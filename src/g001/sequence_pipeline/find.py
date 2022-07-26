@@ -81,6 +81,6 @@ def find(data: Data) -> pd.DataFrame:
     pool = multiprocessing.Pool()
 
     # concat many dataframes together
-    results = pd.concat(pool.map(parse_single_fastq_file, all_sequence_files)).reset_index(drop=True)  # type: ignore
+    results = pd.concat(pool.map(parse_single_fastq_file, all_sequence_files)).sort_values("fastq_sequence_id").reset_index(drop=True)  # type: ignore
     logger.info(f"Parsed {len(results):,} sequences into dataframe")
     return results
