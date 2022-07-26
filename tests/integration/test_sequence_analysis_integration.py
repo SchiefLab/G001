@@ -89,7 +89,6 @@ def test_correct_module(tmp_path: Path, data: Data) -> None:
     assert_frames_equal(tmp_path, working_dataframe, grab_fixture_df("correct"), "correct")
 
 
-@pytest.mark.skip(reason="Not implemented yet")
 def test_annotate_module(tmp_path: Path, data: Data) -> None:
     working_dataframe = grab_fixture_df("correct")
     working_dataframe = annotate(data, working_dataframe)
@@ -133,14 +132,12 @@ def test_unblind_module(tmp_path: Path, data: Data) -> None:
     assert_frames_equal(tmp_path, working_dataframe, grab_fixture_df("unblind"), "unblind")
 
 
-@pytest.mark.skip(reason="Not implemented yet")
 def test_personalize_module(tmp_path: Path, data: Data) -> None:
     working_dataframe = grab_fixture_df("unblind")
     working_dataframe = personalize(data, working_dataframe)
     assert_frames_equal(tmp_path, working_dataframe, grab_fixture_df("personalize"), "personalize")
 
 
-@pytest.mark.skip(reason="Not implemented yet")
 def test_mutate_module(tmp_path: Path, data: Data) -> None:
     working_dataframe = grab_fixture_df("personalize")
     working_dataframe = mutation(data, working_dataframe)

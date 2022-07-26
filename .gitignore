@@ -5,6 +5,7 @@ notebooks/*
 **/g001.egg-info/*
 sequence_analysis_output/*
 *.DS_Store*
+*build/**
 tests/output/annotate.feather
 tests/output/correct.feather
 tests/output/find.feather
