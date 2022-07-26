@@ -1,4 +1,4 @@
-name: Integration Test
+name: Sequence Analysis Pipeline
 on:
   push:
     branches: [ main ]
