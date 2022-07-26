@@ -77,14 +77,12 @@ def test_model_module(tmp_path: Path, data: Data) -> None:
     assert_frames_equal(tmp_path, working_dataframe, grab_fixture_df("model"), "model")
 
 
-@pytest.mark.skip(reason="Not implemented yet")
 def test_split_module(tmp_path: Path, data: Data) -> None:
     working_dataframe = grab_fixture_df("model")
     working_dataframe = split(data, working_dataframe)
     assert_frames_equal(tmp_path, working_dataframe, grab_fixture_df("split"), "split")
 
 
-@pytest.mark.skip(reason="Not implemented yet")
 def test_correct_module(tmp_path: Path, data: Data) -> None:
     working_dataframe = grab_fixture_df("split")
     working_dataframe = correct(data, working_dataframe)
@@ -98,35 +96,30 @@ def test_annotate_module(tmp_path: Path, data: Data) -> None:
     assert_frames_equal(tmp_path, working_dataframe, grab_fixture_df("annotate"), "annotate")
 
 
-@pytest.mark.skip(reason="Not implemented yet")
 def test_join_module(tmp_path: Path, data: Data) -> None:
     working_dataframe = grab_fixture_df("annotate")
     working_dataframe = join(data, working_dataframe)
     assert_frames_equal(tmp_path, working_dataframe, grab_fixture_df("join"), "join")
 
 
-@pytest.mark.skip(reason="Not implemented yet")
 def test_ngs_module(tmp_path: Path, data: Data) -> None:
     working_dataframe = grab_fixture_df("join")
     working_dataframe = ngs(data, working_dataframe)
     assert_frames_equal(tmp_path, working_dataframe, grab_fixture_df("ngs"), "ngs")
 
 
-@pytest.mark.skip(reason="Not implemented yet")
 def test_tag_module(tmp_path: Path, data: Data) -> None:
     working_dataframe = grab_fixture_df("ngs")
     working_dataframe = tag(data, working_dataframe)
     assert_frames_equal(tmp_path, working_dataframe, grab_fixture_df("tag"), "tag")
 
 
-@pytest.mark.skip(reason="Not implemented yet")
 def test_swap_module(tmp_path: Path, data: Data) -> None:
     working_dataframe = grab_fixture_df("tag")
     working_dataframe = swap(data, working_dataframe)
     assert_frames_equal(tmp_path, working_dataframe, grab_fixture_df("swap"), "swap")
 
 
-@pytest.mark.skip(reason="Not implemented yet")
 def test_pair_module(tmp_path: Path, data: Data) -> None:
     working_dataframe = grab_fixture_df("swap")
     working_dataframe, candidates_df = pair(data, working_dataframe)
@@ -134,7 +127,6 @@ def test_pair_module(tmp_path: Path, data: Data) -> None:
     assert_frames_equal(tmp_path, candidates_df, grab_fixture_df("pairing_candidates"), "pairing_candidates")
 
 
-@pytest.mark.skip(reason="Not implemented yet")
 def test_unblind_module(tmp_path: Path, data: Data) -> None:
     working_dataframe = grab_fixture_df("pair")
     working_dataframe = unblind(data, working_dataframe)
