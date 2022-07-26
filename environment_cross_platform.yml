@@ -1,0 +1,15 @@
+name: G001
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python==3.9
+  - biopython==1.79
+  - black
+  - python-levenshtein==0.12.2
+  - click
+  - pandarallel==1.6.1
+  - pydantic==1.9.0
+  - pyarrow==8.0.0
+  - pip:
+    - git+https://github.com/jwillis0720/sadie.git@91cd2f31677121eb62b63d499de12847b5c0e791#egg=sadie_antibody
