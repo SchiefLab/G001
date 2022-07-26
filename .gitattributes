@@ -1,1 +1,4 @@
 tests/fixtures/find.feather filter=lfs diff=lfs merge=lfs -text
+tests/fixtures/split.feather filter=lfs diff=lfs merge=lfs -text
+tests/fixtures/correct.feather filter=lfs diff=lfs merge=lfs -text
+tests/fixtures/model.feather filter=lfs diff=lfs merge=lfs -text
