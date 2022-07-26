@@ -1,0 +1,36 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Sequence Pipelien",
+            "type": "python",
+            "request": "launch",
+            "module": "g001.app",
+            "justMyCode": true,
+            "args": [
+                "sequence_analysis",
+                "-d",
+                "data",
+                "-r",
+                "--skip-csv",
+            ]
+        },
+        {
+            "name": "Run test",
+            "type": "python",
+            "request": "launch",
+            "module": "pytest",
+            "justMyCode": true,
+            "args": [
+                "-x",
+                "--log-cli-level",
+                "INFO",
+                "-s",
+                "tests/integration/test_sequence_analysis_integration.py::test_pair_module",
+            ]
+        }
+    ]
+}
