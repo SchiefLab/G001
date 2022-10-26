@@ -3,6 +3,7 @@
 The G001 Clinical Trial Repository
 
 [![Sequence Analysis Pipeline](https://github.com/SchiefLab/G001/workflows/Sequence%20Analysis%20Pipeline/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/integration.yml)
+[![DOI](https://zenodo.org/badge/517925817.svg)](https://zenodo.org/badge/latestdoi/517925817)
 
 # Downloading and Installing
 
@@ -14,6 +15,12 @@ Once you have git lfs installed, you can clone the repository with the following
 git clone https://github.com/SchiefLab/G001.git
 cd G001
 git lfs pull
+```
+
+To install
+
+```bash
+pip install .
 ```
 
 # Sequencing Pipeline
