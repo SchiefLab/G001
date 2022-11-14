@@ -23,3 +23,5 @@ tests/output/unblind.feather
 tests/output/.cache/find.feather
 raw_flow/
 raw_flow.tgz
+flow_input/
+flow_input.tgz
