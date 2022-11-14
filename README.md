@@ -6,7 +6,7 @@
 ## Data Access
 
 "If you don't want to run the code but would just like the important data files for your own analysis, you can find the following:"
-1. The raw flow cytometry files including .fcs, .xml and .csv files can be found [here](https://iavig001public.s3.us-west-2.amazonaws.com/raw_flow.tgz).
+1. The raw flow cytometry files including .fcs, .xml and .csv files can be found [here](https://iavig001public.s3.us-west-2.amazonaws.com/flow_input.tgz)
    <br> **Warning - this file is large and is thus hosted on a public Amazon S3 bucket**
 
 2. The FASTQ files from Sanger sequencing are found in the [fastq](data/sequence/fastq) directory.
