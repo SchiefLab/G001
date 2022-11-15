@@ -19,7 +19,7 @@ if (!length(args) %in% 4:5) {
   stop("invalid number of arguments to flow processing script.")
 }
 
-source('R/Flow_Functions.R')
+source('src/g001/R/Flow_Functions.R')
 
 key = args[1]
 manifest = args[2]
@@ -42,10 +42,10 @@ if (!interactive()) {
 
 # Reading Manifest ----------------------------------------------------------------------------
 
-print(paste("Processing",key,"flow data, sucker"))
+print(paste("Processing",key,"flow data"))
 print(paste("Reading",key,"manifest"))
 read_manifest <- function(x){
-  readxl::read_excel(x)
+  read.csv(x)
 }
 
 # fh_manifest <- "sample_manifests/Flow/FHCRC/FHCRC_Flow_Manifest_20191121.xls"

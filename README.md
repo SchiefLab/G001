@@ -5,21 +5,35 @@
 
 ## Data Access
 
-"If you don't want to run the code but would just like the important data files for your own analysis, you can find the following:"
+If you don't want to run the code but would just like the important data files for your own analysis, you can find the following:
 1. The raw flow cytometry files including .fcs, .xml and .csv files can be found [here](https://iavig001public.s3.us-west-2.amazonaws.com/flow_input.tgz)
-   <br> **Warning - this file is large and is thus hosted on a public Amazon S3 bucket**
+   <br> **Warning - this file is large at ~120 GB and is hosted on a public Amazon S3 bucket**
 
-2. The FASTQ files from Sanger sequencing are found in the [fastq](data/sequence/fastq) directory.
+2. The output of the processed are found in the [processed flow](data/flow/processed_flow/) directory.
 
-3. The annotated,filtered and paired antibody sequences are found in the [sequences/](data/figures/sequences/) directory and may be download with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/sequences/unblinded_sequences.csv.gz)
+3. The FASTQ files from Sanger sequencing are found in the [fastq](data/sequence/fastq) directory.
 
-4. A merged summary file with all frequencies in this study can be found in the [flow_summary](data/figures/flow_summary) directory and may be download with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/flow_summary/flow_and_sequences.csv.gz)
+4. The annotated,filtered and paired antibody sequences are found in the [sequences/](data/figures/sequences/) directory and may be download with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/sequences/unblinded_sequences.csv.gz)
 
-## Downloading and Installing
+5. A merged summary file with all frequencies in this study can be found in the [flow_summary](data/figures/flow_summary) directory and may be download with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/flow_summary/flow_and_sequences.csv.gz)
 
-<!-- You may need git lfs in order to download the large files associated with this repository. You can download git lfs from [here](https://git-lfs.github.com/). -->
+## Installation
 
-<!-- Once you have git lfs installed, you can clone the repository with the following command: -->
+While not necessary, we highly recommend using the conda open-source package and enviroment manager. This allows you to make an environment with both Python and R dependencies. For the purposes of this repostiory, only minimal installer for anaconda is necessary.
+
+<u>Miniconda installers</u>
+
+[Mac command line installer](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
+
+[Mac GUI installer](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.pkg)
+
+[Linux command line installer](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
+
+Due to our dependencies on HMMER, there is no windows support at the moment.
+
+## Setup
+
+This setup assumes that `git` and `conda` are in your path.
 
 ```bash
 # clone repository
@@ -30,14 +44,30 @@ cd G001
 
 # create conda env
 conda env create -f environment_cross_platform.yml --force
+
 # activate the environment
-
 conda activate G001
-# install repository
-pip install .
 
+# install G001
+pip install .
 ```
-<!-- # git lfs pull -->
+## Flow Processing 
+
+The flow processing needs to be run on for each of the sites independently.
+
+```bash
+# get all raw flow files from public S3 bucket
+wget https://iavig001public.s3.us-west-2.amazonaws.com/flow_input.tgz
+
+# extract the files
+tar -xvzf flow_input.tgz
+
+# Run for FHCRC
+Rscript src/g001/R/Flow_Processing.R FHCRC flow_input/fhcrc/FHCRC_Flow_Manifest.csv flow_input/fhcrc/ yes flow_output
+
+# Run for VRC
+Rscript src/g001/R/Flow_Processing.R VRC flow_input/vrc/VRC_Flow_Manifest.csv flow_input/vrc/ yes flow_output
+```
 
 
 ## Sequencing Pipeline
