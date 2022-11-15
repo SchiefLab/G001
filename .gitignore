@@ -26,3 +26,4 @@ raw_flow.tgz
 flow_input/
 flow_input.tgz
 flow_output/
+.vscode/*
