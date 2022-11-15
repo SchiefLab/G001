@@ -21,7 +21,7 @@ If you don't want to run the code but would just like the important data files f
 
 While not necessary, we highly recommend using the conda open-source package and enviroment manager. This allows you to make an environment with both Python and R dependencies. For the purposes of this repostiory, only minimal installer for anaconda is necessary.
 
-<u>Miniconda installers</u>
+<ins>Miniconda installers</ins>
 
 [Mac command line installer](https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh)
 
