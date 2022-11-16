@@ -27,6 +27,7 @@ dependencies:
   - r-janitor
   - r-lubridate
   - r-purrr
+  - r-readr
   - r-remotes # require(cytoqc) # https://github.com/RGLab/cytoqc # remotes::install_github("RGLab/cytoqc")
   - r-stringr
   - r-tidyr
