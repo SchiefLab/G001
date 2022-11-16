@@ -92,7 +92,7 @@ def fhcrc(ctx: click.Context) -> None:
         "flow_output",
     ]
     stdout = subprocess.run(cmd, capture_output=True)
-    print(stdout)
+    print(stdout.stdout.decode("utf-8"))
 
 
 @main.command("vrc")
@@ -111,7 +111,7 @@ def vcr(ctx: click.Context) -> None:
         "flow_output",
     ]
     stdout = subprocess.run(cmd, capture_output=True)
-    print(stdout)
+    print(stdout.stdout.decode("utf-8"))
 
 
 if __name__ == "__main__":
