@@ -69,6 +69,13 @@ Rscript src/g001/R/Flow_Processing.R FHCRC flow_input/fhcrc/FHCRC_Flow_Manifest.
 Rscript src/g001/R/Flow_Processing.R VRC flow_input/vrc/VRC_Flow_Manifest.csv flow_input/vrc/ yes flow_output
 ```
 
+## Collation of Flow Data
+The following will combine the VRC and FHCRC flow data.
+
+```bash
+Rscript src/g001/R/Collate_Flow_Data.R data/flow/processed_flow/
+```
+
 
 ## Sequencing Pipeline
 
