@@ -23,7 +23,12 @@ dependencies:
   - bioconductor-cytoml
   - bioconductor-flowworkspace # contains r-dplyr
   - bioconductor-ggcyto
+  - bioconductor-mimosa
+  - r-forcats
+  - r-readxl
   - r-assertthat
+  - r-arrow
+  - r-here
   # - r-dplyr # is contained in bioconductor-flowworkspace
   - r-ggrepel
   - r-janitor
