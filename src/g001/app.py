@@ -4,6 +4,7 @@ from __future__ import annotations
 # stdlib
 import logging
 from pathlib import Path
+import subprocess
 
 # third party
 import click
@@ -49,7 +50,7 @@ def main(ctx: click.Context) -> None:
 )
 @click.option("--resume", "-r", is_flag=True, help="""Resume pipeline from .cache path""")
 @click.option("--skip-csv", is_flag=True, help="""Skip copying feathers to .csv in final path""")
-def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resume: bool, skip_csv:bool) -> None:
+def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resume: bool, skip_csv: bool) -> None:
     """
     Run sequence analysis
     """
@@ -73,6 +74,44 @@ def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resum
 
     # run sequene analysis pipeline
     run_sequence_analysis(data, cache_path, resume, skip_csv)
+
+
+@main.command("fhcrc")
+@click.pass_context
+def fhcrc(ctx: click.Context) -> None:
+    """
+    Run sequence analysis
+    """
+    cmd = [
+        "Rscript",
+        "src/g001/R/Flow_Processing.R",
+        "FHCRC",
+        "flow_input/fhcrc/FHCRC_Flow_Manifest.csv",
+        "flow_input/fhcrc/",
+        "yes",
+        "flow_output",
+    ]
+    stdout = subprocess.run(cmd, capture_output=True)
+    print(stdout)
+
+
+@main.command("vrc")
+@click.pass_context
+def vcr(ctx: click.Context) -> None:
+    """
+    Run sequence analysis
+    """
+    cmd = [
+        "Rscript",
+        "src/g001/R/Flow_Processing.R",
+        "VRC",
+        "flow_input/vrc/VRC_Flow_Manifest.csv",
+        "flow_input/vrc/",
+        "yes",
+        "flow_output",
+    ]
+    stdout = subprocess.run(cmd, capture_output=True)
+    print(stdout)
 
 
 if __name__ == "__main__":
