@@ -18,19 +18,19 @@ dependencies:
   - pip:
       - git+https://github.com/jwillis0720/sadie.git@91cd2f31677121eb62b63d499de12847b5c0e791#egg=sadie_antibody
   # R itself
-  - r-base==4.2.1
+  - r-base==4.1.3
   # R core dependencies
-  - bioconductor-cytoml==2.10.0
-  - bioconductor-flowworkspace==4.10.0 # contains r-dplyr
-  - bioconductor-ggcyto==1.26.0
-  - bioconductor-mimosa==1.36.0
+  - bioconductor-cytoml>=2.6.0,<=2.10.0
+  - bioconductor-flowworkspace>=4.6.0,<=4.10.0 # contains r-dplyr
+  - bioconductor-ggcyto>=1.22.0,<=1.26.0
+  - bioconductor-mimosa>=1.32.0,<=1.36.0
   - r-assertthat==0.2.1
-  - r-arrow==9.0.0
+  - r-arrow>=8.0.0,<=9.0.0
   - r-forcats==0.5.2
   - r-here==1.0.1
   - r-readxl==1.4.1
   # - r-dplyr # is contained in bioconductor-flowworkspace
-  - r-ggrepel==0.9.1
+  - r-ggrepel=0.9
   - r-janitor==2.1.0
   - r-lubridate==1.8.0
   - r-purrr==0.3.5
@@ -47,10 +47,10 @@ dependencies:
   - r-tibble==3.1.8 # tibble
   - r-vctrs==0.5.0
   # R cytoqc dependencies
-  - bioconductor-biocgenerics==0.44.0 # BiocGenerics
-  - bioconductor-flowcore==2.10.0 # FlowCore
-  - bioconductor-graph==1.76.0 # graph
-  - bioconductor-rgraphviz==2.42.0 # Rgraphviz
+  - bioconductor-biocgenerics>=0.40.0,<=0.44.0 # BiocGenerics
+  - bioconductor-flowcore==2.6.0 # FlowCore
+  - bioconductor-graph==1.72.0 # graph
+  - bioconductor-rgraphviz==2.38.0 # Rgraphviz
   # - bioconductor-ggcyto # ggcyto
   - r-crayon==1.5.2 # crayon
   # - r-dplyr # is contained in bioconductor-flowworkspace # dplyr
