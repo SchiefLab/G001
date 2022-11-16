@@ -42,14 +42,8 @@ git clone https://github.com/SchiefLab/G001.git
 # change directory
 cd G001
 
-# create conda env
-conda env create -f environment_cross_platform.yml --force
-
-# activate the environment
-conda activate G001
-
 # install G001
-pip install .
+./install.sh
 ```
 ## Flow Processing 
 

@@ -1,8 +1,10 @@
 name: G001
 channels:
   - conda-forge
+  - bioconda
   - r
 dependencies:
+  # Python dependencies
   - python==3.10
   - biopython==1.79
   - pip
@@ -14,4 +16,43 @@ dependencies:
   - pyarrow==8.0.0
   - scikit-learn==1.1.3
   - pip:
-    - git+https://github.com/jwillis0720/sadie.git@91cd2f31677121eb62b63d499de12847b5c0e791#egg=sadie_antibody
+      - git+https://github.com/jwillis0720/sadie.git@91cd2f31677121eb62b63d499de12847b5c0e791#egg=sadie_antibody
+  # R core dependencies
+  - bioconductor-cytoml
+  - bioconductor-flowworkspace # contains r-dplyr
+  - bioconductor-ggcyto
+  - r-assertthat
+  # - r-dplyr # is contained in bioconductor-flowworkspace
+  - r-ggrepel
+  - r-janitor
+  - r-lubridate
+  - r-purrr
+  - r-readr
+  - r-remotes # require(cytoqc) # https://github.com/RGLab/cytoqc # remotes::install_github("RGLab/cytoqc")
+  - r-stringr
+  - r-tidyr
+  - r-wcorr
+  # R colortable dependencies
+  - r-cli # cli
+  - r-knitr # knitr
+  - r-rmarkdown # rmarkdown
+  - r-scales # scales
+  - r-tibble # tibble
+  - r-vctrs
+  # R cytoqc dependencies
+  - bioconductor-biocgenerics # BiocGenerics
+  - bioconductor-flowcore # FlowCore
+  - bioconductor-graph # graph
+  - bioconductor-rgraphviz # Rgraphviz
+  # - bioconductor-ggcyto # ggcyto
+  - r-crayon # crayon
+  # - r-dplyr # is contained in bioconductor-flowworkspace # dplyr
+  - r-dt
+  - r-htmltools # htmltools
+  - r-kableextra # kableExtra
+  # - r-knitr # knitr
+  - r-ggplot2 # ggplot2
+  - r-mass # MASS
+  # - r-purrr # purrr
+  - r-shiny # shiny
+  # - r-tibble # tibble
