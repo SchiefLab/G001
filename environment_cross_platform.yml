@@ -17,6 +17,8 @@ dependencies:
   - scikit-learn==1.1.3
   - pip:
       - git+https://github.com/jwillis0720/sadie.git@91cd2f31677121eb62b63d499de12847b5c0e791#egg=sadie_antibody
+  # R itself
+  - r-base
   # R core dependencies
   - bioconductor-cytoml
   - bioconductor-flowworkspace # contains r-dplyr
