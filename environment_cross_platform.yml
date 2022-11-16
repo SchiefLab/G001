@@ -18,43 +18,48 @@ dependencies:
   - pip:
       - git+https://github.com/jwillis0720/sadie.git@91cd2f31677121eb62b63d499de12847b5c0e791#egg=sadie_antibody
   # R itself
-  - r-base
+  - r-base==4.2.1
   # R core dependencies
-  - bioconductor-cytoml
-  - bioconductor-flowworkspace # contains r-dplyr
-  - bioconductor-ggcyto
-  - r-assertthat
+  - bioconductor-cytoml==2.10.0
+  - bioconductor-flowworkspace==4.10.0 # contains r-dplyr
+  - bioconductor-ggcyto==1.26.0
+  - bioconductor-mimosa==1.36.0
+  - r-assertthat==0.2.1
+  - r-arrow==9.0.0
+  - r-forcats==0.5.2
+  - r-here==1.0.1
+  - r-readxl==1.4.1
   # - r-dplyr # is contained in bioconductor-flowworkspace
-  - r-ggrepel
-  - r-janitor
-  - r-lubridate
-  - r-purrr
-  - r-readr
-  - r-remotes # require(cytoqc) # https://github.com/RGLab/cytoqc # remotes::install_github("RGLab/cytoqc")
-  - r-stringr
-  - r-tidyr
-  - r-wcorr
+  - r-ggrepel==0.9.1
+  - r-janitor==2.1.0
+  - r-lubridate==1.8.0
+  - r-purrr==0.3.5
+  - r-readr==2.1.3
+  - r-remotes==2.4.2 # require(cytoqc) # https://github.com/RGLab/cytoqc # remotes::install_github("RGLab/cytoqc")
+  - r-stringr==1.4.1
+  - r-tidyr==1.2.1
+  - r-wcorr==1.9.5
   # R colortable dependencies
-  - r-cli # cli
-  - r-knitr # knitr
-  - r-rmarkdown # rmarkdown
-  - r-scales # scales
-  - r-tibble # tibble
-  - r-vctrs
+  - r-cli==3.4.1 # cli
+  - r-knitr==1.40 # knitr
+  - r-rmarkdown==2.18 # rmarkdown
+  - r-scales==1.2.1 # scales
+  - r-tibble==3.1.8 # tibble
+  - r-vctrs==0.5.0
   # R cytoqc dependencies
-  - bioconductor-biocgenerics # BiocGenerics
-  - bioconductor-flowcore # FlowCore
-  - bioconductor-graph # graph
-  - bioconductor-rgraphviz # Rgraphviz
+  - bioconductor-biocgenerics==0.44.0 # BiocGenerics
+  - bioconductor-flowcore==2.10.0 # FlowCore
+  - bioconductor-graph==1.76.0 # graph
+  - bioconductor-rgraphviz==2.42.0 # Rgraphviz
   # - bioconductor-ggcyto # ggcyto
-  - r-crayon # crayon
+  - r-crayon==1.5.2 # crayon
   # - r-dplyr # is contained in bioconductor-flowworkspace # dplyr
-  - r-dt
-  - r-htmltools # htmltools
-  - r-kableextra # kableExtra
+  - r-dt==0.26 # DT
+  - r-htmltools==0.5.3 # htmltools
+  - r-kableextra==1.3.4 # kableExtra
   # - r-knitr # knitr
-  - r-ggplot2 # ggplot2
-  - r-mass # MASS
+  - r-ggplot2==3.4.0 # ggplot2
+  - r-mass==7.3_58.1 # MASS
   # - r-purrr # purrr
-  - r-shiny # shiny
+  - r-shiny==1.7.3 # shiny
   # - r-tibble # tibble
