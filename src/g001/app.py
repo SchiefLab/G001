@@ -78,7 +78,15 @@ def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resum
 
 @main.command("fhcrc")
 @click.pass_context
-def fhcrc(ctx: click.Context) -> None:
+@click.option(
+    "--flow-output",
+    "-o",
+    type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=True),
+    required=False,
+    default="flow_output",
+    help="Path to create the flow_output directory",
+)
+def fhcrc(ctx: click.Context, flow_output: Path | str) -> None:
     """
     Run for FHCRC
     """
@@ -89,7 +97,7 @@ def fhcrc(ctx: click.Context) -> None:
         "flow_input/fhcrc/FHCRC_Flow_Manifest.csv",
         "flow_input/fhcrc/",
         "yes",
-        "flow_output",
+        flow_output,
     ]
     stdout = subprocess.run(cmd, capture_output=True)
     print(stdout.stdout.decode("utf-8"))

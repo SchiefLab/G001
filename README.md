@@ -44,7 +44,11 @@ cd G001
 
 # install G001
 ./install.sh
+
+# activate environment
+conda activate G001
 ```
+
 ## Flow Processing 
 
 The flow processing needs to be run on for each of the sites independently.
@@ -57,17 +61,17 @@ wget https://iavig001public.s3.us-west-2.amazonaws.com/flow_input.tgz
 tar -xvzf flow_input.tgz
 
 # Run for FHCRC
-Rscript src/g001/R/Flow_Processing.R FHCRC flow_input/fhcrc/FHCRC_Flow_Manifest.csv flow_input/fhcrc/ yes flow_output
+g001 fhcrc -o flow_output
 
 # Run for VRC
-Rscript src/g001/R/Flow_Processing.R VRC flow_input/vrc/VRC_Flow_Manifest.csv flow_input/vrc/ yes flow_output
+g001 vrc -o flow_output
 ```
 
 ## Collation of Flow Data
 The following will combine the VRC and FHCRC flow data.
 
 ```bash
-Rscript src/g001/R/Collate_Flow_Data.R data/flow/processed_flow/
+g001 collate -o data/flow/processed_flow/Combined_Results
 ```
 
 
