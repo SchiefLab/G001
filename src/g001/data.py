@@ -10,6 +10,172 @@ from pydantic import BaseModel, validator
 
 logger = logging.getLogger("DataManage")
 
+class PlotParameters:
+    def __init__(self):
+        # define visit lookups for
+        self.memory_visit_lookup = {
+            "V02": -4,
+            "V06": 4,
+            "V07": 8,
+            "V08": 10,
+            "V10": 16,
+        }
+        # germinal center timepoints
+        self.gc_visit_lookup = {"V05": 3, "V09": 11}
+
+        # plasmablast timepoints
+        self.pb_visit_lookup = {"V07A": 9}
+
+        # and combine all timepoitns
+        self.combined_timepoints = {**self.memory_visit_lookup, **self.gc_visit_lookup, **self.pb_visit_lookup}
+
+        # any annotations we make will ahve these arguments
+        self.small_annotate_args = dict(
+            xycoords="axes fraction",
+            horizontalalignment="center",
+            verticalalignment="center",
+            fontsize=9,
+            fontweight="bold",
+        )
+
+        self.placebo_color = "#A6A6A6"
+        self.low_dose_vrc01_color = "#6C65FF"
+        self.high_dose_vrc01_color = "#B885EE"
+        self.low_dose_nonvrc01_color = "#F7C3B1"
+        self.high_dose_nonvrc01_color = "#FFF059"
+
+        self.dose_palette = dict(
+            zip(["Low Dose", "High Dose"], [self.low_dose_vrc01_color, self.high_dose_vrc01_color])
+        )
+        self.non_vrv01_dose_palette = dict(
+            zip(["Low Dose", "High Dose"], [self.low_dose_nonvrc01_color, self.high_dose_nonvrc01_color])
+        )
+
+        self.treatment_palette = dict(
+            zip(
+                ["DPBS sucrose", "20 µg eOD-GT8 60mer + AS01B", "100 µg eOD-GT8 60mer + AS01B"],
+                [self.placebo_color, self.low_dose_vrc01_color, self.high_dose_vrc01_color],
+            )
+        )
+        self.treatment_palette_nonvrc01 = dict(
+            zip(
+                ["DPBS sucrose", "20 µg eOD-GT8 60mer + AS01B", "100 µg eOD-GT8 60mer + AS01B"],
+                [self.placebo_color, self.low_dose_nonvrc01_color, self.high_dose_nonvrc01_color],
+            )
+        )
+        self.full_palette = {
+            "Low Dose": {
+                "vrc01_class": self.low_dose_vrc01_color,
+                "vrc01_class_kappa": self.low_dose_vrc01_color,
+                "vrc01_class_lambda": "#65ABFF",
+                "nonvrc01_class": self.low_dose_nonvrc01_color,
+                "nonvrc01_class_kappa": self.low_dose_nonvrc01_color,
+                "nonvrc01_class_lambda": "#B1E5F7",
+            },
+            "High Dose": {
+                "vrc01_class": self.high_dose_vrc01_color,
+                "vrc01_class_kappa": self.high_dose_vrc01_color,
+                "vrc01_class_lambda": "#ED85EE",
+                "nonvrc01_class": self.high_dose_nonvrc01_color,
+                "nonvrc01_class_kappa": self.high_dose_nonvrc01_color,
+                "nonvrc01_class_lambda": "#F059FF",
+            },
+        }
+
+    def get_memory_visit_lookup(self) -> Dict[str, int]:
+        """The timepoint and week visit dictionry of memory b cell associated samples
+
+        Returns
+        -------
+        Dict[str, int]
+        """
+        return self.memory_visit_lookup
+
+    def get_gc_visit_lookup(self) -> Dict[str, int]:
+        """The timepoint and week visit dictionry of germinal center derived (FNA) associated samples
+
+        Returns
+        -------
+        Dict[str, int]
+        """
+        return self.gc_visit_lookup
+
+    def get_pb_visit_lookup(self) -> Dict[str, int]:
+        """The timepoint and week visit dictionry of plasmablasts associated samples
+
+        Returns
+        -------
+        Dict[str, int]
+        """
+        return self.pb_visit_lookup
+
+    def get_combined_timepoints(self) -> Dict[str, int]:
+        """The timepoint and week visit dictionry of all associated samples
+
+        Returns
+        -------
+        Dict[str, int]
+        """
+        return self.combined_timepoints
+
+    def get_pallete(self) -> Dict[str, Dict[str, str]]:
+        """The color palette for the plots
+
+        Low Dose:
+            vrc01_class: #6C65FF
+            vrc01_class_kappa: #6C65FF
+            vrc01_class_lambda: #65ABFF
+            nonvrc01_class: #F7C3B1
+            nonvrc01_class_kappa: #F7C3B1
+            nonvrc01_class_lambda: #B1E5F7
+        High Dose:
+            vrc01_class: #B885EE
+            vrc01_class_kappa: #B885EE
+            vrc01_class_lambda: #ED85EE
+            nonvrc01_class: #FFF059
+            nonvrc01_class_kappa: #FFF059
+            nonvrc01_class_lambda: #D8FF65
+
+        Returns
+        -------
+        Dict[str, Dict[str, str]]
+        """
+        return self.full_palette
+
+    def get_treatment_pallete(self) -> Dict[str, str]:
+        """Color palette but lookup by Treatment, e.g. DPBS sucrose, 20 µg eOD-GT8 60mer + AS01B
+
+        DPBS sucrose: #A6A6A6
+        20 µg eOD-GT8 60mer + AS01B: #6C65FF
+        100 µg eOD-GT8 60mer + AS01B: #B885EE
+
+        Returns
+        -------
+        Dict[str, str]
+        """
+        return self.treatment_palette
+
+    def get_nonvrc01_treatment_pallete(self) -> Dict[str, str]:
+        """Color palette but lookup by Treatment, e.g. DPBS sucrose, 20 µg eOD-GT8 60mer + AS01B
+
+        DPBS sucrose: #A6A6A6
+        20 µg eOD-GT8 60mer + AS01B: #6C65FF
+        100 µg eOD-GT8 60mer + AS01B: #B885EE
+
+        Returns
+        -------
+        Dict[str, str]
+        """
+        return self.treatment_palette_nonvrc01
+
+    def get_small_annotate_args(self) -> Dict[str, str | int]:
+        """The arguments for the small annotations on the plots
+
+        Returns
+        -------
+        Dict[str, str]
+        """
+        return self.small_annotate_args
 
 class SequenceDataPaths(BaseModel):
     base_path: Path
@@ -70,12 +236,22 @@ class SequenceDataPaths(BaseModel):
     def validate_haplotype_path(cls, v: Path | None, values: Dict[str, Path]) -> Path | None:
         if v is None:
             return Path(values["haplotype_path"])
+class FigureDataPaths(BaseModel):
+    base_path: Path = Path('data')
+    flow_and_frequency_path : Path = base_path / Path('figures/flow_summary/flow_and_sequences.feather')
 
+    @validator("*",always=True)
+    def validate_paths(cls, v:Path):
+        if not v.exists():
+            raise FileNotFoundError(f"{v} is not found")
+        return v
 
 class Data:
     def __init__(self, base_path: Path):
         self.sequence_data_paths = SequenceDataPaths(base_path=base_path)
+        self.figure_data_paths = FigureDataPaths(base_path=base_path)
         self.intra_plate_cluster_distance: int = 2
+        self.plot_parameters = PlotParameters()
 
     def get_fastq_files(self) -> List[Path]:
         """
@@ -152,3 +328,13 @@ class Data:
             a pandas dataframe with the dose groups, placebo and pub id
         """
         return pd.read_csv(self.sequence_data_paths.haplotype_path / Path("haplotype.csv.gz"), index_col=0)  # type: ignore
+
+    def get_flow_and_frequency_data(self) -> pd.DataFrame:
+        """Returns the combined flow and frequency dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            a pandas dataframe with all computed values from the combining flow and sequencing module
+        """
+        return pd.read_feather(self.figure_data_paths.flow_and_frequency_path)
