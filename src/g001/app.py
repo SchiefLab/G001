@@ -7,10 +7,13 @@ from pathlib import Path
 
 # third party
 import click
+import seaborn as sns
+import numpy as np
 
 # G001 package
 from g001.data import Data
 from g001.sequence_pipeline.main import run_sequence_analysis
+from g001.figures import plot_flow_frequencies
 
 
 @click.group()
@@ -24,9 +27,10 @@ def main(ctx: click.Context) -> None:
         datefmt="%m-%d-%Y %I:%M%p",
         format="%(name)s:%(levelname)s:%(asctime)s--> %(message)s",
     )
+    data = Data(Path("data"))
 
     # make empty context object
-    ctx.obj = {}
+    ctx.obj = {"data": data}
     pass
 
 
@@ -49,7 +53,7 @@ def main(ctx: click.Context) -> None:
 )
 @click.option("--resume", "-r", is_flag=True, help="""Resume pipeline from .cache path""")
 @click.option("--skip-csv", is_flag=True, help="""Skip copying feathers to .csv in final path""")
-def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resume: bool, skip_csv:bool) -> None:
+def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resume: bool, skip_csv: bool) -> None:
     """
     Run sequence analysis
     """
@@ -73,6 +77,35 @@ def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resum
 
     # run sequene analysis pipeline
     run_sequence_analysis(data, cache_path, resume, skip_csv)
+
+
+@main.group()
+def figures():
+    """
+    Generate for figures.
+    """
+    sns.set_context("paper", font_scale=1)
+    sns.set_style("ticks")
+    sns.set_style({"font.family": "Arial"})
+    np.random.seed(1000)
+    pass
+
+
+@figures.command("fig1")
+@click.pass_context
+@click.option(
+    "--outpath",
+    "-o",
+    default="figures/figure1",
+    type=click.Path(file_okay=True, resolve_path=True),
+    help="Output path for figure",
+    show_default=True,
+)
+def plot_figure_1(ctx: click.Context, outpath: str | Path) -> None:
+    data = ctx.obj["data"]
+    figure = plot_flow_frequencies(data)
+    figure.savefig(outpath + ".png", dpi=300)
+    click.echo(f"Figure 1 generated to {outpath}.png")
 
 
 if __name__ == "__main__":
