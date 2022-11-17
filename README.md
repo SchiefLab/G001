@@ -3,9 +3,21 @@
 [![Sequence Analysis Pipeline](https://github.com/SchiefLab/G001/workflows/Sequence%20Analysis%20Pipeline/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/integration.yml)
 [![DOI](https://zenodo.org/badge/517925817.svg)](https://zenodo.org/badge/latestdoi/517925817)
 
-## Data Access
+- [The IAVI G001 Clinical Trial Repository](#the-iavi-g001-clinical-trial-repository)
+- [Data Access](#data-access)
+- [Pipeline](#pipeline)
+  - [Installation Pre-requisites](#installation-pre-requisites)
+  - [Installation](#installation)
+  - [Flow Processing](#flow-processing)
+  - [Collation of Flow Data](#collation-of-flow-data)
+  - [Sequencing Pipeline](#sequencing-pipeline)
+  - [Combine Flow and Sequence Data](#combine-flow-and-sequence-data)
+  - [Figures](#figures)
+
+# Data Access
 
 If you don't want to run the code but would just like the important data files for your own analysis, you can find the following:
+
 1. The raw flow cytometry files including .fcs, .xml and .csv files can be found [here](https://iavig001public.s3.us-west-2.amazonaws.com/flow_input.tgz)
    <br> **Warning - this file is large at ~120 GB and is hosted on a public Amazon S3 bucket**
 
@@ -17,9 +29,11 @@ If you don't want to run the code but would just like the important data files f
 
 5. A merged summary file with all frequencies in this study can be found in the [flow_summary](data/figures/flow_summary) directory and may be download with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/flow_summary/flow_and_sequences.csv.gz)
 
-## Installation
+# Pipeline
 
-While not necessary, we highly recommend using the conda open-source package and enviroment manager. This allows you to make an environment with both Python and R dependencies. For the purposes of this repostiory, only minimal installer for anaconda is necessary.
+## Installation Pre-requisites
+
+While not necessary, we highly recommend using the [conda](https://docs.conda.io/en/latest/) open-source package and environment manager. This allows you to make an environment with both Python and R dependencies. For the purposes of this repository, only minimal installer for anaconda is necessary.
 
 <ins>Miniconda installers</ins>
 
@@ -31,9 +45,9 @@ While not necessary, we highly recommend using the conda open-source package and
 
 Due to our dependencies on HMMER, there is no windows support at the moment.
 
-## Setup
+## Installation
 
-This setup assumes that `git` and `conda` are in your path.
+This installation assumes that `git` and `conda` are in your path.
 
 ```bash
 # clone repository
@@ -49,7 +63,8 @@ cd G001
 conda activate G001
 ```
 
-## Flow Processing 
+## Flow Processing
+
 
 The flow processing needs to be run on for each of the sites independently.
 
@@ -68,15 +83,30 @@ g001 vrc -o flow_output
 ```
 
 ## Collation of Flow Data
+
 The following will combine the VRC and FHCRC flow data.
 
 ```bash
 g001 collate -o data/flow/processed_flow/Combined_Results
 ```
 
-
 ## Sequencing Pipeline
 
+Analyze Fastq sequences from Sanger sequencing.
+
 ```bash
-G001 sequence_analysis -d data/
+G001 sequence_analysis -d data/ -r -o sequence_analysis_output
+```
+
+## Combine Flow and Sequence Data
+
+```bash
+Rscript src/g001/R/Combine_Flow_and_Seq_Results.R data/sequence data/flow/collated_flow
+```
+
+## Figures
+
+```bash
+# Genarate Figure 1
+G001 figurs fig1-d data/ -o figures_output
 ```
