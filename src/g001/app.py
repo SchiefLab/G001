@@ -8,10 +8,13 @@ import subprocess
 
 # third party
 import click
+import seaborn as sns
+import numpy as np
 
 # G001 package
 from g001.data import Data
 from g001.sequence_pipeline.main import run_sequence_analysis
+from g001.figures import plot_flow_frequencies
 
 
 @click.group()
@@ -25,9 +28,10 @@ def main(ctx: click.Context) -> None:
         datefmt="%m-%d-%Y %I:%M%p",
         format="%(name)s:%(levelname)s:%(asctime)s--> %(message)s",
     )
+    data = Data(Path("data"))
 
     # make empty context object
-    ctx.obj = {}
+    ctx.obj = {"data": data}
     pass
 
 
