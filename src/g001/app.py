@@ -80,7 +80,7 @@ def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resum
 @click.pass_context
 def fhcrc(ctx: click.Context) -> None:
     """
-    Run sequence analysis
+    Run for FHCRC
     """
     cmd = [
         "Rscript",
@@ -99,7 +99,7 @@ def fhcrc(ctx: click.Context) -> None:
 @click.pass_context
 def vcr(ctx: click.Context) -> None:
     """
-    Run sequence analysis
+    Run for VRC
     """
     cmd = [
         "Rscript",
@@ -111,6 +111,22 @@ def vcr(ctx: click.Context) -> None:
         "flow_output",
     ]
     stdout = subprocess.run(cmd, capture_output=True)
+    print(stdout.stdout.decode("utf-8"))
+
+
+@main.command("collate")
+@click.pass_context
+def collate(ctx: click.Context) -> None:
+    """
+    Collation of Flow Data
+    """
+    cmd = [
+        "Rscript",
+        "src/g001/R/Collate_Flow_Data.R",
+        "data/flow/processed_flow/",
+    ]
+    stdout = subprocess.run(cmd, capture_output=True)
+    # TODO: collate doesnt seem to have an stdout
     print(stdout.stdout.decode("utf-8"))
 
 
