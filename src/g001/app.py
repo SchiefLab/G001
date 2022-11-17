@@ -142,5 +142,34 @@ def collate(ctx: click.Context) -> None:
     print(stdout.stdout.decode("utf-8"))
 
 
+@main.group()
+def figures():
+    """
+    Generate for figures.
+    """
+    sns.set_context("paper", font_scale=1)
+    sns.set_style("ticks")
+    sns.set_style({"font.family": "Arial"})
+    np.random.seed(1000)
+    pass
+
+
+@figures.command("fig1")
+@click.pass_context
+@click.option(
+    "--outpath",
+    "-o",
+    default="figures/figure1",
+    type=click.Path(file_okay=True, resolve_path=True),
+    help="Output path for figure",
+    show_default=True,
+)
+def plot_figure_1(ctx: click.Context, outpath: str | Path) -> None:
+    data = ctx.obj["data"]
+    figure = plot_flow_frequencies(data)
+    figure.savefig(outpath + ".png", dpi=300)
+    click.echo(f"Figure 1 generated to {outpath}.png")
+
+
 if __name__ == "__main__":
     main()
