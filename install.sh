@@ -7,4 +7,4 @@ conda activate G001
 Rscript -e "remotes::install_github('thebioengineer/colortable', dependencies = FALSE)"
 Rscript -e "remotes::install_github('RGLab/cytoqc', dependencies = FALSE)"
 
-pip install .
+pip install -e .

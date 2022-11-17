@@ -4,6 +4,7 @@ from __future__ import annotations
 # stdlib
 import logging
 from pathlib import Path
+import subprocess
 
 # third party
 import click
@@ -79,33 +80,66 @@ def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resum
     run_sequence_analysis(data, cache_path, resume, skip_csv)
 
 
-@main.group()
-def figures():
-    """
-    Generate for figures.
-    """
-    sns.set_context("paper", font_scale=1)
-    sns.set_style("ticks")
-    sns.set_style({"font.family": "Arial"})
-    np.random.seed(1000)
-    pass
-
-
-@figures.command("fig1")
+@main.command("fhcrc")
 @click.pass_context
 @click.option(
-    "--outpath",
+    "--flow-output",
     "-o",
-    default="figures/figure1",
-    type=click.Path(file_okay=True, resolve_path=True),
-    help="Output path for figure",
-    show_default=True,
+    type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=True),
+    required=False,
+    default="flow_output",
+    help="Path to create the flow_output directory",
 )
-def plot_figure_1(ctx: click.Context, outpath: str | Path) -> None:
-    data = ctx.obj["data"]
-    figure = plot_flow_frequencies(data)
-    figure.savefig(outpath + ".png", dpi=300)
-    click.echo(f"Figure 1 generated to {outpath}.png")
+def fhcrc(ctx: click.Context, flow_output: Path | str) -> None:
+    """
+    Run for FHCRC
+    """
+    cmd = [
+        "Rscript",
+        "src/g001/R/Flow_Processing.R",
+        "FHCRC",
+        "flow_input/fhcrc/FHCRC_Flow_Manifest.csv",
+        "flow_input/fhcrc/",
+        "yes",
+        flow_output,
+    ]
+    stdout = subprocess.run(cmd, capture_output=True)
+    print(stdout.stdout.decode("utf-8"))
+
+
+@main.command("vrc")
+@click.pass_context
+def vcr(ctx: click.Context) -> None:
+    """
+    Run for VRC
+    """
+    cmd = [
+        "Rscript",
+        "src/g001/R/Flow_Processing.R",
+        "VRC",
+        "flow_input/vrc/VRC_Flow_Manifest.csv",
+        "flow_input/vrc/",
+        "yes",
+        "flow_output",
+    ]
+    stdout = subprocess.run(cmd, capture_output=True)
+    print(stdout.stdout.decode("utf-8"))
+
+
+@main.command("collate")
+@click.pass_context
+def collate(ctx: click.Context) -> None:
+    """
+    Collation of Flow Data
+    """
+    cmd = [
+        "Rscript",
+        "src/g001/R/Collate_Flow_Data.R",
+        "data/flow/processed_flow/",
+    ]
+    stdout = subprocess.run(cmd, capture_output=True)
+    # TODO: collate doesnt seem to have an stdout
+    print(stdout.stdout.decode("utf-8"))
 
 
 if __name__ == "__main__":
