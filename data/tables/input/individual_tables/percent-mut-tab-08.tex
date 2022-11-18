@@ -1,0 +1,173 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{table}[!h]
+
+\caption[(Percent Mutation Report Table 8): Summary statistics for median values for each participant by VRC01 class, aa or nt mutations, VH or VK/VL, treatment, and time point]{\label{tab:percent-mut-tab-08}(Percent Mutation Report Table 8): Summary statistics for median values for each participant by VRC01 class, aa or nt mutations, VH or VK/VL, treatment, and time point. 25th, 50th, and 75th quantiles displayed.}
+\centering
+\fontsize{6}{8}\selectfont
+\begin{tabular}[t]{lllllll}
+\toprule
+\multicolumn{3}{c}{ } & \multicolumn{4}{c}{25\%/50\%/75\% Quantiles} \\
+\cmidrule(l{3pt}r{3pt}){4-7}
+ &  &  & VRC01-class / aa & VRC01-class / nt & non-VRC01-class / aa & non-VRC01-class / nt\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textbf{VH}}\\
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textit{20µg}}\\
+\hspace{1em}\hspace{1em} &  & Wk-4 (V02) & n=1; 6.122/6.122/6.122 & n=1; 2.712/2.712/2.712 & n=15; 6.633/9.184/12.701 & n=15; 3.885/5.424/7.621\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk3 (V05) & n=6; 1.020/1.020/1.786 & n=6; 0.424/0.679/0.680 & n=9; 2.020/2.041/2.041 & n=9; 1.003/1.006/1.017\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk4 (V06) & n=17; 0.000/0.000/1.020 & n=17; 0.000/0.339/0.676 & n=18; 2.041/3.046/5.064 & n=18; 1.021/1.353/2.308\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk8 (V07) & n=15; 0.000/1.531/2.041 & n=15; 0.339/0.680/1.355 & n=18; 2.554/3.793/5.141 & n=18; 1.239/2.037/2.636\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk9 (V07A) & n=7; 1.788/2.062/3.316 & n=7; 1.025/1.699/2.034 & n=14; 3.340/5.102/5.880 & n=14; 2.043/2.551/3.033\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk10 (V08) & n=17; 2.041/3.093/4.082 & n=17; 1.020/1.695/1.709 & n=17; 3.061/4.082/4.613 & n=17; 1.359/1.724/2.034\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk11 (V09) & n=3; 4.592/5.102/5.612 & n=3; 2.561/2.716/2.884 & n=11; 5.355/7.143/7.690 & n=11; 2.881/3.236/3.807\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk16 (V10) & n=16; 2.041/3.061/3.093 & n=16; 1.147/1.359/1.870 & n=16; 3.061/3.551/4.082 & n=16; 1.361/1.698/2.038\\
+\cmidrule{2-7}
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textit{100µg}}\\
+\hspace{1em}\hspace{1em} &  & Wk-4 (V02) & n=3; 1.531/3.061/3.571 & n=3; 1.187/2.373/2.543 & n=12; 5.612/9.184/11.862 & n=12; 3.663/4.572/6.255\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk3 (V05) & n=10; 1.020/1.536/2.041 & n=10; 0.678/0.681/0.934 & n=12; 2.041/2.041/2.308 & n=12; 0.932/1.021/1.228\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk4 (V06) & n=17; 0.000/0.000/1.020 & n=17; 0.000/0.000/0.342 & n=18; 1.023/2.051/3.827 & n=18; 0.546/1.012/1.844\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk8 (V07) & n=16; 0.765/1.531/2.312 & n=16; 0.257/1.016/1.361 & n=17; 2.041/3.077/5.051 & n=17; 1.181/1.858/2.373\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk9 (V07A) & n=10; 3.061/3.834/4.097 & n=10; 1.695/1.699/2.081 & n=13; 3.061/4.082/6.092 & n=13; 1.356/2.365/2.726\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk10 (V08) & n=15; 1.536/3.061/3.837 & n=15; 1.018/1.701/1.705 & n=17; 3.031/4.082/5.102 & n=17; 1.029/1.873/2.365\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk11 (V09) & n=8; 5.740/6.664/7.143 & n=8; 2.301/3.051/3.729 & n=10; 6.397/8.182/9.986 & n=10; 3.227/3.747/4.862\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk16 (V10) & n=15; 3.061/3.077/4.135 & n=15; 1.273/1.730/2.213 & n=16; 3.053/4.082/4.368 & n=16; 1.350/1.709/2.365\\
+\cmidrule{1-7}
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textbf{VK/VL}}\\
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textit{20µg}}\\
+\hspace{1em}\hspace{1em} &  & Wk-4 (V02) & n=1; 6.452/6.452/6.452 & n=1; 2.518/2.518/2.518 & n=15; 3.590/7.292/10.257 & n=15; 1.529/3.716/5.446\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk3 (V05) & n=6; 0.000/0.538/1.084 & n=6; 0.090/0.360/0.363 & n=9; 1.053/1.053/2.041 & n=9; 0.513/0.678/0.704\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk4 (V06) & n=17; 0.000/0.000/1.047 & n=17; 0.000/0.000/0.348 & n=18; 1.040/2.073/3.031 & n=18; 0.431/0.874/1.370\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk8 (V07) & n=15; 0.000/1.087/2.148 & n=15; 0.179/0.362/0.982 & n=18; 1.211/2.078/3.469 & n=18; 0.680/1.024/1.836\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk9 (V07A) & n=7; 1.093/2.723/4.348 & n=7; 0.724/0.905/1.629 & n=14; 2.322/3.093/3.183 & n=14; 1.336/1.397/1.727\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk10 (V08) & n=17; 1.087/2.174/3.226 & n=17; 0.544/1.071/1.779 & n=17; 2.041/2.116/3.061 & n=17; 0.707/1.068/1.342\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk11 (V09) & n=3; 1.893/2.151/2.724 & n=3; 1.092/1.099/1.177 & n=11; 4.167/4.211/5.693 & n=11; 2.063/2.439/2.676\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk16 (V10) & n=16; 1.099/1.622/2.174 & n=16; 0.717/0.732/1.164 & n=16; 2.036/2.094/2.353 & n=16; 0.704/1.058/1.362\\
+\cmidrule{2-7}
+\addlinespace[0.3em]
+\multicolumn{7}{l}{\textit{100µg}}\\
+\hspace{1em}\hspace{1em} &  & Wk-4 (V02) & n=3; 0.515/1.031/4.597 & n=3; 0.171/0.341/3.730 & n=12; 4.156/5.264/6.577 & n=12; 1.731/2.113/3.234\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk3 (V05) & n=10; 1.087/1.099/1.099 & n=10; 0.361/0.366/0.720 & n=12; 1.050/1.073/2.083 & n=12; 0.592/0.690/0.785\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk4 (V06) & n=17; 0.000/0.000/1.031 & n=17; 0.000/0.179/0.357 & n=18; 1.044/1.985/2.444 & n=18; 0.354/0.701/1.076\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk8 (V07) & n=16; 0.000/1.099/1.651 & n=16; 0.000/0.547/0.728 & n=17; 1.058/2.105/3.046 & n=17; 0.876/1.355/1.399\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk9 (V07A) & n=10; 2.177/2.192/2.995 & n=10; 1.086/1.095/1.401 & n=13; 2.105/3.093/3.158 & n=13; 1.048/1.379/1.706\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk10 (V08) & n=15; 1.099/2.151/2.198 & n=15; 0.722/0.896/1.097 & n=17; 1.064/2.105/3.061 & n=17; 0.702/1.099/1.377\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk11 (V09) & n=8; 3.007/3.279/4.360 & n=8; 1.460/1.902/2.171 & n=10; 3.259/4.513/5.265 & n=10; 1.670/2.099/2.326\\
+\cmidrule{3-7}
+\hspace{1em}\hspace{1em} &  & Wk16 (V10) & n=15; 1.362/2.151/2.198 & n=15; 0.720/0.893/1.534 & n=16; 1.909/2.845/3.061 & n=16; 0.710/1.192/1.354\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

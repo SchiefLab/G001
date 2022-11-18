@@ -1,0 +1,71 @@
+\documentclass{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8x]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage{geometry}%
+\geometry{margin=1in}%
+\usepackage{booktabs}%
+\usepackage{longtable}%
+\usepackage{adjustbox}%
+\usepackage{multirow}%
+\usepackage{makecell}%
+\usepackage{caption}%
+%
+%
+%
+\begin{document}%
+\normalsize%
+\captionsetup{labelformat=empty,justification=raggedright,margin=0cm,font=normalsize}%
+\fontsize{8}{12}%
+\selectfont%
+\begin{longtable}{p{4cm}p{4cm}p{4cm}p{3cm}}
+\caption{Table S10: Memory B Cell and Plasmablast Flow Cytometry Panel}\\
+\toprule
+                                     Antibody &          Vendor & Catalog Number &    Clone \\
+\midrule
+\endfirsthead
+\caption[]{Table S10: Memory B Cell and Plasmablast Flow Cytometry Panel} \\
+\toprule
+                                     Antibody &          Vendor & Catalog Number &    Clone \\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+                               Live/Dead 7AAD &    Thermofisher &          A1310 &        - \\
+                               $^1$CD14 BV510 &       BioLegend &         301842 &     M5E2 \\
+                               $^1$CD56 BV510 &              BD &         563041 & NCAM16.2 \\
+                                $^1$CD3 BV510 &              BD &         317332 &     OK3T \\
+                               $^1$CD16 BV510 &              BD &         563830 &      3G8 \\
+                                   CD10 BV650 &              BD &         563734 &    HI10a \\
+                                     CD19 ECD & Beckman Coulter &        IM2708U &   J3-119 \\
+                                 CD20 APC-Cy7 &       BioLegend &         302314 &      2H7 \\
+                              CD21 PerCPCy5.5 &       BioLegend &         354908 &     Bu32 \\
+                                   CD27 BV605 &       BioLegend &         302830 &     O323 \\
+                                   CD38 AF700 &       BioLegend &         303524 &     HIT2 \\
+                                    IgD BV786 &              BD &         740997 &    IA6-2 \\
+                                    IgG BV421 &              BD &         562581 &  G18-145 \\
+                           Streptavidin BV711 &       BioLegend &         405241 &        - \\
+Streptavidin R-Phycoerythrin Conjugate (SAPE) &    Thermofisher &         S21388 &        - \\
+                           Streptavidin BB515 &              BD &         564453 &        - \\
+                              $^2$CD21 PE-Cy5 &              BD &         551064 &    B-ly4 \\
+                   $^2$IgG1 K isotype Ctrl PE &              BD &         555749 &  MOPC-21 \\
+                $^2$IgG1 K isotype Ctrl BV711 &       BioLegend &         400168 &  MOPC-21 \\
+                                $^2$IgG BB515 &              BD &         564581 &  G18-145 \\
+\end{longtable}
+%
+\begin{footnotesize}%
+\textit{
+\makecell[l]{
+$^1$ These antibodies are detected in the same channel. \\
+$^2$ Used as comp antibody only. \\
+}}%
+\end{footnotesize}%
+\pagenumbering{gobble}%
+\end{document}

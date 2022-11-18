@@ -1,0 +1,111 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{table}[!h]
+
+\caption[ (B cell Report Table 19): Percent of IgG+ B cells or plasmablasts that are epitope-specific (KO-GT8++) testing between vaccine dose among detectable response participantst]{\label{tab:bcell-tab-19}(B cell Report Table 19): Percent of IgG+ B cells or plasmablasts that are epitope-specific (KO-GT8++) testing between vaccine dose among detectable response participants. Testing was done using the Wilcoxon rank-sum test (two-sided, $\alpha$ = 0.05) and p values less than 0.05 are highlighted. Median, minimum, and maximum values are presented by treatment group and time point.}
+\centering
+\fontsize{7.5}{9.5}\selectfont
+\begin{tabular}[t]{llllll}
+\toprule
+ &  & Sample Type & Sample Sizes & Median (Range) & P Value\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{20µg vs. 100µg}}\\
+\hspace{1em} & Wk3 (V05) & FNA/IgG GC B cells & 12 vs. 13 & 17.7883 [0.4208, 50.8186] vs. 4.1046 [0.3949, 22.0344] & \cellcolor{yellow}{0.0114}\\
+\cmidrule{2-6}
+\hspace{1em} & Wk4 (V06) & PBMCs/IgG memory B cells & 18 vs. 18 & 0.0528 [0.0149, 0.2292] vs. 0.0724 [0.0241, 0.4719] & 0.1516\\
+\cmidrule{2-6}
+\hspace{1em} & Wk8 (V07) & PBMCs/IgG memory B cells & 18 vs. 17 & 0.0235 [0.0056, 0.1231] vs. 0.0385 [0.0116, 0.1537] & 0.1949\\
+\cmidrule{2-6}
+\hspace{1em} & Wk9 (V07A) & Fresh PBMCs/IgD- PBs & 18 vs. 17 & 5.3287 [0.1217, 26.1824] vs. 1.3195 [0.2156, 5.3007] & \cellcolor{yellow}{0.0043}\\
+\cmidrule{2-6}
+\hspace{1em} & Wk10 (V08) & PBMCs/IgG memory B cells & 17 vs. 17 & 0.3370 [0.0889, 0.8924] vs. 0.5124 [0.1403, 2.5581] & 0.3223\\
+\cmidrule{2-6}
+\hspace{1em} & Wk11 (V09) & FNA/IgG GC B cells & 12 vs. 10 & 14.3631 [0.1418, 67.2531] vs. 1.2268 [0.1227, 4.0690] & 0.1402\\
+\cmidrule{2-6}
+\hspace{1em} & Wk16 (V10) & PBMCs/IgG memory B cells & 18 vs. 16 & 0.1499 [0.0341, 0.3737] vs. 0.2482 [0.0305, 0.8489] & 0.0946\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

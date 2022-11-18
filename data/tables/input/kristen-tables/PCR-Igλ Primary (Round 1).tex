@@ -1,0 +1,54 @@
+\documentclass{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8x]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage{geometry}%
+\geometry{margin=1in}%
+\usepackage{booktabs}%
+\usepackage{longtable}%
+\usepackage{adjustbox}%
+\usepackage{multirow}%
+\usepackage{caption}%
+%
+%
+%
+\begin{document}%
+\normalsize%
+\fontsize{7}{12}%
+\selectfont%
+\captionsetup{labelformat=empty,justification=raggedright,margin=0cm,font=normalsize}%
+\begin{longtable}{cll}
+\caption{Table S17: Ig$\lambda$ Primary (Round 1)}\\
+\toprule
+{} &         Primer &                Sequence 5’ to 3’ \\
+Direction &                &                                  \\
+\midrule
+\endfirsthead
+\caption[]{Table S17: Ig$\lambda$ Primary (Round 1)} \\
+\toprule
+{} &         Primer &                Sequence 5’ to 3’ \\
+Direction &                &                                  \\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+Forward   &  5'L-VL1/10-RL &       CCT CCT CAC TCA CTS TGC AG \\
+Forward   &   5'L-VL5/6-RL &        CTC CTC KCT CAC TGC ACA G \\
+Forward   &     5'L-VL2-RL &       CCT CCT CAC TCA GGG CAC AG \\
+Forward   &     5'L-VL9-RL &       CCT CCT CAG TCT CCT CAC AG \\
+Forward   &     5'L-VL4-RL &    CTG CCC TTC ATT TTC TCC ACA G \\
+Forward   &     5'L-VL3-RL &      GCG TCC TTG CTT ACT GCA CAG \\
+Forward   &     5'L-VL8-RL &      GAC TCC TTG CTT ATG GAT CAG \\
+Forward   &     5'L-VL7-RL &       CCT CCT CAC TTG CTG CCC AG \\
+Reverse   &           3'CL &  CAC CAG TGT GGC CTT GTT GGC TTG \\
+\end{longtable}
+%
+\pagenumbering{gobble}%
+\end{document}

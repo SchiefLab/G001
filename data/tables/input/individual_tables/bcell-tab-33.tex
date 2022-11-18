@@ -1,0 +1,123 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{table}[!h]
+
+\caption[ (B cell Report Table 33): Percent of IgG+ B cells that are GT8++ (regardless of KO binding status) magnitude testing between non-baseline time points for the treatment group, for frozen PBMC samples]{\label{tab:bcell-tab-33} (B cell Report Table 33): Percent of IgG+ B cells that are GT8++ (regardless of KO binding status) magnitude testing between non-baseline time points for the treatment group, for frozen PBMC samples. Testing was done using Wilcoxon signed-rank test for paired data (two-sided, $\alpha$ = 0.05) and p values less than 0.05 are highlighted.}
+\centering
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{ll>{\raggedleft\arraybackslash}p{1cm}ll}
+\toprule
+ &  & Number of Pairs & Median (Range) & P Value\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{20µg}}\\
+\hspace{1em} & Wk4 (V06) vs. Wk8 (V07) & 18 & 0.1264 [0.0528, 0.3482] vs. 0.0833 [0.0208, 0.2884] & \cellcolor{yellow}{0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk4 (V06) vs. Wk10 (V08) & 17 & 0.1284 [0.0528, 0.3482] vs. 2.0403 [0.3117, 7.6517] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk4 (V06) vs. Wk16 (V10) & 18 & 0.1264 [0.0528, 0.3482] vs. 0.5411 [0.1139, 1.7309] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk8 (V07) vs. Wk10 (V08) & 17 & 0.0838 [0.0208, 0.2884] vs. 2.0403 [0.3117, 7.6517] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk8 (V07) vs. Wk16 (V10) & 18 & 0.0833 [0.0208, 0.2884] vs. 0.5411 [0.1139, 1.7309] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk10 (V08) vs. Wk16 (V10) & 17 & 2.0403 [0.3117, 7.6517] vs. 0.5513 [0.1139, 1.7309] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{100µg}}\\
+\hspace{1em} & Wk4 (V06) vs. Wk8 (V07) & 17 & 0.1900 [0.0771, 0.8912] vs. 0.1142 [0.0404, 0.3422] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk4 (V06) vs. Wk10 (V08) & 17 & 0.1900 [0.0771, 0.8912] vs. 2.7716 [0.9187, 9.1259] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk4 (V06) vs. Wk16 (V10) & 16 & 0.1707 [0.0771, 0.8912] vs. 0.9596 [0.1715, 3.0402] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk8 (V07) vs. Wk10 (V08) & 17 & 0.1142 [0.0404, 0.3422] vs. 2.7716 [0.9187, 9.1259] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk8 (V07) vs. Wk16 (V10) & 16 & 0.1110 [0.0404, 0.3422] vs. 0.9596 [0.1715, 3.0402] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk10 (V08) vs. Wk16 (V10) & 16 & 2.8572 [0.9187, 9.1259] vs. 0.9596 [0.1715, 3.0402] & \cellcolor{yellow}{<0.0001}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

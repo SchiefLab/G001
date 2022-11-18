@@ -1,0 +1,70 @@
+\documentclass{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8x]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage{geometry}%
+\geometry{margin=1in}%
+\usepackage{booktabs}%
+\usepackage{longtable}%
+\usepackage{adjustbox}%
+\usepackage{multirow}%
+\usepackage{makecell}%
+\usepackage{caption}%
+%
+%
+%
+\begin{document}%
+\normalsize%
+\captionsetup{labelformat=empty,justification=raggedright,margin=0cm,font=normalsize}%
+\fontsize{8}{12}%
+\selectfont%
+\begin{longtable}{p{4cm}p{4cm}p{4cm}p{3cm}}
+\caption{Table S11: Lymph node FNA Germinal Center B Cell Flow Cytometry Panel}\\
+\toprule
+                                     Antibody &                 Vendor & Catalog Number &   Clone \\
+\midrule
+\endfirsthead
+\caption[]{Table S11: Lymph node FNA Germinal Center B Cell Flow Cytometry Panel} \\
+\toprule
+                                     Antibody &                 Vendor & Catalog Number &   Clone \\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+                               Live/Dead 7AAD &           Thermofisher &          A1310 &       - \\
+                                   CD4 PE-Cy7 &                     BD &         557852 &     SK3 \\
+                                   PD-1 BB700 &                     BD &         566460 &  EH12.1 \\
+                                    CXCR5 APC &              BioLegend &         356908 &  J252D4 \\
+                                  CD14 PE-Cy5 & Affymetrix eBioscience &     15-0149-42 &    61D3 \\
+                                   CD45RO APC &                     BD &         559865 &   UCHL1 \\
+                                    CD3 BV510 &              BioLegend &         317332 &    OK3T \\
+                                   CD10 BV650 &                     BD &         563734 &   HI10a \\
+                                     CD19 ECD &        Beckman Coulter &        IM2708U &  J3-119 \\
+                                 CD20 APC-Cy7 &              BioLegend &         302314 &     2H7 \\
+                                   CD27 BV605 &              BioLegend &         302830 &    O323 \\
+                                   CD38 AF700 &              BioLegend &         303524 &    HIT2 \\
+                                    IgD BV786 &                     BD &         740997 &   IA6-2 \\
+                                    IgG BV421 &                     BD &         562581 & G18-145 \\
+                           Streptavidin BV711 &              BioLegend &         405241 &       - \\
+Streptavidin R-Phycoerythrin Conjugate (SAPE) &           Thermofisher &         S21388 &       - \\
+                           Streptavidin BB515 &                     BD &         564453 &       - \\
+                       $^1$PE Isotype Control &                     BD &         550617 &       - \\
+                    $^1$BV711 Isotype Control &              BioLegend &         400167 &       - \\
+                    $^1$BB515 Isotype Control &                     BD &         564416 &       - \\
+\end{longtable}
+%
+\begin{footnotesize}%
+\textit{
+\makecell[l]{
+$^1$ Used as compensation antibody only.
+}}%
+\end{footnotesize}%
+\pagenumbering{gobble}%
+\end{document}
