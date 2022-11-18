@@ -10,6 +10,8 @@ dependencies:
   - click
   - biopython==1.79
   - black
+  - log
+  - logomaker==0.8
   - pandarallel==1.6.1
   - pyarrow==8.0.0
   - pydantic==1.9.0
