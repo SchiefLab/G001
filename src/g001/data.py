@@ -277,6 +277,18 @@ class FlowDataPaths(BaseModel):
         return v
 
 
+class TableDataPaths(BaseModel):
+    base_path: Path = Path("data/tables")
+    table_src: Path = base_path / Path("input")
+    table_out: Path = base_path / Path("output")
+
+    @validator("*", always=True)
+    def validate_paths(cls, v: Path):
+        if not v.exists():
+            raise FileNotFoundError(f"{v} is not found")
+        return v
+
+
 class Data:
     def __init__(self, base_path: Path):
         self.sequence_data_paths = SequenceDataPaths(base_path=base_path)
@@ -284,6 +296,7 @@ class Data:
         self.figure_data_paths = FigureDataPaths(base_path=base_path)
         self.intra_plate_cluster_distance: int = 2
         self.plot_parameters = PlotParameters()
+        self.table_data_paths = TableDataPaths(base_path=base_path)
 
     def get_fastq_files(self) -> List[Path]:
         """

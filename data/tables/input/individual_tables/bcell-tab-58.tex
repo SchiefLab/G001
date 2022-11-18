@@ -1,0 +1,135 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{table}[!h]
+
+\caption[(B cell Report Table 58): Percent of GT8++KO- IgD- B cells that are IgG+ magnitude testing between selected time points for the treatment groups]{\label{tab:bcell-tab-58}(B cell Report Table 58): Percent of GT8++KO- IgD- B cells that are IgG+ magnitude testing between selected time points for the treatment groups. Testing was done using Wilcoxon signed-rank test for paired data (two-sided, $\alpha$ = 0.05) and p values less than 0.05 are highlighted.}
+\centering
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{ll>{\raggedleft\arraybackslash}p{1cm}ll}
+\toprule
+ &  & Number of Pairs & Median (Range) & P Value\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{20µg}}\\
+\hspace{1em} & Wk-4 (V02) vs. Wk3 (V05) & 12 & 41.2698 [23.0769, 84.6154] vs. 70.2801 [39.9921, 94.9648] & \cellcolor{yellow}{0.0161}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk-4 (V02) vs. Wk4 (V06) & 18 & 44.0972 [22.2222, 84.6154] vs. 67.5008 [53.7217, 87.2340] & \cellcolor{yellow}{0.0003}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk-4 (V02) vs. Wk8 (V07) & 18 & 44.0972 [22.2222, 84.6154] vs. 70.7234 [57.3099, 89.5000] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk-4 (V02) vs. Wk10 (V08) & 17 & 43.7500 [22.2222, 84.6154] vs. 76.9523 [67.1719, 94.1789] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk-4 (V02) vs. Wk11 (V09) & 12 & 44.0972 [23.0769, 84.6154] vs. 83.3820 [69.7543, 99.7765] & \cellcolor{yellow}{0.0010}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk-4 (V02) vs. Wk16 (V10) & 18 & 44.0972 [22.2222, 84.6154] vs. 75.8582 [61.9962, 95.5499] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk8 (V07) vs. Wk10 (V08) & 17 & 68.1592 [57.3099, 89.5000] vs. 76.9523 [67.1719, 94.1789] & \cellcolor{yellow}{0.0067}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk8 (V07) vs. Wk11 (V09) & 12 & 68.0796 [57.3099, 89.5000] vs. 83.3820 [69.7543, 99.7765] & \cellcolor{yellow}{0.0425}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk8 (V07) vs. Wk16 (V10) & 18 & 70.7234 [57.3099, 89.5000] vs. 75.8582 [61.9962, 95.5499] & 0.0539\\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{100µg}}\\
+\hspace{1em} & Wk-4 (V02) vs. Wk3 (V05) & 14 & 51.8065 [0.0000, 86.2745] vs. 69.9100 [7.0000, 85.7143] & \cellcolor{yellow}{0.0040}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk-4 (V02) vs. Wk4 (V06) & 17 & 51.5625 [0.0000, 86.2745] vs. 73.2639 [46.1300, 82.6667] & \cellcolor{yellow}{0.0002}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk-4 (V02) vs. Wk8 (V07) & 16 & 51.5877 [17.6471, 86.2745] vs. 80.8675 [45.3704, 88.5802] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk-4 (V02) vs. Wk10 (V08) & 16 & 51.5877 [17.6471, 86.2745] vs. 87.7037 [50.1912, 93.8673] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk-4 (V02) vs. Wk11 (V09) & 10 & 48.8582 [17.6471, 86.2745] vs. 92.4369 [58.3333, 97.5008] & \cellcolor{yellow}{0.0020}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk-4 (V02) vs. Wk16 (V10) & 15 & 51.5625 [17.6471, 75.4098] vs. 85.8966 [32.9140, 95.3407] & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk8 (V07) vs. Wk10 (V08) & 17 & 79.0738 [45.3704, 88.5802] vs. 87.2549 [50.1912, 93.8673] & \cellcolor{yellow}{0.0002}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk8 (V07) vs. Wk11 (V09) & 10 & 80.3445 [57.3333, 88.5802] vs. 92.4369 [58.3333, 97.5008] & 0.1602\\
+\cmidrule{2-5}
+\hspace{1em} & Wk8 (V07) vs. Wk16 (V10) & 16 & 78.6087 [45.3704, 88.5802] vs. 85.3142 [32.9140, 95.3407] & \cellcolor{yellow}{0.0131}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

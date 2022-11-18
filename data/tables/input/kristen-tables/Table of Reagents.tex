@@ -1,0 +1,55 @@
+\documentclass{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8x]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage{geometry}%
+\geometry{margin=1in}%
+\usepackage{booktabs}%
+\usepackage{longtable}%
+\usepackage{adjustbox}%
+\usepackage{multirow}%
+\usepackage{makecell}%
+\usepackage{caption}%
+%
+%
+%
+\begin{document}%
+\normalsize%
+\captionsetup{labelformat=empty,justification=raggedright,margin=0cm,font=normalsize}%
+\fontsize{8}{12}%
+\selectfont%
+\renewcommand{\arraystretch}{2}%
+\begin{longtable}{p{5.5cm}p{3cm}p{2.5cm}p{4cm}}
+\caption{Table S12: Table of Reagents}\\
+\toprule
+                                                                           Reagent &                                         Vendor & Catalog Number &                                                  Other \\
+\midrule
+\endfirsthead
+\caption[]{Table S12: Table of Reagents} \\
+\toprule
+                                                                           Reagent &                                         Vendor & Catalog Number &                                                  Other \\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+                     \makecell[l]{eOD GT8-Biotin \\ (DOM 11/10/2017) MW: 22.45 kD} &    \makecell[l]{Scripps Research \\ Institute} &              - &                                \makecell[l]{0.1 mg/mL} \\
+                \makecell[l]{eOD GT8-KO11-Biotin\\ (DOM 11/10/2017) MW: 20.187 kD} &    \makecell[l]{Scripps Research \\ Institute} &              - &                     \makecell[l]{Lot A31728 0.1 mg/mL} \\
+                                            \makecell[l]{Anti-Ms Ig, k Comp Beads} &                               \makecell[l]{BD} &  51-90-9001229 &                                        \makecell[l]{-} \\
+                                                      \makecell[l]{Ms Anti-Hu IgG} &                               \makecell[l]{BD} &         555784 &                                        \makecell[l]{-} \\
+                \makecell[l]{KG064\_nonVRC01c\_099 \\ monoclonal antibody (099 mAb)} &    \makecell[l]{Scripps Research \\ Institute} &              - & \makecell[l]{Lot AB1443 \\ Concentration: 0.347 mg/mL} \\
+                                         \makecell[l]{glVRC01 monoclonal antibody} &    \makecell[l]{Scripps Research \\ Institute} &              - &                     \makecell[l]{5/9/2017 1.435 mg/mL} \\
+                                              \makecell[l]{Brilliant Stain Buffer} &                               \makecell[l]{BD} &         563794 &                                        \makecell[l]{-} \\
+\makecell[l]{Hard shell, low profile, \\ skirted, 96-well PCR plates, white/clear} &                           \makecell[l]{Thermo} &         563041 &                                        \makecell[l]{-} \\
+                                      \makecell[l]{Safe-lock tubes, 1.5 mL, amber} & \makecell[l]{Eppendorf North \\ America, Inc.} &       22363221 &                                        \makecell[l]{-} \\
+                                \makecell[l]{Polystyrene round-bottom tube, 14 mL} &                          \makecell[l]{Corning} &          38008 &                                        \makecell[l]{-} \\
+\end{longtable}
+%
+\pagenumbering{gobble}%
+\end{document}

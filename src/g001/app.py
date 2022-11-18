@@ -6,10 +6,9 @@ from itertools import product
 # stdlib
 import logging
 from pathlib import Path
-import subprocess
 
 # third party
-import click
+import rich_click as click
 import seaborn as sns
 import numpy as np
 from g001.figures.binding import plot_boosting_binding, plot_gt8_binding
@@ -26,7 +25,8 @@ from g001.figures.frequency import (
 from g001.figures.overview import plot_overview
 from g001.figures.somatic import plot_somatic_mutation_frequencies, plot_somatic_mutation_frequencies_violin
 from g001.sequence_pipeline.main import run_sequence_analysis
-from g001.utils import RScript
+from g001.utils.latex_modifiers import make_tables
+from g001.utils.rscript_wrapper import RScript
 
 
 @click.group()
@@ -386,6 +386,89 @@ def plot_figure_8(ctx: click.Context, outpath: str | Path) -> None:
     figure = plot_boosting_binding(data)
     figure.savefig(outpath + ".png", dpi=300)
     click.echo(f"Figure 8 generated to {outpath}.png")
+
+
+@main.group("paper1")
+def paper1():
+    """
+    Generate for first paper figures.
+    """
+    pass
+
+
+@paper1.command("ST")
+@click.pass_context
+@click.option(
+    "--outpath",
+    "-o",
+    type=click.Path(file_okay=True, resolve_path=True),
+    help="Output path for Sup Tables for Paper 1",
+    show_default=True,
+)
+@click.option("-c", "--cleanheaders", is_flag=True, default=False)
+def generate_st1(ctx: click.Context, cleanheaders: bool, outpath: str) -> None:
+    data = ctx.obj["data"]
+    table_output = data.table_data_paths.table_out
+    table_src = data.table_data_paths.table_src
+
+    pdf_order = [
+        # Static files with Word file src
+        ("S1", "", "misc/demographics.docx"),
+        ("S2", "", "misc/G001 Schedule of Procedures from Protocol from Vince 01Aug2021.docx"),
+        ("S3", "", "misc/G001 Trials.pdf"),  # made from df
+        ("S4", "", "misc/solicited symptoms.docx"),
+        ("S5", "", "misc/unsolicited AEs.docx"),
+        ("S6", "", "misc/unsolicited AEs related to study procedures.docx"),
+        ("S7", "", "misc/response-rates-IQR-5-antigens-epitopes.pdf"),
+        ("S8", "", "misc/AUTC-mag-weeks2_10-5-antigens-epitopes.pdf"),
+        ("S9", "", "misc/Response rate summary.tex"),
+        # Kristen tables
+        ("S10", "", "kristen-tables/Memory B Cell and Plasmablast Flow Cytometry Panel.pdf"),
+        ("S11", "", "kristen-tables/Germinal Center B Cell LN FNA Flow Cytometry Panel.pdf"),
+        ("S12", "", "kristen-tables/Table of Reagents.pdf"),
+        ("S13", "", "kristen-tables/PCR-IgH Primary (Round 1).pdf"),
+        ("S14", "", "kristen-tables/PCR-IgH Nested (Round 2).pdf"),
+        ("S15", "", "kristen-tables/PCR-Igκ Primary (Round 1).pdf"),
+        ("S16", "", "kristen-tables/PCR-Igκ Nested (Round 2).pdf"),
+        ("S17", "", "kristen-tables/PCR-Igλ Primary (Round 1).pdf"),
+        ("S18", "", "kristen-tables/PCR-Igλ Nested (Round 2).pdf"),
+        ("S19", "", "kristen-tables/PCR constructs.pdf"),
+        # Files built from Cell Report
+        ("S20", "B cell Report Table 2", "individual_tables/bcell-tab-02.tex"),
+        ("S21", "B cell Report Table 30", "individual_tables/bcell-tab-30.tex"),
+        ("S22", "B cell Report Table 18", "individual_tables/bcell-tab-18.tex"),
+        ("S23", "B cell Report Table 29", "individual_tables/bcell-tab-29.tex"),
+        ("S24", "B cell Report Table 17", "individual_tables/bcell-tab-17.tex"),
+        ("S25", "B cell Report Table 31", "individual_tables/bcell-tab-31.tex"),
+        ("S26", "B cell Report Table 32", "individual_tables/bcell-tab-32.tex"),
+        ("S27", "B cell Report Table 19", "individual_tables/bcell-tab-19.tex"),
+        ("S28", "B cell Report Table 20", "individual_tables/bcell-tab-20.tex"),
+        ("S29", "B cell Report Table 33", "individual_tables/bcell-tab-33.tex"),
+        ("S30", "B cell Report Table 21", "individual_tables/bcell-tab-21.tex"),
+        ("S31", "B cell Report Table 44", "individual_tables/bcell-tab-44.tex"),
+        ("S32", "B cell Report Table 5", "individual_tables/bcell-tab-57.tex"),
+        ("S33", "B cell Report Table 48", "individual_tables/bcell-tab-58.tex"),
+        ("S34", "B cell Report Table 50", "individual_tables/bcell-tab-59.tex"),
+        ("S35", "B cell Report Table 6", "individual_tables/bcell-tab-06.tex"),
+        ("S36", "B cell Report Table 5", "individual_tables/bcell-tab-05.tex"),
+        ("S37", "B cell Report Table 48", "individual_tables/bcell-tab-48.tex"),
+        ("S38", "B cell Report Table 50", "individual_tables/bcell-tab-50.tex"),
+        ("S39", "B cell Report Table 47", "individual_tables/bcell-tab-47.tex"),
+        ("S40", "B cell Report Table 52", "individual_tables/bcell-tab-52.tex"),
+        ("S41", "B cell Report Table 49", "individual_tables/bcell-tab-49.tex"),
+        ("S42", "B cell Report Table 12", "individual_tables/bcell-tab-12.tex"),
+        # Files built from Genotype Report
+        ("S43", "Genotype Report Table", "individual_tables/genotype-tab-01_02.tex"),
+        # Merged from Paper 2
+        ("S44", "Percent Mutation Report Table 2", "individual_tables/percent-mut-tab-02.tex"),
+        ("S45", "Percent Mutation Report Table 8", "individual_tables/percent-mut-tab-08.tex"),
+        ("S46", "Percent Mutation Report Table 4", "individual_tables/percent-mut-tab-04.tex"),
+        ("S47", "Percent Mutation Report Table 5", "individual_tables/percent-mut-tab-05.tex"),
+        ("S48", "Percent Mutation Report Table 6", "individual_tables/percent-mut-tab-06.tex"),
+        ("S49", "Percent Mutation Report Table 7", "individual_tables/percent-mut-tab-07.tex"),
+        ("S50", "", "misc/BCRs detected.pdf"),  # static
+    ]
+    make_tables(table_src, table_output, pdf_order, cleanheaders=cleanheaders, paper_numnber=1)
 
 
 if __name__ == "__main__":

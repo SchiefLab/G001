@@ -1,0 +1,203 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{table}[!h]
+
+\caption[ (B cell Report Table 5): Percent of IgG+ B cells detected as VRC01-class by participant and time point]{\label{tab:bcell-tab-05} (B cell Report Table 5): Percent of IgG+ B cells detected as VRC01-class by participant and time point. Baseline cases when missing sequence data have upper limit listed with *. The non-response sample with positive VRC01 rate has been grayed out and underlined}
+\centering
+\fontsize{6.5}{8.5}\selectfont
+\begin{tabular}[t]{l>{}l|lllllll>{}l|>{\raggedleft\arraybackslash}p{1.2cm}|}
+\toprule
+ & ID & Wk-4 (V02) & Wk3 (V05) & Wk4 (V06) & Wk8 (V07) & Wk9 (V07A) & Wk10 (V08) & Wk11 (V09) & Wk16 (V10) & Total Responses\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{11}{l}{\textbf{DPBS sucrose}}\\
+\hspace{1em} & 001 & 0.00023 & 0.00000 & 0.00000 & 0.00147 & 0.00000 & 0.00246 & 0.00000 & 0.00000 & 2\\
+
+\hspace{1em} & 080 & 0.00023 & No LN & 0.00062 & 0.00000 & 0.00000 & \textcolor{gray}{\underline{0.00017}} & 0.00000 & 0.00000 & 1\\
+
+\hspace{1em} & 016 & <0.00046* & 0.00000 & 0.00000 & No Call & 0.00000 & No Call & 0.00000 & 0.00000 & 0\\
+
+\hspace{1em} & 030 & 0.00000 & No LN & 0.00000 & No Call & 0.00000 & 0.00000 & No LN & No Call & 0\\
+
+\hspace{1em} & 088 & 0.00000 & No LN & No Call & 0.00000 & 0.00000 & No Call & No LN & 0.00000 & 0\\
+
+\hspace{1em} & 121 & 0.00000 & No LN & 0.00000 & 0.00000 & 0.00000 & 0.00000 & No LN & No Seq & 0\\
+
+\hspace{1em} & 152 & 0.00000 & No LN & No Call & 0.00000 & 0.00000 & 0.00000 & No LN & No Call & 0\\
+
+\hspace{1em} & 164 & 0.00000 & 0.00000 & 0.00000 & 0.00000 & 0.00000 & 0.00000 & 0.00000 & No Call & 0\\
+
+\hspace{1em} & 165 & 0.00000 & 0.00000 & 0.00000 & 0.00000 & 0.00000 & No Call & 0.00000 & No Seq & 0\\
+
+\hspace{1em} & 180 & 0.00000 & 0.00000 & 0.00000 & No Seq & 0.00000 & No Call & 0.00000 & No Seq & 0\\
+
+\hspace{1em} & 185 & <0.00135* & No LN & No Call & No Call & 0.00000 & No Call & No LN & No Call & 0\\
+
+\hspace{1em} & 198 & 0.00000 & 0.00000 & No Seq & 0.00000 & 0.00000 & No Call & No LN & No Call & 0\\
+\cmidrule{1-11}
+\addlinespace[0.3em]
+\multicolumn{11}{l}{\textbf{20 µg eOD-GT8 60mer and AS01B}}\\
+\hspace{1em} & 100 & 0.00000 & 9.50707 & 0.05815 & 0.04924 & 0.47315 & 0.14477 & 3.98831 & 0.06797 & 7\\
+
+\hspace{1em} & 077 & 0.00004 & 5.91179 & 0.00495 & 0.00385 & 0.85271 & 0.06395 & 0.00000 & 0.02769 & 6\\
+
+\hspace{1em} & 151 & 0.00000 & 3.56850 & 0.09243 & 0.02639 & 0.90808 & 0.16492 & 0.00000 & 0.04119 & 6\\
+
+\hspace{1em} & 005 & 0.00000 & 3.02004 & 0.01415 & 0.00312 & 0.00000 & 0.08775 & 0.00000 & 0.03581 & 5\\
+
+\hspace{1em} & 036 & 0.00000 & No Seq & 0.02137 & 0.02340 & No Seq & 0.14013 & 8.72247 & 0.08161 & 5\\
+
+\hspace{1em} & 051 & 0.00000 & 3.41394 & 0.01205 & 0.00160 & 0.00000 & 0.10569 & 0.00000 & 0.03917 & 5\\
+
+\hspace{1em} & 110 & 0.00000 & 2.29021 & 0.01792 & 0.01303 & 0.00000 & 0.21483 & 0.00000 & 0.03496 & 5\\
+
+\hspace{1em} & 153 & 0.00000 & No LN & 0.01404 & 0.00260 & 0.35410 & 0.07222 & No LN & 0.00528 & 5\\
+
+\hspace{1em} & 014 & 0.00000 & 0.00000 & 0.00263 & 0.00140 & No Seq & 0.02137 & 0.00000 & 0.00300 & 4\\
+
+\hspace{1em} & 023 & 0.00000 & 0.00000 & 0.00831 & 0.01837 & No Seq & 0.09614 & 0.00000 & 0.08261 & 4\\
+
+\hspace{1em} & 046 & 0.00000 & 0.00000 & 0.00833 & 0.00177 & 0.00000 & 0.02395 & 0.00000 & 0.00796 & 4\\
+
+\hspace{1em} & 047 & <0.00022* & 0.00000 & 0.00548 & 0.00070 & No Seq & 0.10098 & No LN & 0.01473 & 4\\
+
+\hspace{1em} & 056 & 0.00000 & 0.00000 & 0.00337 & 0.00217 & 0.00000 & 0.07466 & 0.00000 & 0.01960 & 4\\
+
+\hspace{1em} & 079 & <0.00079* & No LN & 0.00320 & 0.00000 & 0.87951 & 0.05352 & 0.00000 & 0.01779 & 4\\
+
+\hspace{1em} & 114 & <0.00191* & 0.00000 & 0.01012 & 0.00000 & 0.18557 & 0.18971 & 0.03884 & No Call & 4\\
+
+\hspace{1em} & 154 & 0.00000 & 0.00000 & 0.00306 & 0.00281 & 0.00000 & 0.03128 & No Seq & 0.02543 & 4\\
+
+\hspace{1em} & 187 & 0.00000 & No Seq & 0.01016 & 0.00741 & 0.00000 & 0.02298 & No LN & 0.02402 & 4\\
+
+\hspace{1em} & 028 & 0.00000 & No Seq & 0.00000 & 0.00000 & 0.42246 & No Visit & No Visit & No Call & 1\\
+\cmidrule{1-11}
+\addlinespace[0.3em]
+\multicolumn{11}{l}{\textbf{100 µg eOD-GT8 60mer and AS01B}}\\
+\hspace{1em} & 060 & <0.00184* & 6.47166 & 0.05659 & 0.04609 & 0.08584 & 0.11882 & 0.83774 & 0.10097 & 7\\
+
+\hspace{1em} & 112 & 0.00000 & 6.29553 & 0.01288 & 0.01218 & 0.19458 & 0.10361 & 1.35167 & 0.02257 & 7\\
+
+\hspace{1em} & 193 & 0.00017 & 1.53125 & 0.02405 & 0.01471 & 0.45926 & 0.09780 & 2.12833 & 0.06877 & 7\\
+
+\hspace{1em} & 062 & 0.00000 & 9.44226 & 0.00135 & 0.00165 & No Seq & 0.02805 & 0.20184 & 0.01098 & 6\\
+
+\hspace{1em} & 064 & 0.00000 & No Call & 0.05452 & 0.02396 & 2.07448 & 0.13053 & 0.07134 & 0.08166 & 6\\
+
+\hspace{1em} & 092 & 0.00053 & 12.08845 & 0.02209 & 0.01542 & 0.00000 & 0.12869 & 0.04404 & 0.05668 & 6\\
+
+\hspace{1em} & 113 & <0.00239* & 3.61759 & 0.16494 & 0.06075 & 0.88393 & 0.63763 & 0.00000 & 0.27180 & 6\\
+
+\hspace{1em} & 116 & 0.00043 & 2.48642 & 0.01837 & 0.01054 & 0.53928 & 0.04613 & 0.00000 & 0.02797 & 6\\
+
+\hspace{1em} & 117 & 0.00000 & 1.93598 & 0.02440 & 0.01695 & 0.29810 & 0.26475 & No LN & 0.04115 & 6\\
+
+\hspace{1em} & 032 & <0.00048* & 0.00000 & 0.09651 & 0.01590 & 0.53327 & 0.19514 & 0.00000 & 0.10998 & 5\\
+
+\hspace{1em} & 070 & 0.00000 & 0.00000 & 0.10225 & 0.03025 & 2.29432 & 0.60586 & 0.00000 & 0.19453 & 5\\
+
+\hspace{1em} & 163 & 0.00000 & 0.29007 & 0.00618 & 0.00233 & 0.00000 & 0.07277 & No LN & 0.00763 & 5\\
+
+\hspace{1em} & 177 & <0.00088* & 0.64857 & 0.02898 & 0.00981 & No Seq & 0.15712 & 0.00000 & 0.04781 & 5\\
+
+\hspace{1em} & 191 & 0.00000 & No LN & 0.00740 & 0.00584 & No Seq & 0.06918 & 1.78884 & 0.03851 & 5\\
+
+\hspace{1em} & 009 & 0.00000 & No LN & 0.01391 & 0.00549 & No Seq & 0.31345 & No LN & 0.04521 & 4\\
+
+\hspace{1em} & 068 & 0.00000 & 0.00000 & 0.00549 & 0.00427 & 0.17865 & 0.00000 & 0.62103 & No Visit & 4\\
+
+\hspace{1em} & 172 & 0.00000 & No Seq & 0.00915 & No Visit & No Visit & No Visit & No Visit & No Visit & 1\\
+
+\hspace{1em} & 059 & 0.00000 & 0.00000 & 0.00000 & 0.00000 & 0.00000 & 0.00000 & 0.00000 & 0.00000 & 0\\
+\bottomrule
+\multicolumn{11}{l}{\rule{0pt}{1em}\textit{Note: }}\\
+\multicolumn{11}{l}{\rule{0pt}{1em}*: Baseline cases when missing sequence data have upper limit}\\
+\multicolumn{11}{l}{\rule{0pt}{1em}No Visit: Visits that participants missed}\\
+\multicolumn{11}{l}{\rule{0pt}{1em}No LN: FNA samples where no lymph nodes could be detected}\\
+\multicolumn{11}{l}{\rule{0pt}{1em}No Seq: Samples with missing sequence data entirely}\\
+\multicolumn{11}{l}{\rule{0pt}{1em}No Call: Samples with sequence data insufficient to make a VRC01 call}\\
+\end{tabular}
+\end{table}
+
+\end{document}

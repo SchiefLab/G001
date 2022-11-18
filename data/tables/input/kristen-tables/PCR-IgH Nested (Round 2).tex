@@ -1,0 +1,58 @@
+\documentclass{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8x]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage{geometry}%
+\geometry{margin=1in}%
+\usepackage{booktabs}%
+\usepackage{longtable}%
+\usepackage{adjustbox}%
+\usepackage{multirow}%
+\usepackage{caption}%
+%
+%
+%
+\begin{document}%
+\normalsize%
+\fontsize{7}{12}%
+\selectfont%
+\captionsetup{labelformat=empty,justification=raggedright,margin=0cm,font=normalsize}%
+\begin{longtable}{cll}
+\caption{Table S14: IgH Nested (Round 2)}\\
+\toprule
+{} &       Primer &                    Sequence 5’ to 3’ \\
+Direction &              &                                      \\
+\midrule
+\endfirsthead
+\caption[]{Table S14: IgH Nested (Round 2)} \\
+\toprule
+{} &       Primer &                    Sequence 5’ to 3’ \\
+Direction &              &                                      \\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+Forward   &     5'L-VH 1 &      ACA GGT GCC CAC TCC CAG GTG CAG \\
+Forward   &     5'L-VH 3 &       AAG GTG TCC AGT GTG ARG TGC AG \\
+Forward   &   5'L-VH 4/6 &  CCC AGA TGG GTC CTG TCC CAG GTG CAG \\
+Forward   &     5'L-VH 5 &      CAA GGA GTC TGT TCC GAG GTG CAG \\
+Forward   &     5xwL-VH1 &          GCA GCC ACA GGT GCC CAC TCC \\
+Forward   &  5xwL-VH1-24 &        CAG CAG CTA CAG GCA CCC ACG C \\
+Forward   &  5xwL-VH1-69 &    GGC AGC AGC TAC AGG TGT CCA GTC C \\
+Forward   &    VH3-L1-MP &      GCT ATT TTA AAA GGT GTC CAA TGT \\
+Forward   &  VH3/4-L1-MP &   GTG GCA GCT CCC AGA TGG GTC CTG TC \\
+Forward   &  VH3/4-L3-MP &   GTT GCA GTT TTA AAA GGT GTC CAG TG \\
+Forward   &    VH5-L1-MP &      GCT GTT CTC CAA GGA GTC TGT TCC \\
+Reverse   &     3'IgGint &        GTT CGG GGA AGT AGT CCT TGA C \\
+Reverse   &    3' IgMint &           GGA ATT CTC ACA GGA GAC GA \\
+\end{longtable}
+%
+\pagenumbering{gobble}%
+\end{document}

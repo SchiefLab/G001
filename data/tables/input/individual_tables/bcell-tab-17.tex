@@ -1,0 +1,143 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{table}[!h]
+
+\caption[(B cell Report Table 17) IgG+ B cells detected as epitope-specific (KO-GT8++) response rate testing between vaccine and placebo recipients by time point]{\label{tab:bcell-tab-17}(B cell Report Table 17): IgG+ B cells detected as epitope-specific (KO-GT8++) response rate testing between vaccine and placebo recipients by time point. Testing was done using Barnard's test (two-sided, $\alpha$ = 0.05) and p values less than 0.05 are highlighted.}
+\centering
+\fontsize{7.5}{9.5}\selectfont
+\begin{tabular}[t]{lllll}
+\toprule
+ &  & Sample Type & Response Rates (95\% Wilson CI) & P Value\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Placebo vs. 20µg}}\\
+\hspace{1em} & Wk3 (V05) & FNA/IgG GC B cells & 0/6 = 0.0\% (0.0\%, 39.0\%) vs. 12/16 = 75.0\% (50.5\%, 89.8\%) & \cellcolor{yellow}{0.0017}\\
+\cmidrule{2-5}
+\hspace{1em}\hspace{1em} & Wk4 (V06) & PBMCs/IgG memory B cells & 0/12 = 0.0\% (0.0\%, 24.2\%) vs. 18/18 = 100.0\% (82.4\%, 100.0\%) & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk8 (V07) & PBMCs/IgG memory B cells & 0/12 = 0.0\% (0.0\%, 24.2\%) vs. 18/18 = 100.0\% (82.4\%, 100.0\%) & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk9 (V07A) & Fresh PBMCs/IgD- PBs & 0/12 = 0.0\% (0.0\%, 24.2\%) vs. 18/18 = 100.0\% (82.4\%, 100.0\%) & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em}\hspace{1em} & Wk10 (V08) & PBMCs/IgG memory B cells & 0/12 = 0.0\% (0.0\%, 24.2\%) vs. 17/17 = 100.0\% (81.6\%, 100.0\%) & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk11 (V09) & FNA/IgG GC B cells & 0/5 = 0.0\% (0.0\%, 43.4\%) vs. 12/14 = 85.7\% (60.1\%, 96.0\%) & \cellcolor{yellow}{0.0006}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk16 (V10) & PBMCs/IgG memory B cells & 0/12 = 0.0\% (0.0\%, 24.2\%) vs. 18/18 = 100.0\% (82.4\%, 100.0\%) & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{Placebo vs. 100µg}}\\
+\hspace{1em} & Wk3 (V05) & FNA/IgG GC B cells & 0/6 = 0.0\% (0.0\%, 39.0\%) vs. 13/16 = 81.2\% (57.0\%, 93.4\%) & \cellcolor{yellow}{0.0007}\\
+\cmidrule{2-5}
+ & Wk4 (V06) & PBMCs/IgG memory B cells & 0/12 = 0.0\% (0.0\%, 24.2\%) vs. 18/18 = 100.0\% (82.4\%, 100.0\%) & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk8 (V07) & PBMCs/IgG memory B cells & 0/12 = 0.0\% (0.0\%, 24.2\%) vs. 17/17 = 100.0\% (81.6\%, 100.0\%) & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk9 (V07A) & Fresh PBMCs/IgD- PBs & 0/12 = 0.0\% (0.0\%, 24.2\%) vs. 17/17 = 100.0\% (81.6\%, 100.0\%) & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+ & Wk10 (V08) & PBMCs/IgG memory B cells & 0/12 = 0.0\% (0.0\%, 24.2\%) vs. 17/17 = 100.0\% (81.6\%, 100.0\%) & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk11 (V09) & FNA/IgG GC B cells & 0/5 = 0.0\% (0.0\%, 43.4\%) vs. 10/14 = 71.4\% (45.4\%, 88.3\%) & \cellcolor{yellow}{0.0059}\\
+\cmidrule{2-5}
+\hspace{1em} & Wk16 (V10) & PBMCs/IgG memory B cells & 0/12 = 0.0\% (0.0\%, 24.2\%) vs. 16/16 = 100.0\% (80.6\%, 100.0\%) & \cellcolor{yellow}{<0.0001}\\
+\cmidrule{1-5}
+\addlinespace[0.3em]
+\multicolumn{5}{l}{\textbf{20µg vs. 100µg}}\\
+\hspace{1em} & Wk3 (V05) & FNA/IgG GC B cells & 12/16 = 75.0\% (50.5\%, 89.8\%) vs. 13/16 = 81.2\% (57.0\%, 93.4\%) & 0.7840\\
+\cmidrule{2-5}
+\hspace{1em} & Wk4 (V06) & PBMCs/IgG memory B cells & 18/18 = 100.0\% (82.4\%, 100.0\%) vs. 18/18 = 100.0\% (82.4\%, 100.0\%) & 1.0000\\
+\cmidrule{2-5}
+\hspace{1em} & Wk8 (V07) & PBMCs/IgG memory B cells & 18/18 = 100.0\% (82.4\%, 100.0\%) vs. 17/17 = 100.0\% (81.6\%, 100.0\%) & 1.0000\\
+\cmidrule{2-5}
+\hspace{1em} & Wk9 (V07A) & Fresh PBMCs/IgD- PBs & 18/18 = 100.0\% (82.4\%, 100.0\%) vs. 17/17 = 100.0\% (81.6\%, 100.0\%) & 1.0000\\
+\cmidrule{2-5}
+\hspace{1em} & Wk10 (V08) & PBMCs/IgG memory B cells & 17/17 = 100.0\% (81.6\%, 100.0\%) vs. 17/17 = 100.0\% (81.6\%, 100.0\%) & 1.0000\\
+\cmidrule{2-5}
+\hspace{1em} & Wk11 (V09) & FNA/IgG GC B cells & 12/14 = 85.7\% (60.1\%, 96.0\%) vs. 10/14 = 71.4\% (45.4\%, 88.3\%) & 0.5260\\
+\cmidrule{2-5}
+\hspace{1em} & Wk16 (V10) & PBMCs/IgG memory B cells & 18/18 = 100.0\% (82.4\%, 100.0\%) vs. 16/16 = 100.0\% (80.6\%, 100.0\%) & 1.0000\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

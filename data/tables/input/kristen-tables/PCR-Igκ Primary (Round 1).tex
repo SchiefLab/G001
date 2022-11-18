@@ -1,0 +1,49 @@
+\documentclass{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8x]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage{geometry}%
+\geometry{margin=1in}%
+\usepackage{booktabs}%
+\usepackage{longtable}%
+\usepackage{adjustbox}%
+\usepackage{multirow}%
+\usepackage{caption}%
+%
+%
+%
+\begin{document}%
+\normalsize%
+\fontsize{7}{12}%
+\selectfont%
+\captionsetup{labelformat=empty,justification=raggedright,margin=0cm,font=normalsize}%
+\begin{longtable}{cll}
+\caption{Table S15: Ig$\kappa$ Primary (Round 1)}\\
+\toprule
+{} &      Primer &                      Sequence 5’ to 3’ \\
+Direction &             &                                        \\
+\midrule
+\endfirsthead
+\caption[]{Table S15: Ig$\kappa$ Primary (Round 1)} \\
+\toprule
+{} &      Primer &                      Sequence 5’ to 3’ \\
+Direction &             &                                        \\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+Forward   &  5'L-VK 1/2 &      ATG AGG STC CCY GCT CAG CTG CTG G \\
+Forward   &    5'L-VK 3 &  CTC TTC CTC CTG CTA CTC TGG CTC CCA G \\
+Forward   &    5'L-VK 4 &      ATT TCT CTG TTG CTC TGG ATC TCT G \\
+Reverse   &    3'CK 543 &        GTT TCT CGT AGT CTG CTT TGC TCA \\
+\end{longtable}
+%
+\pagenumbering{gobble}%
+\end{document}
