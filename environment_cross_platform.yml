@@ -10,12 +10,12 @@ dependencies:
   - biopython==1.79
   - black
   - click
-  - docx2pdf==0.1.8
+  - docx2pdf
   - logomaker==0.8
   - pandarallel==1.6.1
   - pyarrow==8.0.0
   - pydantic==1.9.0
-  - PyPDF2==2.11.1
+  - PyPDF2
   - python-levenshtein==0.12.2
   - rich-click==1.5.2
   - scikit-learn==1.1.3
