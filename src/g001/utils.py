@@ -8,6 +8,8 @@ from rich.console import Console
 
 @dataclass
 class RScript:
+    """RScript Wrapper"""
+
     rpath = Path(__file__).parent / "R"
     gates = ["FHCRC", "VRC"]
     verbose: bool = False
@@ -98,6 +100,13 @@ class RScript:
         self.__run_cmd(cmd)
 
     def collate_flow(self, collate_output_dir: Path | str) -> None:
+        """Collate Flow
+
+        Parameters
+        ----------
+        collate_output_dir : Path | str
+            Path to the directory where the collated flow data will be written
+        """
         collate_output_dir = Path(collate_output_dir)
         if not collate_output_dir.exists():
             raise ValueError(f"collate_output_dir {collate_output_dir} does not exist")
