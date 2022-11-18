@@ -13,6 +13,7 @@
   - [BCR Sequence Analysis](#bcr-sequence-analysis)
   - [Combine Flow and Sequence Data](#combine-flow-and-sequence-data)
   - [Figures](#figures)
+  - [Tables](#tables)
 
 # Data Access
 
@@ -126,4 +127,13 @@ g001 figures fig5
 g001 figures fig6
 g001 figures fig7
 g001 figures fig8
+```
+
+
+## Tables
+
+The following can generate separate & combined tables
+
+```bash
+g001 paper1 ST -c
 ```
