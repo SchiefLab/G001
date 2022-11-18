@@ -326,10 +326,14 @@ def plot_figure_5_and_s26(ctx: click.Context, aa_outpath: str, nt_outpath: str) 
         fig = plot_somatic_mutation_frequencies(unblind_df, palette, ab_type, molecule, sup_title)
         new_outpath = outpath_ + f"_{ab_type}_{molecule}.png"
         fig.savefig(new_outpath, dpi=300)
-        click.echo(f"Figure 2 generated to {new_outpath}")
+        if molecule == "nt":
+            _figure = "S20"
+        else:
+            _figure = "2"
+        click.echo(f"Figure {_figure} generated to {new_outpath}")
         fig = plot_somatic_mutation_frequencies_violin(unblind_df, palette, ab_type, molecule, sup_title)
         new_outpath = outpath_ + f"_{ab_type}_{molecule}_violin.png"
-        click.echo(f"Figure S20 generated to {new_outpath}")
+        click.echo(f"Figure {_figure} generated to {new_outpath}")
         fig.savefig(new_outpath, dpi=300)
 
 
