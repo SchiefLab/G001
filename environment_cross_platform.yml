@@ -18,7 +18,6 @@ dependencies:
   - rich-click==1.5.2
   - scikit-learn==1.1.3
   - git-lfs
-  - docx2pdf==0.1.8
   - pip:
       - git+https://github.com/jwillis0720/sadie.git@91cd2f31677121eb62b63d499de12847b5c0e791#egg=sadie_antibody
       - git+https://github.com/jwillis0720/seaborn.git@59a5f237709124981abf835bad9eef4132255321#egg=seaborn
