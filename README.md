@@ -113,13 +113,15 @@ Rscript src/g001/R/Combine_Flow_and_Seq_Results.R data/sequence data/flow/collat
 
 ## Figures
 
+The following can generate main text figures
+
 ```bash
-# Genarate Figure 1
-g001 figures fig1 -d data/ -o figures/fig1
-g001 figures fig1 -d data/ -o figures/fig1
-g001 figures fig1 -d data/ -o figures/fig1
-g001 figures fig1 -d data/ -o figures/fig1
-g001 figures fig1 -d data/ -o figures/fig1
-g001 figures fig1 ta/ -o figures/fig1
-g001 figures fig2  -o figures/fig1
+g001 figures fig1
+g001 figures fig2
+g001 figures fig3
+g001 figures fig4
+g001 figures fig5
+g001 figures fig6
+g001 figures fig7
+g001 figures fig8
 ```
