@@ -10,7 +10,7 @@ from rich.console import Console
 class RScript:
     """RScript Wrapper"""
 
-    rpath = Path(__file__).parent / "R"
+    rpath = Path(__file__).parent.parent / "R"
     sites = ["FHCRC", "VRC"]
     verbose: bool = False
     console = Console(record=False)
