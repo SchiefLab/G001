@@ -10,6 +10,7 @@ from pydantic import BaseModel, validator
 
 logger = logging.getLogger("DataManage")
 
+
 class PlotParameters:
     def __init__(self):
         # define visit lookups for
@@ -177,6 +178,7 @@ class PlotParameters:
         """
         return self.small_annotate_args
 
+
 class SequenceDataPaths(BaseModel):
     base_path: Path
     base_sequence_path: Optional[Path] = None
@@ -236,15 +238,33 @@ class SequenceDataPaths(BaseModel):
     def validate_haplotype_path(cls, v: Path | None, values: Dict[str, Path]) -> Path | None:
         if v is None:
             return Path(values["haplotype_path"])
-class FigureDataPaths(BaseModel):
-    base_path: Path = Path('data')
-    flow_and_frequency_path : Path = base_path / Path('figures/flow_summary/flow_and_sequences.feather')
 
-    @validator("*",always=True)
-    def validate_paths(cls, v:Path):
+
+class FigureDataPaths(BaseModel):
+    base_path: Path = Path("data")
+    flow_and_frequency_path: Path = base_path / Path("figures/flow_summary/flow_and_sequences.feather")
+    sequence_path: Path = base_path / Path("figures/sequences/unblinded_sequences.feather")
+    distance_path_vrc01_path: Path = base_path / Path("figures/cluster/distance_df_vrc01.feather")
+    distance_path_nonvrc01_path: Path = base_path / Path("figures/cluster/distance_df_nonvrc01.feather")
+    dekosky_vh12_path: Path = base_path / Path("controls/dekosky_vh12.feather")
+    kappa_vrc01_aa_path: Path = base_path / Path("controls/kappa_vrc01_aa.feather")
+    lambda_vrc01_aa_path: Path = base_path / Path("controls/lambda_vrc01_aa.feather")
+    oas_five_len_path: Path = base_path / Path("controls/oas_5_lc_5_len.feather")
+    oas_vh12_path: Path = base_path / Path("controls/oas_vh12.feather")
+    vrc01_reference_airr_path: Path = base_path / Path("controls/vrc01_class_bnabs_ref_airr.feather")
+    human_naive_path: Path = base_path / Path("controls/human_naive_vrc01_class.feather")
+    cottrell_path: Path = base_path / Path("controls/cottrell.json")
+    igl_spr_path: Path = base_path / Path("figures/binding/igl_spr.feather")
+    clk_spr_path: Path = base_path / Path("figures/binding/clk_spr.feather")
+    mature_spr_path: Path = base_path / Path("figures/binding/mature_spr.feather")
+    boost_v_gt8_trend_path: Path = base_path / Path("figures/trends/boost_v_gt8.csv")
+
+    @validator("*", always=True)
+    def validate_paths(cls, v: Path):
         if not v.exists():
             raise FileNotFoundError(f"{v} is not found")
         return v
+
 
 class Data:
     def __init__(self, base_path: Path):
@@ -338,3 +358,149 @@ class Data:
             a pandas dataframe with all computed values from the combining flow and sequencing module
         """
         return pd.read_feather(self.figure_data_paths.flow_and_frequency_path)
+
+    def get_unblinded_sequences(self) -> pd.DataFrame:
+        """Returns the unblinded sequences dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            a pandas dataframe with all computed values from the combining flow and sequencing module
+        """
+        return pd.read_feather(self.figure_data_paths.sequence_path)
+
+    def get_distance_df(self, is_vrc01_class: bool) -> pd.DataFrame:
+        """Get the pre-computed distance dataframe for all vrc01 and non-vrc01 sequences
+
+        Returns
+        -------
+        is_vrc01_class: bool
+            if True, return the vrc01 distance dataframe, otherwise return the non-vrc01 distance dataframe
+        """
+        if is_vrc01_class:
+            return pd.read_feather(self.figure_data_paths.distance_path_vrc01_path)
+        return pd.read_feather(self.figure_data_paths.distance_path_nonvrc01_path)
+
+    def get_dekosky(self) -> pd.DataFrame:
+        """Get VH1-2 pairs from Dekosky et al
+
+        Returns
+        -------
+        pd.DataFrame
+            the dekosky vh12 dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.dekosky_vh12_path)
+
+    def get_kappa_vrc01_aa(self) -> pd.DataFrame:
+        """Get the kappa vrc01 aa dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the kappa vrc01 aa dataframe from an ANARCI alignment
+        """
+        return pd.read_feather(self.figure_data_paths.kappa_vrc01_aa_path)
+
+    def get_lambda_vrc01_aa(self) -> pd.DataFrame:
+        """Get the lambda vrc01 aa dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the lambda vrc01 aa dataframe from an ANARCI alignment
+        """
+        return pd.read_feather(self.figure_data_paths.lambda_vrc01_aa_path)
+
+    def get_oas_five_len(self) -> pd.DataFrame:
+        """Get the oas five len dataframe
+
+        A collection of HD light chains that have a LCDR3 len of 5
+
+        Returns
+        -------
+        pd.DataFrame
+            the oas five len dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.oas_five_len_path)
+
+    def get_oas_vh12(self) -> pd.DataFrame:
+        """Get the oas vh12 dataframe
+
+        A collection of HD VH1-2 heavy chains
+
+        Returns
+        -------
+        pd.DataFrame
+            the oas vh12 dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.oas_vh12_path)
+
+    def get_vr01_ref_airr(self) -> pd.DataFrame:
+        """Get the vrc01 reference airr dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the vrc01 reference airr dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.vrc01_reference_airr_path)
+
+    def get_human_naive_airr(self) -> pd.DataFrame:
+        """Get the human naive airr dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the human naive airr dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.human_naive_path)
+
+    def get_cottrell_path(self) -> Path:
+        """Get the cottrell path
+
+        Returns
+        -------
+        Path
+            the cottrell path
+        """
+        return self.figure_data_paths.cottrell_path
+
+    def get_igl_spr_df(self) -> pd.DataFrame:
+        """Get the igl spr dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the igl spr dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.igl_spr_path)
+
+    def get_clk_spr_df(self) -> pd.DataFrame:
+        """Get the clk/hugl (human naives) spr dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the clk/hugl spr dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.clk_spr_path)
+
+    def get_mature_spr_df(self) -> pd.DataFrame:
+        """Get the mature spr dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the mature spr dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.mature_spr_path)
+
+    def get_boost_v_gt8_trend(self) -> pd.DataFrame:
+        """Get the boost v gt8 trend dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the boost v gt8 trend dataframe
+        """
+        return pd.read_csv(self.figure_data_paths.boost_v_gt8_trend_path, index_col=0)
