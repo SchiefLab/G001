@@ -75,11 +75,11 @@ wget https://iavig001public.s3.us-west-2.amazonaws.com/flow_input.tgz
 # extract the files
 tar -xvzf flow_input.tgz
 
-# Run for FHCRC
-g001 fhcrc -o flow_output
+# Run for FHCRC defaults
+g001 process-flow fhcrc
 
-# Run for VRC
-g001 vrc -o flow_output
+# Run for VRC defaults 
+g001 process-flow vrc 
 ```
 
 ## Collation of Flow Data
@@ -87,7 +87,7 @@ g001 vrc -o flow_output
 The following will combine the VRC and FHCRC flow data.
 
 ```bash
-g001 collate -o data/flow/processed_flow/Combined_Results
+g001 collate 
 ```
 
 ## Sequencing Pipeline
