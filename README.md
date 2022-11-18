@@ -108,7 +108,7 @@ g001 collate -f data/flow/processed_flow/
 
 ## BCR sequence analysis
 
-Run BCR sequence analysis pipeline (as in fig. S10)
+Run BCR sequence analysis pipeline (as in Leggat et al fig. S10). This code is fully functional on the deidentified data.
 
 ```bash
 g001 sequence_analysis -d data/ -r -o sequence_analysis_output
@@ -139,11 +139,10 @@ g001 figures fig7
 g001 figures fig8
 ```
 
-
 ## Tables
 
-The following can generate separate & combined tables
+The following code generates all supplementary tables in the Leggat et al manuscript. Both individual pdfs and a single combined pdf are generated.
 
 ```bash
-g001 paper1 ST -c
+g001 supptables -c -o supp_tables
 ```
