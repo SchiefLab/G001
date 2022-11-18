@@ -10,6 +10,7 @@ from pydantic import BaseModel, validator
 
 logger = logging.getLogger("DataManage")
 
+
 class PlotParameters:
     def __init__(self):
         # define visit lookups for
@@ -177,6 +178,7 @@ class PlotParameters:
         """
         return self.small_annotate_args
 
+
 class SequenceDataPaths(BaseModel):
     base_path: Path
     base_sequence_path: Optional[Path] = None
@@ -236,15 +238,21 @@ class SequenceDataPaths(BaseModel):
     def validate_haplotype_path(cls, v: Path | None, values: Dict[str, Path]) -> Path | None:
         if v is None:
             return Path(values["haplotype_path"])
-class FigureDataPaths(BaseModel):
-    base_path: Path = Path('data')
-    flow_and_frequency_path : Path = base_path / Path('figures/flow_summary/flow_and_sequences.feather')
 
-    @validator("*",always=True)
-    def validate_paths(cls, v:Path):
+
+class FigureDataPaths(BaseModel):
+    base_path: Path = Path("data")
+    flow_and_frequency_path: Path = base_path / Path("figures/flow_summary/flow_and_sequences.feather")
+    sequence_path: Path = base_path / Path("figures/sequences/unblinded_sequences.feather")
+    distance_path_vrc01: Path = base_path / Path("figures/cluster/distance_df_vrc01.feather")
+    distance_path_nonvrc01: Path = base_path / Path("figures/cluster/distance_df_nonvrc01.feather")
+
+    @validator("*", always=True)
+    def validate_paths(cls, v: Path):
         if not v.exists():
             raise FileNotFoundError(f"{v} is not found")
         return v
+
 
 class Data:
     def __init__(self, base_path: Path):
@@ -338,3 +346,25 @@ class Data:
             a pandas dataframe with all computed values from the combining flow and sequencing module
         """
         return pd.read_feather(self.figure_data_paths.flow_and_frequency_path)
+
+    def get_unblinded_sequences(self) -> pd.DataFrame:
+        """Returns the unblinded sequences dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            a pandas dataframe with all computed values from the combining flow and sequencing module
+        """
+        return pd.read_feather(self.figure_data_paths.sequence_path)
+
+    def get_distance_df(self,is_vrc01_class: bool) -> pd.DataFrame:
+        """Get the pre-computed distance dataframe for all vrc01 and non-vrc01 sequences
+
+        Returns
+        -------
+        is_vrc01_class: bool
+            if True, return the vrc01 distance dataframe, otherwise return the non-vrc01 distance dataframe
+        """
+        if is_vrc01_class:
+            return pd.read_feather(self.figure_data_paths.distance_path_vrc01)
+        return pd.read_feather(self.figure_data_paths.distance_path_nonvrc01)

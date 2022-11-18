@@ -10,6 +10,7 @@ import subprocess
 import click
 import seaborn as sns
 import numpy as np
+from g001.figures.polyclonality import plot_class_clonality
 
 # G001 package
 from g001.data import Data
@@ -151,6 +152,8 @@ def figures():
     sns.set_context("paper", font_scale=1)
     sns.set_style("ticks")
     sns.set_style({"font.family": "Arial"})
+    import warnings
+    warnings.simplefilter("ignore")
     np.random.seed(1000)
     pass
 
@@ -191,6 +194,23 @@ def plot_figure_2(ctx: click.Context, outpath: str | Path) -> None:
     figure_d = plot_overview(data)
     figure_d.savefig(outpath + "_d.png", dpi=300)
     click.echo(f"Figure 2D generated to {outpath}_d.png")
+
+
+@figures.command("fig3")
+@click.pass_context
+@click.option(
+    "--outpath",
+    "-o",
+    default="figures/figure3",
+    type=click.Path(file_okay=True, resolve_path=True),
+    help="Output path for figure",
+    show_default=True,
+)
+def plot_figure_1(ctx: click.Context, outpath: str | Path) -> None:
+    data = ctx.obj["data"]
+    figure = plot_class_clonality(data, True)
+    figure.savefig(outpath + ".png", dpi=300)
+    click.echo(f"Figure 3 generated to {outpath}.png")
 
 
 if __name__ == "__main__":
