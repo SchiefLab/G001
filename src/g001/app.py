@@ -11,6 +11,7 @@ import subprocess
 import click
 import seaborn as sns
 import numpy as np
+from g001.figures.features import plot_sequence_features
 from g001.figures.polyclonality import plot_class_clonality
 
 # G001 package
@@ -284,12 +285,27 @@ def plot_figure_5_and_s26(ctx: click.Context, aa_outpath: str, nt_outpath: str) 
         new_outpath = outpath_ + f"_{ab_type}_{molecule}.png"
         fig.savefig(new_outpath, dpi=300)
         click.echo(f"Figure 2 generated to {new_outpath}")
-        fig = plot_somatic_mutation_frequencies_violin(
-            unblind_df, palette, ab_type, molecule, sup_title
-        )
+        fig = plot_somatic_mutation_frequencies_violin(unblind_df, palette, ab_type, molecule, sup_title)
         new_outpath = outpath_ + f"_{ab_type}_{molecule}_violin.png"
         click.echo(f"Figure S20 generated to {new_outpath}")
         fig.savefig(new_outpath, dpi=300)
+
+
+@figures.command("fig6")
+@click.pass_context
+@click.option(
+    "--outpath",
+    "-o",
+    default="figures/figure6",
+    type=click.Path(file_okay=True, resolve_path=True),
+    help="Output path for figure",
+    show_default=True,
+)
+def plot_figure_6(ctx: click.Context, outpath: str | Path) -> None:
+    data = ctx.obj["data"]
+    figure = plot_sequence_features(data)
+    figure.savefig(outpath + ".png", dpi=300)
+    click.echo(f"Figure 6 generated to {outpath}.png")
 
 
 if __name__ == "__main__":

@@ -16,3 +16,5 @@ data/sequence/pairing_candidates.feather filter=lfs diff=lfs merge=lfs -text
 data/sequence/personalize.feather filter=lfs diff=lfs merge=lfs -text
 data/figures/cluster/distance_df_nonvrc01.feather filter=lfs diff=lfs merge=lfs -text
 data/figures/cluster/distance_df_vrc01.feather filter=lfs diff=lfs merge=lfs -text
+data/controls/oas_5_lc_5_len.feather filter=lfs diff=lfs merge=lfs -text
+data/controls/oas_vh12.feather filter=lfs diff=lfs merge=lfs -text

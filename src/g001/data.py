@@ -244,8 +244,16 @@ class FigureDataPaths(BaseModel):
     base_path: Path = Path("data")
     flow_and_frequency_path: Path = base_path / Path("figures/flow_summary/flow_and_sequences.feather")
     sequence_path: Path = base_path / Path("figures/sequences/unblinded_sequences.feather")
-    distance_path_vrc01: Path = base_path / Path("figures/cluster/distance_df_vrc01.feather")
-    distance_path_nonvrc01: Path = base_path / Path("figures/cluster/distance_df_nonvrc01.feather")
+    distance_path_vrc01_path: Path = base_path / Path("figures/cluster/distance_df_vrc01.feather")
+    distance_path_nonvrc01_path: Path = base_path / Path("figures/cluster/distance_df_nonvrc01.feather")
+    dekosky_vh12_path: Path = base_path / Path("controls/dekosky_vh12.feather")
+    kappa_vrc01_aa_path: Path = base_path / Path("controls/kappa_vrc01_aa.feather")
+    lambda_vrc01_aa_path: Path = base_path / Path("controls/lambda_vrc01_aa.feather")
+    oas_five_len_path: Path = base_path / Path("controls/oas_5_lc_5_len.feather")
+    oas_vh12_path: Path = base_path / Path("controls/oas_vh12.feather")
+    vrc01_reference_airr_path: Path = base_path / Path("controls/vrc01_class_bnabs_ref_airr.feather")
+    human_naive_path: Path = base_path / Path("controls/human_naive_vrc01_class.feather")
+    cottrell_path: Path = base_path / Path("controls/cottrell.json")
 
     @validator("*", always=True)
     def validate_paths(cls, v: Path):
@@ -357,7 +365,7 @@ class Data:
         """
         return pd.read_feather(self.figure_data_paths.sequence_path)
 
-    def get_distance_df(self,is_vrc01_class: bool) -> pd.DataFrame:
+    def get_distance_df(self, is_vrc01_class: bool) -> pd.DataFrame:
         """Get the pre-computed distance dataframe for all vrc01 and non-vrc01 sequences
 
         Returns
@@ -366,5 +374,89 @@ class Data:
             if True, return the vrc01 distance dataframe, otherwise return the non-vrc01 distance dataframe
         """
         if is_vrc01_class:
-            return pd.read_feather(self.figure_data_paths.distance_path_vrc01)
-        return pd.read_feather(self.figure_data_paths.distance_path_nonvrc01)
+            return pd.read_feather(self.figure_data_paths.distance_path_vrc01_path)
+        return pd.read_feather(self.figure_data_paths.distance_path_nonvrc01_path)
+
+    def get_dekosky(self) -> pd.DataFrame:
+        """Get VH1-2 pairs from Dekosky et al
+
+        Returns
+        -------
+        pd.DataFrame
+            the dekosky vh12 dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.dekosky_vh12_path)
+
+    def get_kappa_vrc01_aa(self) -> pd.DataFrame:
+        """Get the kappa vrc01 aa dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the kappa vrc01 aa dataframe from an ANARCI alignment
+        """
+        return pd.read_feather(self.figure_data_paths.kappa_vrc01_aa_path)
+
+    def get_lambda_vrc01_aa(self) -> pd.DataFrame:
+        """Get the lambda vrc01 aa dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the lambda vrc01 aa dataframe from an ANARCI alignment
+        """
+        return pd.read_feather(self.figure_data_paths.lambda_vrc01_aa_path)
+
+    def get_oas_five_len(self) -> pd.DataFrame:
+        """Get the oas five len dataframe
+
+        A collection of HD light chains that have a LCDR3 len of 5
+
+        Returns
+        -------
+        pd.DataFrame
+            the oas five len dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.oas_five_len_path)
+
+    def get_oas_vh12(self) -> pd.DataFrame:
+        """Get the oas vh12 dataframe
+
+        A collection of HD VH1-2 heavy chains
+
+        Returns
+        -------
+        pd.DataFrame
+            the oas vh12 dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.oas_vh12_path)
+
+    def get_vr01_ref_airr(self) -> pd.DataFrame:
+        """Get the vrc01 reference airr dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the vrc01 reference airr dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.vrc01_reference_airr_path)
+
+    def get_human_naive_airr(self) -> pd.DataFrame:
+        """Get the human naive airr dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the human naive airr dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.human_naive_path)
+
+    def get_cottrell_path(self) -> Path:
+        """Get the cottrell path
+
+        Returns
+        -------
+        Path
+            the cottrell path
+        """
+        return self.figure_data_paths.cottrell_path
