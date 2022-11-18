@@ -23,17 +23,19 @@ If you don't want to run the code but would just like the important data files f
 
 2. The output of the processed are found in the [processed flow](data/flow/processed_flow/) directory.
 
-3. The FASTQ files from Sanger sequencing are found in the [fastq](data/sequence/fastq) directory.
+3. The output of the processed flow needs to be collated from both trial sites into one [collated flow](data/flow/collated_flow/) directory.
 
-4. The annotated,filtered and paired antibody sequences are found in the [sequences/](data/figures/sequences/) directory and may be download with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/sequences/unblinded_sequences.csv.gz)
+4. The FASTQ files from Sanger sequencing are found in the [fastq](data/sequence/fastq) directory.
 
-5. A merged summary file with all frequencies in this study can be found in the [flow_summary](data/figures/flow_summary) directory and may be download with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/flow_summary/flow_and_sequences.csv.gz)
+5. The annotated,filtered and paired antibody sequences are found in the [sequences/](data/figures/sequences/) directory and may be download with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/sequences/unblinded_sequences.csv.gz)
+
+6. A merged summary file with all frequencies in this study can be found in the [flow_summary](data/figures/flow_summary) directory and may be download with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/flow_summary/flow_and_sequences.csv.gz)
 
 # Pipeline
 
 ## Installation Pre-requisites
 
-While not necessary, we highly recommend using the [conda](https://docs.conda.io/en/latest/) open-source package and environment manager. This allows you to make an environment with both Python and R dependencies. For the purposes of this repository, only minimal installer for anaconda is necessary.
+While not necessary, we highly recommend using the [conda](https://docs.conda.io/en/latest/) open-source package and environment manager. This allows you to make an environment with both Python and R dependencies. For the purposes of this repository, only minimal installer for anaconda is necessary (Miniconda).
 
 <ins>Miniconda installers</ins>
 
@@ -61,10 +63,15 @@ cd G001
 
 # activate environment
 conda activate G001
+
+# initialize git-lfs
+git-lfs install
+
+# pull large files
+git-lfs pull
 ```
 
 ## Flow Processing
-
 
 The flow processing needs to be run on for each of the sites independently.
 
