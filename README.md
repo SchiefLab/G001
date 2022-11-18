@@ -3,6 +3,8 @@
 [![Sequence Analysis Pipeline](https://github.com/SchiefLab/G001/workflows/Sequence%20Analysis%20Pipeline/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/integration.yml)
 [![DOI](https://zenodo.org/badge/517925817.svg)](https://zenodo.org/badge/latestdoi/517925817)
 
+This repository includes data and code used to produce the manuscript Leggat, Cohen, Willis, Fulp, deCamp et al. Science (2022)
+
 - [The IAVI G001 Clinical Trial Repository](#the-iavi-g001-clinical-trial-repository)
 - [Data Access](#data-access)
 - [Pipeline](#pipeline)
@@ -123,7 +125,7 @@ Rscript src/g001/R/Combine_Flow_and_Seq_Results.R data/sequence data/flow/collat
 
 ## Figures
 
-The following code can generate main text figures
+The following code generates the main text figures from the data in this repository.
 
 ```bash
 g001 figures fig1
