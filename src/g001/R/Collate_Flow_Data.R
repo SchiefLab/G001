@@ -12,14 +12,14 @@ library(wCorr)
 
 fhcrc_manifest_path <- args[1]
 vrc_manifest_path <- args[2]
-flow_path <- args[2]
+flow_path <- args[3]
 
 # Loading in manifest -------------------------------------------------------------------------
 # fhcrc_manifest <- read_csv(file.path(flow_path, "fhrc/fhcrc_manifest.csv"), col_select = -1)
 # vrc_manifest <- read_csv(file.path(flow_path, "vrc/vrc_manifest.csv"), col_select = -1) %>% 
 #   mutate(Tube = as.character(Tube))
-fhcrc_manifest <- read_csv(file.path(fhcrc_manifest), col_select = -1)
-vrc_manifest <- read_csv(file.path(vrc_manifest), col_select = -1) %>% 
+fhcrc_manifest <- read_csv(file.path(fhcrc_manifest_path), col_select = -1)
+vrc_manifest <- read_csv(file.path(vrc_manifest_path), col_select = -1) %>% 
   mutate(Tube = as.character(Tube))
 
 # make full manifest
@@ -411,16 +411,16 @@ final_flow_data <- flow_data_by_PTID %>%
 
 
 # Sample Swap
-if (length(args) > 1) {
-  # Applying Sample Swap fix: 2 PTIDs were swapped for V08 and V10
-  # From David Leggat email 11/06/2020
-  swap_info <- read_csv(args[2])
-  final_flow_data <- final_flow_data %>%
-    full_join(swap_info,
-              by = c('PTID' = 'Bad_PTID', 'VISIT')) %>%
-    mutate(PTID = if_else(is.na(Correct_PTID), PTID, Correct_PTID)) %>%
-    select(-Correct_PTID)
-}
+# if (length(args) > 1) {
+#   # Applying Sample Swap fix: 2 PTIDs were swapped for V08 and V10
+#   # From David Leggat email 11/06/2020
+#   swap_info <- read_csv(args[2])
+#   final_flow_data <- final_flow_data %>%
+#     full_join(swap_info,
+#               by = c('PTID' = 'Bad_PTID', 'VISIT')) %>%
+#     mutate(PTID = if_else(is.na(Correct_PTID), PTID, Correct_PTID)) %>%
+#     select(-Correct_PTID)
+# }
 
 
 write_csv(final_flow_data,
@@ -524,15 +524,15 @@ final_flow_data_by_type <- flow_data_by_type %>%
 
 
 # Sample Swap
-if (length(args) > 1) {
-  # Applying Sample Swap fix: 2 PTIDs were swapped for V08 and V10
-  # From David Leggat email 11/06/2020
-  final_flow_data_by_type <- final_flow_data_by_type %>%
-    full_join(swap_info,
-              by = c('PTID' = 'Bad_PTID', 'VISIT')) %>%
-    mutate(PTID = if_else(is.na(Correct_PTID), PTID, Correct_PTID)) %>%
-    select(-Correct_PTID)
-}
+# if (length(args) > 1) {
+#   # Applying Sample Swap fix: 2 PTIDs were swapped for V08 and V10
+#   # From David Leggat email 11/06/2020
+#   final_flow_data_by_type <- final_flow_data_by_type %>%
+#     full_join(swap_info,
+#               by = c('PTID' = 'Bad_PTID', 'VISIT')) %>%
+#     mutate(PTID = if_else(is.na(Correct_PTID), PTID, Correct_PTID)) %>%
+#     select(-Correct_PTID)
+# }
 
 
 write_csv(final_flow_data_by_type,

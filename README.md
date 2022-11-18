@@ -94,7 +94,7 @@ g001 process-flow -s VRC -m VRC_manifest_file.csv -i flow_input/vrc/
 The following will combine the VRC and FHCRC flow data.
 
 ```bash
-g001 collate
+g001 collate -1 fhcrc_manifest.csv -2 vrc_manifest.csv -f flow_output
 ```
 
 ## Sequencing Pipeline

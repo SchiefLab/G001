@@ -9,7 +9,7 @@ from pathlib import Path
 import subprocess
 
 # third party
-import click
+import rich_click as click
 import seaborn as sns
 import numpy as np
 from g001.figures.binding import plot_boosting_binding, plot_gt8_binding
@@ -172,18 +172,18 @@ def process_flow(
     help="Prints final command that was run to console",
 )
 @click.option(
-    "--FHCRC-manifest",
+    "--fhcrc-manifest",
     "-1",
     type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
-    required=True,
+    required=False,
     show_default=True,
     help="Path to read the flow manifest for specified site",
 )
 @click.option(
-    "--VRC-manifest",
+    "--vrc-manifest",
     "-2",
     type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
-    required=True,
+    required=False,
     show_default=True,
     help="Path to read the flow manifest for specified site",
 )
@@ -198,17 +198,21 @@ def process_flow(
 def collate(
     ctx: click.Context,
     verbose: bool,
-    FHCRC_manifest: Path | str,
-    VRC_manifest: Path | str,
+    fhcrc_manifest: Path | str,
+    vrc_manifest: Path | str,
     flow_output_dir: Path | str,
 ) -> None:
-    """ """
+    """Collated Flow Data from sites FHCRC & VRC"""
+    data = ctx.obj["data"]
+    if not fhcrc_manifest:
+        fhcrc_manifest = data.flow_data_paths.processed_flow_path / Path("fhrc/fhcrc_manifest.csv")
+    if not vrc_manifest:
+        vrc_manifest = data.flow_data_paths.processed_flow_path / Path("vrc/vrc_manifest.csv")
     if not flow_output_dir:
-        data = ctx.obj["data"]
         flow_output_dir = data.get_processed_flow_paths()
     RScript(verbose=verbose).collate_flow(
-        fhcrc_manifest=FHCRC_manifest,
-        vrc_manifest=VRC_manifest,
+        fhcrc_manifest=fhcrc_manifest,
+        vrc_manifest=vrc_manifest,
         flow_output_dir=flow_output_dir,
     )
 
