@@ -143,7 +143,7 @@ g001 figures fig8
 
 The following code generates all supplementary tables in the Leggat et al manuscript. Both individual pdfs and a single combined pdf are generated. This is only supported on Mac.
 
-```bash
+```
 conda install -c conda-forge docx2pdf
 g001 supptables -c -o supp_tables
 ```
