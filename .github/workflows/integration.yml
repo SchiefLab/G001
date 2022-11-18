@@ -1,11 +1,11 @@
 name: Sequence Analysis Pipeline
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     tags:
       - "*"
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build-test:
@@ -24,8 +24,8 @@ jobs:
           activate-environment: G001
           auto-activate-base: false
       - run: |
-         conda install pytest
-         pip install -e .
+          conda install pytest
+          pip install -e .
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
       - name: Restore LFS cache
@@ -40,7 +40,7 @@ jobs:
           git lfs ls-files
       - name: Test NGS
         run: pytest -x -s --log-cli-level INFO tests/integration/test_sequence_analysis_integration.py::test_ngs_module
-      - name: Test Find 
+      - name: Test Find
         run: pytest -x -s --log-cli-level INFO tests/integration/test_sequence_analysis_integration.py::test_find_module
       - name: Test Model
         run: pytest -x -s --log-cli-level INFO tests/integration/test_sequence_analysis_integration.py::test_model_module
