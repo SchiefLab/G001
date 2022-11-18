@@ -172,24 +172,24 @@ def process_flow(
     help="Prints final command that was run to console",
 )
 @click.option(
-    "--collate-output-dir",
-    "-o",
+    "--flow-output-dir",
+    "-f",
     type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=False),
     required=False,
-    default=Path("processed_flow"),
-    show_default=True,
-    help="Path to create the collated output directory",
+    default=None,
+    help="Path to the processed flow directory",
 )
 def collate(
     ctx: click.Context,
     verbose: bool,
-    collate_output_dir: Path | str,
+    flow_output_dir: Path | str,
 ) -> None:
-    """Collate flow data"""
-    if not Path(collate_output_dir).exists():
-        Path(collate_output_dir).mkdir()
+    """ """
+    if not flow_output_dir:
+        data = ctx.obj["data"]
+        flow_output_dir = data.get_processed_flow_paths()
     RScript(verbose=verbose).collate_flow(
-        collate_output_dir=collate_output_dir,
+        collate_output_dir=flow_output_dir,
     )
 
 

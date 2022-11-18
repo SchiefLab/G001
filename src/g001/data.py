@@ -266,9 +266,21 @@ class FigureDataPaths(BaseModel):
         return v
 
 
+class FlowDataPaths(BaseModel):
+    base_path: Path = Path("data/flow")
+    processed_flow_path: Path = base_path / Path("processed_flow")
+
+    @validator("*", always=True)
+    def validate_paths(cls, v: Path):
+        if not v.exists():
+            raise FileNotFoundError(f"{v} is not found")
+        return v
+
+
 class Data:
     def __init__(self, base_path: Path):
         self.sequence_data_paths = SequenceDataPaths(base_path=base_path)
+        self.flow_data_paths = FlowDataPaths(base_path=base_path / Path("flow"))
         self.figure_data_paths = FigureDataPaths(base_path=base_path)
         self.intra_plate_cluster_distance: int = 2
         self.plot_parameters = PlotParameters()
@@ -504,3 +516,6 @@ class Data:
             the boost v gt8 trend dataframe
         """
         return pd.read_csv(self.figure_data_paths.boost_v_gt8_trend_path, index_col=0)
+
+    def get_processed_flow_paths(self) -> Path:
+        return self.flow_data_paths.processed_flow_path
