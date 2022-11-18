@@ -176,21 +176,5 @@ def collate(
     )
 
 
-# @main.command("collate")
-# @click.pass_context
-# def collate(ctx: click.Context) -> None:
-#     """
-#     Collation of Flow Data
-#     """
-#     cmd = [
-#         "Rscript",
-#         "src/g001/R/Collate_Flow_Data.R",
-#         "data/flow/processed_flow/",
-#     ]
-#     stdout = subprocess.run(cmd, capture_output=True)
-#     # TODO: collate doesnt seem to have an stdout
-#     print(stdout.stdout.decode("utf-8"))
-
-
 if __name__ == "__main__":
     main()
