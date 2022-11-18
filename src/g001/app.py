@@ -135,7 +135,7 @@ def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resum
     required=False,
     default=Path("flow_output"),
     show_default=True,
-    help="Path to create the flow_output directory",
+    help="Path to create the flow_output dicjrectory",
 )
 @click.option("-f", "--force_overwrite_output_dir", default=True, is_flag=True, help="Force overwrite output directory")
 def process_flow(
@@ -153,7 +153,7 @@ def process_flow(
     if not Path(flow_output_dir).exists():
         Path(flow_output_dir).mkdir()
     RScript(verbose=verbose).flow_processing(
-        gate=site,
+        site=site,
         manifest=manifest,
         flow_input_dir=flow_input_dir,
         flow_output_dir=flow_output_dir,
@@ -176,7 +176,7 @@ def process_flow(
     "-o",
     type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=False),
     required=False,
-    default=Path(__file__).parent.parent.parent / "data/flow/processed_flow",
+    default=Path("processed_flow"),
     show_default=True,
     help="Path to create the collated output directory",
 )
@@ -185,7 +185,9 @@ def collate(
     verbose: bool,
     collate_output_dir: Path | str,
 ) -> None:
-    """ """
+    """Collate flow data"""
+    if not Path(collate_output_dir).exists():
+        Path(collate_output_dir).mkdir()
     RScript(verbose=verbose).collate_flow(
         collate_output_dir=collate_output_dir,
     )

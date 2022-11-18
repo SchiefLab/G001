@@ -11,7 +11,7 @@ class RScript:
     """RScript Wrapper"""
 
     rpath = Path(__file__).parent / "R"
-    gates = ["FHCRC", "VRC"]
+    sites = ["FHCRC", "VRC"]
     verbose: bool = False
     console = Console(record=False)
 
@@ -33,7 +33,7 @@ class RScript:
 
     def flow_processing(
         self,
-        gate: str,
+        site: str,
         manifest: Path | str,
         flow_input_dir: Path | str,
         flow_output_dir: Path | str,
@@ -43,21 +43,21 @@ class RScript:
 
         Parameters
         ----------
-        gate : str
+        site : str
             FHCRC or VRC
         flow_input_dir : Path | str
             Path to the directory containing the flow data
         flow_output_dir : Path | str
             Path to the directory where the flow data will be written
         manifest : Path | str | None, optional
-            Manifest linked to gate, by default flow_input/{gate.lower()}/{gate}_Flow_Manifest.csv
+            Manifest linked to site, by default flow_input/{site.lower()}/{site}_Flow_Manifest.csv
         force_overwrite_output_dir : bool | str, optional
             overwrite output folder, by default True
 
         Raises
         ------
         ValueError
-            gate must be FHCRC or VRC
+            site must be FHCRC or VRC
         ValueError
             flow_input_dir must be a Path or str and must exist
         ValueError
@@ -65,9 +65,9 @@ class RScript:
         ValueError
             manifest must be a Path or str
         """
-        gate = gate.upper()
-        if gate not in self.gates:
-            raise ValueError(f"gate {gate} not found, must be one of {self.gates}")
+        site = site.upper()
+        if site not in self.sites:
+            raise ValueError(f"site {site} not found, must be one of {self.sites}")
 
         flow_input_dir = Path(flow_input_dir)
         if not flow_input_dir.exists():
@@ -80,7 +80,7 @@ class RScript:
         manifest = (
             Path(manifest)
             if manifest
-            else Path(__file__).parent.parent / f"flow_input/{gate.lower()}/{gate}_Flow_Manifest.csv"
+            else Path(__file__).parent.parent / f"flow_input/{site.lower()}/{site}_Flow_Manifest.csv"
         )
 
         if not manifest.exists():
@@ -91,7 +91,7 @@ class RScript:
         cmd = [
             "Rscript",
             str(self.rpath / "Flow_Processing.R"),
-            gate,
+            site,
             str(manifest),
             str(flow_input_dir),
             str(force_overwrite_output_dir),
