@@ -11,7 +11,7 @@ import subprocess
 import click
 import seaborn as sns
 import numpy as np
-from g001.figures.binding import plot_gt8_binding
+from g001.figures.binding import plot_boosting_binding, plot_gt8_binding
 from g001.figures.features import plot_sequence_features
 from g001.figures.polyclonality import plot_class_clonality
 
@@ -308,6 +308,7 @@ def plot_figure_6(ctx: click.Context, outpath: str | Path) -> None:
     figure.savefig(outpath + ".png", dpi=300)
     click.echo(f"Figure 6 generated to {outpath}.png")
 
+
 @figures.command("fig7")
 @click.pass_context
 @click.option(
@@ -323,6 +324,24 @@ def plot_figure_6(ctx: click.Context, outpath: str | Path) -> None:
     figure = plot_gt8_binding(data)
     figure.savefig(outpath + ".png", dpi=300)
     click.echo(f"Figure 7 generated to {outpath}.png")
+
+
+@figures.command("fig8")
+@click.pass_context
+@click.option(
+    "--outpath",
+    "-o",
+    default="figures/figure8",
+    type=click.Path(file_okay=True, resolve_path=True),
+    help="Output path for figure",
+    show_default=True,
+)
+def plot_figure_8(ctx: click.Context, outpath: str | Path) -> None:
+    data = ctx.obj["data"]
+    figure = plot_boosting_binding(data)
+    figure.savefig(outpath + ".png", dpi=300)
+    click.echo(f"Figure 8 generated to {outpath}.png")
+
 
 if __name__ == "__main__":
     main()

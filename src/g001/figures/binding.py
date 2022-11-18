@@ -5,10 +5,23 @@ from matplotlib import gridspec
 from matplotlib import pyplot as plt
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
-
+import numpy as np
 from g001.data import Data
 from g001.figures.tables import plot_binding_table
 from g001.figures.util import MinorSymLogLocator, adjust_boxplot
+from scipy.stats import t
+from scipy.stats import linregress
+
+explicit_mapping = {
+    "IGKV1-33": "#91FCC0",
+    "IGKV1-5": "#E377C2",
+    "IGKV3-20": "#2078B4",
+    "IGLV2-14": "#17BFD0",
+    "IGKV3-15": "#9567BD",
+    "IGLV2-11": "#BDBD23",
+    "IGLV2-23": "#FF7F0F",
+    "Other": "#F2F0F2",
+}
 
 log_fixed_locator_lookup = {
     -14: "10 fM",
@@ -278,4 +291,227 @@ def plot_gt8_binding(data: Data):
         bbox_to_anchor=(0.5, -0.85),
     )
     label_axis.set_axis_off()
+    return fig
+
+
+def plot_boosting_binding(data: Data, is_vrc01_class=True, skip_regression=False):
+    mature_spr = data.get_mature_spr_df()
+    clk_spr = data.get_clk_spr_df()
+    igl_spr = data.get_igl_spr_df()
+    spr_df = pd.concat([mature_spr, clk_spr, igl_spr]).reset_index(drop=True)
+    plot_parm = data.plot_parameters
+    memory_timepoint = plot_parm.get_memory_visit_lookup()
+    annotate_args = plot_parm.get_small_annotate_args()
+
+    fig = plt.figure(figsize=(8.5, 7.5))
+    gs = gridspec.GridSpec(
+        5,
+        35,
+        figure=fig,
+        height_ratios=[0.14, 0.70, 0.13, 0.005, 0.4],
+        hspace=0.08,
+        wspace=0.12,
+        left=0.13,
+        top=0.91,
+        right=0.98,
+        bottom=0.06,
+    )
+
+    # table specs
+    clk_table_spec = fig.add_subplot(gs[0, :5])
+    ig_table_spec = fig.add_subplot(gs[0, 5:10])
+    pbmc_table_spec = fig.add_subplot(gs[0, 10:])
+
+    # plot A spec
+    clk_spec = fig.add_subplot(gs[1, :5])
+    ig_spec = fig.add_subplot(gs[1, 5:10])
+    pbmc_spec = fig.add_subplot(gs[1, 10:])
+
+    # label axis
+    label_axis = fig.add_subplot(gs[2, :])
+
+    # reg axis
+    if not skip_regression:
+        reg_axis = [fig.add_subplot(gs[4, i : i + 6]) for i in range(0, 35, 7)]
+
+    # get SPR
+    publish_analytes_map = {"GT6": "GT6", "3MUTB": "GT6v2", "4MUTB": "GT6v3", "5MUTB": "GT6v4", "N276": "GT6-N276+"}
+
+    analytes_spr = (
+        spr_df[~spr_df["publish_analyte"].isna()]
+        .query("is_vrc01_class == @is_vrc01_class")
+        .copy()
+        .reset_index(drop=True)
+    )
+    gt8_spr = (
+        spr_df.query("publish_analyte=='GT8'")
+        .query("is_vrc01_class == @is_vrc01_class")
+        .query("approx==False")
+        .copy()
+        .reset_index(drop=True)
+    )
+
+    # only have to change igl to say weeks_post = 0 and Timepoint == 0
+    analytes_spr.loc[analytes_spr["is_igl"], "weeks_post"] = 0
+    analytes_spr.loc[analytes_spr["is_igl"], "Timepoint"] = "V00"
+    analytes_spr.loc[analytes_spr["is_igl"], "Specimen_Type"] = "iGL"
+    analytes_spr = analytes_spr.astype({"weeks_post": int})
+    analytes_spr["x-axis"] = analytes_spr[["weeks_post", "Specimen_Type"]].apply(
+        lambda x: "week " + str(x[0]) + "\n" + x[1] if x[1] != "CLK" else "week 0", axis=1
+    )
+
+    # change the FNA to GC and PMBC to MBC
+    analytes_spr["x-axis"] = analytes_spr["x-axis"].apply(
+        lambda x: x.replace("FNA", "GC").replace("PBMC", "MBC") if x else x
+    )
+    analytes_spr["publish_analyte"] = pd.Categorical(
+        analytes_spr["publish_analyte"], categories=publish_analytes_map.values(), ordered=True
+    )
+    for ax_index, (table_ax, ax) in enumerate(
+        zip(
+            [clk_table_spec, ig_table_spec, pbmc_table_spec],
+            [clk_spec, ig_spec, pbmc_spec],
+        )
+    ):
+        timepoints = {}
+        table_title = "Null"
+        plot_table_row_title = False
+        overide_stats = None
+        if ax_index == 0:
+            timepoints = {"CLK": 0}
+            table_title = "Naive\nPrecursors"
+            plot_table_row_title = True
+            overide_stats = 12
+        elif ax_index == 1:
+            timepoints = {"V00": 0}
+            table_title = "Inferred\nPrecursors"
+        elif ax_index == 2:
+            timepoints = memory_timepoint
+            table_title = "Memory B Cells in PBMCs"
+        # Only get timepoints of intreset
+        sub_plot = analytes_spr.query("Timepoint in @timepoints.keys()").copy().sort_values("publish_analyte")
+        if ax_index == 0:
+            sub_plot["x-axis"] = "week 0"
+
+        # plot table in catch all function
+        title_xy = (0.5, 1.5)
+        plot_binding_table(
+            table_ax,
+            sub_plot,
+            annotate_args,
+            table_title,
+            title_xy,
+            plot_table_row_title,
+            overide_stats,
+            ["weeks_post", "publish_analyte"],
+            fontsize=6,
+            hue_order=publish_analytes_map.values(),
+            median_label="Median $\mathregular{K_D}$ ($\mathregular{\mu}$M)",  # noqa: W605
+            median_scale=1e6,
+            ascending_rank=[1, 1],
+        )
+        palette = dict(zip(publish_analytes_map.values(), explicit_mapping.values()))
+
+        # plot strip plot on boxplot
+        plot_strip_on_box(ax, sub_plot, palette, hue="publish_analyte", hue_order=publish_analytes_map.values())
+
+        # remove legend, will add manually
+        ax.legend_.remove()
+        ax.set_ylim(1e-11, 0.00015)
+        ax.set_xlabel("")
+        ax.set(yscale="log")
+
+        if ax_index == 0:
+            ax.set_ylabel("$\mathregular{K_D}$", size=14)  # noqa: W605
+            ax.yaxis.set_major_locator(mtick.LogLocator(base=10, numticks=9))
+            # custom locator, shouldnt be linear anywhere
+            ax.yaxis.set_minor_locator(MinorSymLogLocator(linthresh=1))
+            ax.yaxis.set_major_formatter(mtick.FuncFormatter(lambda x, p: fixed_locator_lookup[x]))
+        else:
+            ax.set_ylabel("")
+            ax.yaxis.set_major_locator(mtick.LogLocator(base=10, numticks=9))
+            ax.yaxis.set_minor_locator(mtick.LogLocator(base=10, subs=range(0, 10), numticks=9))
+            ax.yaxis.set_major_formatter(mtick.NullFormatter())
+        adjust_boxplot(ax)
+        ax.tick_params(which="major", length=6, labelsize=12)
+        ax.axhline(y=0.0001, linestyle="--", linewidth=1, color="black", zorder=-10)
+
+    custom_lines = []
+    for name, color in zip(publish_analytes_map.values(), explicit_mapping.values()):
+        # custom_lines.append(Line2D([0], [0], color=color, lw=2, label=name))
+        custom_lines.append(Patch(facecolor=color, edgecolor="black", linewidth=1, label=name))
+    label_axis.legend(
+        custom_lines,
+        publish_analytes_map.values(),
+        loc="lower center",
+        frameon=False,
+        ncol=6,
+        fontsize=12,
+        bbox_to_anchor=(0.5, -0.5),
+    )
+
+    label_axis.axis("off")
+    collector = []
+    trendline_df = data.get_boost_v_gt8_trend()
+    if not skip_regression:
+        for ax_index, ax in enumerate(reg_axis):
+            antigen_of_interest = list(publish_analytes_map.values())[ax_index]
+            sub_trend = trendline_df.query("xaxis==@antigen_of_interest")
+            sub_plot = analytes_spr.query("publish_analyte==@antigen_of_interest").copy()
+            sub_plot = sub_plot.merge(
+                gt8_spr[["Ligand", "KD_fix"]], on="Ligand", how="inner", suffixes=["_analyte", "_gt8"]
+            ).query("weeks_post > 0")
+            sub_plot["KD_fix_analyte"] = np.log10(sub_plot["KD_fix_analyte"])
+            sub_plot["KD_fix_gt8"] = np.log10(sub_plot["KD_fix_gt8"])
+            collector.append(sub_plot)
+            # sub_plot.to_csv(f"{antigen_of_interest}_regression_figure5b.csv")
+            color = list(explicit_mapping.values())[ax_index]
+
+            def _make_scatter(sp, c=color, a=0.7, lw=1):
+                sns.scatterplot(
+                    data=sp,
+                    y="KD_fix_gt8",
+                    x="KD_fix_analyte",
+                    color=c,
+                    ax=ax,
+                    s=7,
+                    alpha=a,
+                    edgecolor="black",
+                    linewidth=lw,
+                )
+
+            data_lt = sub_plot.query("KD_fix_analyte<-4")
+            data_eq = sub_plot.query("KD_fix_analyte>=-4")
+            _make_scatter(data_lt)
+            _make_scatter(data_eq, c="white", a=0.1, lw=0.5)
+            ax.plot(np.log10(sub_trend["x"]), np.log10(sub_trend["pred"]), color=color, linewidth=1)
+            ax.fill_between(
+                np.log10(sub_trend["x"]), np.log10(sub_trend["lci"]), np.log10(sub_trend["uci"]), color=color, alpha=0.5
+            )
+            if ax_index == 0:
+                ax.set_ylabel(r"$\mathregular{K_D}$" + " GT8")
+            else:
+                ax.set_ylabel("")
+            ax.set_xlabel(r"$\mathregular{K_D}$" + f" {antigen_of_interest}")
+            ax.set_xlim(-11.1, -3.5)
+            ax.set_ylim(-11.1, -3.5)
+            x = np.arange(-11.1, -3.5, 0.1)
+            ax.plot(x, x, color="grey", linestyle="--", alpha=0.5)
+            ax.set(adjustable="box", aspect="equal")
+            ax.xaxis.set_major_locator(mtick.MultipleLocator(base=2))
+            ax.yaxis.set_major_locator(mtick.MultipleLocator(base=2))
+            ax.yaxis.set_major_formatter(mtick.FuncFormatter(lambda x, p: r"$\mathregular{10^{" + str(int(x)) + "}}$"))
+            ax.xaxis.set_major_formatter(mtick.FuncFormatter(lambda x, p: r"$\mathregular{10^{" + str(int(x)) + "}}$"))
+            # ax.xaxis.set_major_formatter(mtick.FuncFormatter(lambda x, p: log_fixed_locator_lookup[int(x)]))
+            # ax.tick_params(which="major", axis="x", labelrotation=90)
+            if ax_index > 0:
+                ax.set_yticklabels([])
+            X = sub_plot["KD_fix_analyte"]
+            Y = sub_plot["KD_fix_gt8"]
+
+            # for 95% confidence interval
+            ts = tinv(0.05, len(X) - 2)
+            slope, intercept, r_value, p_value, std_err = linregress(x=X, y=Y)
+            # print(antigen_of_interest, slope, intercept, r_value, p_value, std_err)
+    sns.despine()
     return fig

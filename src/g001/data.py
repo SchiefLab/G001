@@ -257,6 +257,7 @@ class FigureDataPaths(BaseModel):
     igl_spr_path: Path = base_path / Path("figures/binding/igl_spr.feather")
     clk_spr_path: Path = base_path / Path("figures/binding/clk_spr.feather")
     mature_spr_path: Path = base_path / Path("figures/binding/mature_spr.feather")
+    boost_v_gt8_trend_path: Path = base_path / Path("figures/trends/boost_v_gt8.csv")
 
     @validator("*", always=True)
     def validate_paths(cls, v: Path):
@@ -464,7 +465,6 @@ class Data:
         """
         return self.figure_data_paths.cottrell_path
 
-
     def get_igl_spr_df(self) -> pd.DataFrame:
         """Get the igl spr dataframe
 
@@ -494,3 +494,13 @@ class Data:
             the mature spr dataframe
         """
         return pd.read_feather(self.figure_data_paths.mature_spr_path)
+
+    def get_boost_v_gt8_trend(self) -> pd.DataFrame:
+        """Get the boost v gt8 trend dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the boost v gt8 trend dataframe
+        """
+        return pd.read_csv(self.figure_data_paths.boost_v_gt8_trend_path, index_col=0)
