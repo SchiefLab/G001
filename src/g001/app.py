@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from __future__ import annotations
+from itertools import product
 
 # stdlib
 import logging
@@ -7,14 +9,23 @@ from pathlib import Path
 import subprocess
 
 # third party
-import rich_click as click
+import click
 import seaborn as sns
 import numpy as np
+from g001.figures.binding import plot_boosting_binding, plot_gt8_binding
+from g001.figures.features import plot_sequence_features
+from g001.figures.polyclonality import plot_class_clonality
 
 # G001 package
 from g001.data import Data
+from g001.figures.frequency import (
+    plot_count_frequency_response,
+    plot_flow_frequencies,
+    plot_vrc01_among_epitope_specific,
+)
+from g001.figures.overview import plot_overview
+from g001.figures.somatic import plot_somatic_mutation_frequencies, plot_somatic_mutation_frequencies_violin
 from g001.sequence_pipeline.main import run_sequence_analysis
-from g001.figures import plot_flow_frequencies
 from g001.utils import RScript
 
 
