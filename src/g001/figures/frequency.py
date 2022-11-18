@@ -727,10 +727,81 @@ def plot_count_frequency_response(
 
     fig.subplots_adjust(hspace=0.1, left=0.11, right=0.975, top=0.9)
     return fig
-    # plt.savefig(outpath + ".pdf")
-    # plt.savefig(outpath + ".png", dpi=300)
-    # plt.savefig(outpath + ".svg")
 
+def plot_vrc01_among_epitope_specific(
+    data: Data,
+) -> plt.figure:
+    """Main Figure 4, The percentage of IgG+ B cells that are VRC01-class BCRs
+
+    Parameters
+    ----------
+    data : Data
+    """
+    # get 1 axes but with dummyies in between in order to add some psuedo spacing
+    fig, (row_ax1, row_ax2) = plt.subplots(
+        2,
+        10,
+        figsize=(8.5, 6.5),
+        gridspec_kw={
+            "width_ratios": [1, 1, 1, 1, 1, 0.4, 1, 1, 0.4, 1],
+        },
+        sharex=False,
+        sharey=False,
+    )
+
+    frequency_df = data.get_flow_and_frequency_data()
+    plot_params = data.plot_parameters
+    combined_timepoints = plot_params.get_combined_timepoints()
+    frequency_pallete = plot_params.get_treatment_pallete()
+    small_annotate_args = plot_params.get_small_annotate_args()
+
+    "top row: % of VRC01 class amont eptipope specific"
+    plot_frequency_panel(
+        row_ax1,
+        frequency_df,
+        combined_timepoints,
+        frequency_pallete,
+        small_annotate_args,
+        0,
+        108,
+        "Treatment",
+        "Percent of epitope-specific (KO-GT8++) sequenced IgG BCRs that are VRC01-class",
+        y_text_pos=None,
+        y_label=[
+            "% VRC01-class among CD4bs-specific\nIgG$^{+}$ memory BCR sequences",
+            "% VRC01-class among CD4bs-specific\nIgG$^{+}$ GC BCR sequences",
+            "% VRC01-class among CD4bs-specific\nIgD$^{-}$ PB BCR sequences",
+        ],
+        skip_header=False,
+        thresh=0,
+        scale="linear",
+        x_tick_labels=False,
+        labelpad=[0, 0, 0],
+    )
+    plot_frequency_panel(
+        row_ax2,
+        frequency_df,
+        combined_timepoints,
+        frequency_pallete,
+        small_annotate_args,
+        0,
+        108,
+        "Treatment",
+        "Percent of GT8++ IgG+ B cells detected as VRC01-class (missing seq to 0)",
+        y_text_pos=None,
+        y_label=[
+            "% VRC01-class among GT8-specific\nIgG$^{+}$ memory BCR sequences",
+            "% VRC01-class among GT8-specific\nIgG$^{+}$ GC BCR sequences",
+            "% VRC01-class among GT8-specific\nIgD$^{-}$ PB BCR sequences",
+        ],
+        skip_header=True,
+        thresh=0,
+        scale="linear",
+        x_tick_labels=True,
+        labelpad=[0, 0, 0],
+    )
+    fig.subplots_adjust(hspace=0.1, left=0.11, right=0.97, top=0.85, bottom=0.1)
+    return fig
 
 # @todo for v 1.1
 # @dataclass
