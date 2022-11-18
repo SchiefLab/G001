@@ -30,19 +30,20 @@ unpaired_data_org <- paired_candidates %>%
 
 unpaired_data <- unpaired_data_org %>%
   mutate(
-    Tissue = Tissue %>% str_to_title(),
-    Plate_Type = Plate_Type %>% str_to_title(),
+    Tissue = tissue %>% str_to_title(),
+    Plate_Type = plate_type %>% str_to_title(),
     pos_call = case_when(
-      Chain == 'HEAVY' ~ v_call %>% str_detect('IGHV1-2'),
-      Chain %in% c('KAPPA', 'LAMBDA') ~ nchar(cdr3_aa) == 5
+      chain == 'HEAVY' ~ v_call %>% str_detect('IGHV1-2'),
+      chain %in% c('KAPPA', 'LAMBDA') ~ nchar(cdr3_aa) == 5
     )
   ) %>%
   # dropping missing calls for now
   filter(!is.na(pos_call)) %>%
   #if multiple chains Heavy must be negative or both Light to be considered a single negative call
-  group_by(Subject, Dose_Group, Timepoint, Plate_Type, Tissue, Plate, Well) %>%
-  summarise(pos_call = min(pos_call[Chain == 'Heavy'],
-                           max(pos_call[Chain != 'Heavy'])
+  group_by(Subject = pub_id, Dose_Group = dose_group, Timepoint = timepoint, 
+           Plate_Type, Tissue, Plate = plate, Well = well) %>%
+  summarise(pos_call = min(pos_call[chain == 'Heavy'],
+                           max(pos_call[chain != 'Heavy'])
   ),
   `.groups` = "drop") %>%
   # can only include negative values in unpaired data
@@ -53,10 +54,10 @@ unpaired_data <- unpaired_data_org %>%
 
 samples_in_paired_long <- paired_candidates %>%
   mutate(Plate_Type = paste0(
-    str_replace(Plate_Type %>% str_to_title(),
-                'Probe Specific', 'Ag_Spec'),
+    str_replace(plate_type %>% str_to_title(),
+                'Probe_specific', 'Ag_Spec'),
     '_Seq_Manifest')) %>%
-  distinct(Subject, Timepoint, Plate_Type) %>%
+  distinct(Subject = pub_id, Timepoint = timepoint, Plate_Type) %>%
   mutate(in_paired = TRUE)
 
 
@@ -65,15 +66,15 @@ samples_in_paired <- samples_in_paired_long %>%
               values_from = in_paired)
 
 #seq_data_org <- readr::read_csv(file.path(seq_path, 'personalized.csv'))
-seq_data_org <- read_feather(file.path(seq_path, 'personalized.feather'))
+seq_data_org <- read_feather(file.path(seq_path, 'personalize.feather'))
 
 
 seq_data <- seq_data_org %>%
   mutate(
     # Tissue_heavy and Tissue_light should always match
-    Tissue = Tissue_heavy %>% str_to_title(),
+    Tissue = tissue %>% str_to_title(),
     # Plate_Type_heavy and Plate_Type_light should always match
-    Plate_Type = Plate_Type_heavy %>% str_to_title()
+    Plate_Type = plate_type %>% str_to_title()
   ) %>%
   filter(!is.na(is_vrc01_class))
 
@@ -82,7 +83,8 @@ seq_results_long <- bind_rows(
   seq_data %>%
     mutate(is_paired = 'paired'),
 ) %>%
-  group_by(Subject, Dose_Group, Timepoint, Plate_Type, Tissue) %>%
+  group_by(Subject = pub_id, Dose_Group = dose_group, Timepoint = timepoint, 
+           Plate_Type, Tissue) %>%
   dplyr::summarise(
     sequenced = dplyr::n(),
     n_VRC01 = sum(is_vrc01_class),
@@ -93,7 +95,7 @@ seq_results_long <- bind_rows(
     `.groups` = 'drop'
   ) %>%
   ungroup() %>%
-  mutate(Plate_Type = str_replace(Plate_Type, 'Probe Specific', 'Ag_Spec'))
+  mutate(Plate_Type = str_replace(Plate_Type, 'Probe_specific', 'Ag_Spec'))
 
 
 
@@ -128,11 +130,14 @@ flow_data_by_type <- read_csv(file.path(
 
 # Need all manifest index plate counts for QC
 fhcrc_flow_manifest <- read_csv(file.path(
-  flow_path,
-  'FHCRC_manifest_w_paths.csv'))
+  'data','flow','processed_flow',
+  'fhrc',
+  'fhcrc_manifest.csv'), col_select = -1)
 vrc_flow_manifest <- read_csv(file.path(
-  flow_path,
-  'VRC_manifest_w_paths.csv'))
+  'data','flow','processed_flow',
+  'vrc',
+  'vrc_manifest.csv'), col_select = -1) %>% 
+  mutate(Tube = as.character(Tube))
 
 flow_manifest_long <- bind_rows(fhcrc_flow_manifest, vrc_flow_manifest) %>%
   filter(!is.na(INX_Number_Of_Cells)) %>%
@@ -156,42 +161,11 @@ flow_manifest <- flow_manifest_long %>%
 # Treatment and PubIDs ----------------------------------------------------
 
 #Getting treatment
-treat_path <- system.file("extdata",
-                          c("G001UBlist_26JUN2019_unlocked.xlsx",
-                            "G001UBlist_Group2_10JUN2020_unlocked.xlsx"),
-                          package = "Feinberg725")
+treat_path <- 'data/groups/G001treatment.csv'
 
-treat_info <- map_dfr(treat_path, read_excel)
+treat_info <- read_csv(treat_path, col_select = -1) %>% 
+  rename(Site = site)
 
-#Getting visit info
-visit_path <- system.file("extdata", "TRX_File_for_Stats_DRAFT_18Sept2018.xlsx",
-                          package = "Feinberg725")
-
-visit_info <- read_excel(visit_path, sheet = 'Visit_Map') %>%
-  mutate(
-    Week = Time_Point / 7,
-    Visit = ifelse(Visit_Num %in% c('03A', '03B', '07A', 10:13),
-                   paste0('V', Visit_Num),
-                   paste0('V0', Visit_Num)
-    ),
-    Week_Visit = paste0('Wk',VISCfunctions::round_away_0(Week, digits = 3, trailing_zeros = FALSE),
-                        ' (', Visit, ')') %>% fct_inorder()
-  )
-
-pubid_path <- system.file("extdata",
-                          "Feinberg725_Emmes_PTID&PubID_25May2018.xlsx",
-                          package = "Feinberg725")
-
-pubid_info <- read_excel(pubid_path) %>%
-  mutate(
-    ptid = PTID %>% str_replace_all('-', ''),
-    pubid = paste0('PubID_', PubID),
-  ) %>%
-  select(ptid, pubid)
-
-#
-# treat_info <- read_csv(file.path('external_files','treatment_link.csv'))
-# pubid_info <- read_csv(file.path('external_files','pubid_link.csv'))
 
 # Merging All ---------------------------------------------------------------------------------
 
@@ -205,14 +179,7 @@ combined_results <-
   left_join(samples_in_paired,
             by = c('PTID' = 'Subject', 'Visit' = 'Timepoint')) %>%
   full_join(treat_info, by = c('PTID' = 'Volunteer Study ID')) %>%
-  left_join(pubid_info, by = c('PTID' = 'ptid')) %>%
   mutate(
-    Site = case_when(
-      # Todo, should just have site in the manifest now
-      PTID %>% str_detect('') ~ 'VRC',
-      PTID %>% str_detect('') ~ 'FHCRC'
-    ),
-    PTID_num = PTID %>% str_replace('G001', '') %>% as.numeric(),
     Dose = Group %>% fct_recode(`Low Dose` = 'Group 1',
                                 `High Dose` = 'Group 2'),
     Visit = Visit %>% factor(),
@@ -250,13 +217,13 @@ combined_results <-
   ) %>%
   ungroup() %>%
 
-  select(PTID, PubID = pubid, Site, Dose, Treatment, everything(),
-         -PTID_num, -Dose_Group, -Group, -`Dummy ID`) %>%
+  select(PTID, Site, Dose, Treatment, everything(),
+         -Dose_Group, -Group) %>%
   arrange(desc(Dose))
 
 
 write_csv(combined_results,
-          file.path(flow_path, 'Combined_Results', 'Wide_Flow_Seq_Data.csv'), na = '')
+          file.path('data', 'combined_results', 'Wide_Flow_Seq_Data.csv'), na = '')
 
 
 
@@ -475,7 +442,6 @@ final_results <- combined_results %>%
 
   ) %>%
   select(
-    PubID,
     PTID,
     Site,
     Treatment,
@@ -556,12 +522,12 @@ final_results <- combined_results %>%
 
   ) %>%
   mutate_at(vars(matches("Percent")), ~if_else(is.nan(.), NA_real_,.)) %>%
-  arrange(PubID)
+  arrange(PTID)
 
 
 
 write_csv(final_results,
-          file.path(flow_path, 'Combined_Results', 'Flow_Seq_Results.csv'),
+          file.path('data', 'combined_results', 'Flow_Seq_Results.csv'),
           na = '')
 
 
@@ -720,8 +686,8 @@ final_results_with_calls <- final_results %>%
                 TRUE ~ Response_GT8)) %>%
     select(-contains('Population'), everything(), contains('Population'))
 
-write_csv(final_results,
-          file.path(flow_path, 'Combined_Results', 'Flow_Seq_Results_with_calls.csv'),
+write_csv(final_results_with_calls,
+          file.path('data', 'combined_results', 'Flow_Seq_Results_with_calls.csv'),
           na = '')
 
 
@@ -735,47 +701,47 @@ write_csv(final_results,
 
 
 
-# Data Summary -----------------------------------------------------------------------------------------
-
-# Reading in specimen info
-specimen_info <- read_csv(file.path('Data_Completeness','G001_ptid_info_&_Spec_Collection_29May2020.csv'))
-
-
-data_summary_data <- combined_results %>%
-  mutate(
-    Visit_Tissue = case_when(
-      Visit %in% c('V05','V09') ~ paste0(Visit, ' (FNA)'),
-      Visit %in% c('V07A') ~ paste0(Visit, ' (PB)'),
-      TRUE ~ paste0(Visit, ' (Frozen)'),
-    ) %>% factor()
-  )
-
-data_summary_ptid <-   data_summary_data %>%
-  full_join(specimen_info,
-            by = c('PTID', 'Site', 'Dose', 'Visit_Tissue' = 'name')) %>%
-  mutate(
-    Flow_Seq_Data = case_when(
-      is.na(Seq_Attempted) ~ Flow_Missing_Reason,
-      # AG_Specific_Count < sequenced_Ag_Spec ~ 'Ag Spec < # Seq',
-      Seq_Attempted %in% c('No Seq Expected',
-                           'VRC01 Calls Made') ~ 'X',
-      Seq_Attempted == 'Seq Data but no VRC01 Calls' ~ 'No VRC01 Performed',
-      Seq_Attempted == 'No Seq Performed' ~ 'No Seq Data'
-    )
-  ) %>%
-  pivot_wider(id_cols = c('PTID', 'Site'),
-              names_from = Visit_Tissue,
-              names_sort = TRUE,
-              values_from = Flow_Seq_Data) %>%
-  full_join(combined_results %>% distinct(PTID, PubID, Treatment), by = 'PTID') %>%
-  select(PubID, Site, Treatment, everything(), -PTID) %>%
-  arrange(PubID)
-
-
-write_csv(data_summary_ptid, file.path(flow_path, 'Combined_Results', 'flow_and_seq_data_summary_by_ptid.csv'))
-
-
-
+# # Data Summary -----------------------------------------------------------------------------------------
+# 
+# # Reading in specimen info
+# specimen_info <- read_csv(file.path('Data_Completeness','G001_ptid_info_&_Spec_Collection_29May2020.csv'))
+# 
+# 
+# data_summary_data <- combined_results %>%
+#   mutate(
+#     Visit_Tissue = case_when(
+#       Visit %in% c('V05','V09') ~ paste0(Visit, ' (FNA)'),
+#       Visit %in% c('V07A') ~ paste0(Visit, ' (PB)'),
+#       TRUE ~ paste0(Visit, ' (Frozen)'),
+#     ) %>% factor()
+#   )
+# 
+# data_summary_ptid <-   data_summary_data %>%
+#   full_join(specimen_info,
+#             by = c('PTID', 'Site', 'Dose', 'Visit_Tissue' = 'name')) %>%
+#   mutate(
+#     Flow_Seq_Data = case_when(
+#       is.na(Seq_Attempted) ~ Flow_Missing_Reason,
+#       # AG_Specific_Count < sequenced_Ag_Spec ~ 'Ag Spec < # Seq',
+#       Seq_Attempted %in% c('No Seq Expected',
+#                            'VRC01 Calls Made') ~ 'X',
+#       Seq_Attempted == 'Seq Data but no VRC01 Calls' ~ 'No VRC01 Performed',
+#       Seq_Attempted == 'No Seq Performed' ~ 'No Seq Data'
+#     )
+#   ) %>%
+#   pivot_wider(id_cols = c('PTID', 'Site'),
+#               names_from = Visit_Tissue,
+#               names_sort = TRUE,
+#               values_from = Flow_Seq_Data) %>%
+#   full_join(combined_results %>% distinct(PTID, Treatment), by = 'PTID') %>%
+#   select(PTID, Site, Treatment, everything()) %>%
+#   arrange(PTID)
+# 
+# 
+# write_csv(data_summary_ptid, file.path('data', 'combined_results', 'flow_and_seq_data_summary_by_ptid.csv'))
+# 
+# 
+# 
 
 
 
@@ -809,21 +775,9 @@ combined_results_by_type <-
                        str_replace('_Seq_Manifest', '')),
             by = c('PTID' = 'Subject', 'Visit' = 'Timepoint', 'Plate_Type')) %>%
   full_join(treat_info, by = c('PTID' = 'Volunteer Study ID')) %>%
-  left_join(pubid_info, by = c('PTID' = 'ptid')) %>%
-
-  # left_join(seq_manifest,
-  #           by = c('PTID', 'Visit', 'Tissue')) %>%
   mutate(
-    Site = case_when(
-      # need site from manifest
-      PTID %>% str_detect('') ~ 'VRC',
-      PTID %>% str_detect('') ~ 'FHCRC'
-    ),
-    PTID_num = PTID %>% str_replace('G001', '') %>% as.numeric(),
-    Dose = case_when(
-      (PTID_num >= 58001 & PTID_num <= 58021) | (PTID_num >= 59007 & PTID_num <= 59038) ~ 'Low Dose',
-      (PTID_num >= 58022 & PTID_num <= 58040) | (PTID_num >= 59050 & PTID_num <= 59096) ~ 'High Dose'
-    ),
+    Dose = Dose_Group %>% fct_recode(`Low Dose` = 'low_dose',
+                                `High Dose` = 'high_dose'),
 
     # making seq indicator variable
     Seq_Attempted = case_when(
@@ -861,13 +815,13 @@ combined_results_by_type <-
                           NA)
   ) %>%
   ungroup() %>%
-  select(PTID, PubID = pubid, Site, Dose, Treatment, everything(),
-         -PTID_num, -Dose_Group, -Group, -`Dummy ID`, -plate_type) %>%
+  select(PTID, Site, Dose, Treatment, everything(),
+         -Dose_Group, -Group, -plate_type) %>%
   arrange(desc(Dose))
 
 
 write_csv(combined_results_by_type,
-          file.path(flow_path, 'Combined_Results', 'Wide_Flow_Seq_Data_by_Plate_Type.csv'),
+          file.path('data', 'combined_results', 'Wide_Flow_Seq_Data_by_Plate_Type.csv'),
           na = '')
 
 
@@ -1116,7 +1070,6 @@ final_results_by_type <- combined_results_by_type %>%
 
   ) %>%
   select(
-    PubID,
     PTID,
     Site,
     Treatment,
@@ -1198,53 +1151,53 @@ final_results_by_type <- combined_results_by_type %>%
 
   ) %>%
   mutate_at(vars(matches("Percent")), ~if_else(is.nan(.), NA_real_,.)) %>%
-  arrange(PubID)
+  arrange(PTID)
 
 
 write_csv(final_results_by_type,
-          file.path(flow_path, 'Combined_Results', 'Flow_Seq_Results_by_Plate_Type.csv'),
+          file.path('data', 'combined_results', 'Flow_Seq_Results_by_Plate_Type.csv'),
           na = '')
 
 
 
 
-# Reading in specimen info
-
-
-
-data_summary_data_by_type <- combined_results_by_type %>%
-  mutate(
-    Visit_Tissue = case_when(
-      Visit %in% c('V05','V09') ~ paste0(Visit, ' (FNA)'),
-      Visit %in% c('V07A') ~ paste0(Visit, ' (PB)'),
-      TRUE ~ paste0(Visit, ' (Frozen)'),
-    ) %>% factor()
-  )
-
-data_summary_ptid_by_type <-   data_summary_data_by_type %>%
-  filter(Plate_Type == 'Antigen-Specific') %>%
-  full_join(specimen_info,
-            by = c('PTID', 'Site', 'Dose', 'Visit_Tissue' = 'name')) %>%
-  mutate(
-    Flow_Seq_Data = case_when(
-      is.na(Seq_Attempted) & !is.na(Flow_Missing_Reason) ~ Flow_Missing_Reason,
-      # AG_Specific_Count < sequenced_Ag_Spec ~ 'Ag Spec < # Seq',
-      Seq_Attempted %in% c('No Seq Expected',
-                           'VRC01 Calls Made') ~ 'X',
-      Seq_Attempted == 'Seq Data but no VRC01 Calls' ~ 'No VRC01 Performed',
-      Seq_Attempted == 'No Seq Performed' ~ 'No Seq Data',
-      TRUE ~ 'No Flow Data During Sorting'
-    )
-  ) %>%
-  pivot_wider(id_cols = c('PTID', 'Site'),
-              names_from = Visit_Tissue,
-              names_sort = TRUE,
-              values_from = Flow_Seq_Data) %>%
-  full_join(combined_results %>% distinct(PTID, PubID, Treatment), by = 'PTID') %>%
-  select(PubID, Site, Treatment, unique(data_summary_data_by_type$Visit_Tissue)) %>%
-  arrange(PubID)
-
-write_csv(data_summary_ptid_by_type,
-          file.path(flow_path, 'Combined_Results',
-                    'flow_and_seq_data_summary_by_ptid_ag_spec_plate.csv'))
+# # Reading in specimen info
+# 
+# 
+# 
+# data_summary_data_by_type <- combined_results_by_type %>%
+#   mutate(
+#     Visit_Tissue = case_when(
+#       Visit %in% c('V05','V09') ~ paste0(Visit, ' (FNA)'),
+#       Visit %in% c('V07A') ~ paste0(Visit, ' (PB)'),
+#       TRUE ~ paste0(Visit, ' (Frozen)'),
+#     ) %>% factor()
+#   )
+# 
+# data_summary_ptid_by_type <-   data_summary_data_by_type %>%
+#   filter(Plate_Type == 'Antigen-Specific') %>%
+#   full_join(specimen_info,
+#             by = c('PTID', 'Site', 'Dose', 'Visit_Tissue' = 'name')) %>%
+#   mutate(
+#     Flow_Seq_Data = case_when(
+#       is.na(Seq_Attempted) & !is.na(Flow_Missing_Reason) ~ Flow_Missing_Reason,
+#       # AG_Specific_Count < sequenced_Ag_Spec ~ 'Ag Spec < # Seq',
+#       Seq_Attempted %in% c('No Seq Expected',
+#                            'VRC01 Calls Made') ~ 'X',
+#       Seq_Attempted == 'Seq Data but no VRC01 Calls' ~ 'No VRC01 Performed',
+#       Seq_Attempted == 'No Seq Performed' ~ 'No Seq Data',
+#       TRUE ~ 'No Flow Data During Sorting'
+#     )
+#   ) %>%
+#   pivot_wider(id_cols = c('PTID', 'Site'),
+#               names_from = Visit_Tissue,
+#               names_sort = TRUE,
+#               values_from = Flow_Seq_Data) %>%
+#   full_join(combined_results %>% distinct(PTID, Treatment), by = 'PTID') %>%
+#   select(PTID, Site, Treatment, unique(data_summary_data_by_type$Visit_Tissue)) %>%
+#   arrange(PTID)
+# 
+# write_csv(data_summary_ptid_by_type,
+#           file.path('data', 'combined_results',
+#                     'flow_and_seq_data_summary_by_ptid_ag_spec_plate.csv'))
 
