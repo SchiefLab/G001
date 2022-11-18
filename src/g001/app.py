@@ -172,6 +172,22 @@ def process_flow(
     help="Prints final command that was run to console",
 )
 @click.option(
+    "--FHCRC-manifest",
+    "-1",
+    type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
+    required=True,
+    show_default=True,
+    help="Path to read the flow manifest for specified site",
+)
+@click.option(
+    "--VRC-manifest",
+    "-2",
+    type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
+    required=True,
+    show_default=True,
+    help="Path to read the flow manifest for specified site",
+)
+@click.option(
     "--flow-output-dir",
     "-f",
     type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=False),
@@ -182,6 +198,8 @@ def process_flow(
 def collate(
     ctx: click.Context,
     verbose: bool,
+    FHCRC_manifest: Path | str,
+    VRC_manifest: Path | str,
     flow_output_dir: Path | str,
 ) -> None:
     """ """
@@ -189,7 +207,9 @@ def collate(
         data = ctx.obj["data"]
         flow_output_dir = data.get_processed_flow_paths()
     RScript(verbose=verbose).collate_flow(
-        collate_output_dir=flow_output_dir,
+        fhcrc_manifest=FHCRC_manifest,
+        vrc_manifest=VRC_manifest,
+        flow_output_dir=flow_output_dir,
     )
 
 

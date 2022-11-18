@@ -10,11 +10,16 @@ library(stringr)
 library(janitor)
 library(wCorr)
 
-flow_path <- args[1]
+fhcrc_manifest_path <- args[1]
+vrc_manifest_path <- args[2]
+flow_path <- args[2]
 
 # Loading in manifest -------------------------------------------------------------------------
-fhcrc_manifest <- read_csv(file.path(flow_path, "fhrc/fhcrc_manifest.csv"), col_select = -1)
-vrc_manifest <- read_csv(file.path(flow_path, "vrc/vrc_manifest.csv"), col_select = -1) %>% 
+# fhcrc_manifest <- read_csv(file.path(flow_path, "fhrc/fhcrc_manifest.csv"), col_select = -1)
+# vrc_manifest <- read_csv(file.path(flow_path, "vrc/vrc_manifest.csv"), col_select = -1) %>% 
+#   mutate(Tube = as.character(Tube))
+fhcrc_manifest <- read_csv(file.path(fhcrc_manifest), col_select = -1)
+vrc_manifest <- read_csv(file.path(vrc_manifest), col_select = -1) %>% 
   mutate(Tube = as.character(Tube))
 
 # make full manifest
