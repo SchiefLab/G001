@@ -1,49 +1,49 @@
-,Group,Volunteer Study ID,Treatment
-0,Group 1,PubID_036,20 µg eOD-GT8 60mer + AS01B
-1,Group 1,PubID_023,20 µg eOD-GT8 60mer + AS01B
-2,Group 1,PubID_151,20 µg eOD-GT8 60mer + AS01B
-3,Group 1,PubID_088,DPBS sucrose
-4,Group 1,PubID_005,20 µg eOD-GT8 60mer + AS01B
-5,Group 1,PubID_051,20 µg eOD-GT8 60mer + AS01B
-6,Group 1,PubID_001,DPBS sucrose
-7,Group 1,PubID_187,20 µg eOD-GT8 60mer + AS01B
-8,Group 1,PubID_153,20 µg eOD-GT8 60mer + AS01B
-9,Group 1,PubID_164,DPBS sucrose
-10,Group 1,PubID_056,20 µg eOD-GT8 60mer + AS01B
-11,Group 1,PubID_046,20 µg eOD-GT8 60mer + AS01B
-12,Group 1,PubID_185,DPBS sucrose
-13,Group 1,PubID_077,20 µg eOD-GT8 60mer + AS01B
-14,Group 1,PubID_100,20 µg eOD-GT8 60mer + AS01B
-15,Group 1,PubID_028,20 µg eOD-GT8 60mer + AS01B
-16,Group 1,PubID_110,20 µg eOD-GT8 60mer + AS01B
-17,Group 1,PubID_154,20 µg eOD-GT8 60mer + AS01B
-18,Group 1,PubID_016,DPBS sucrose
-19,Group 1,PubID_047,20 µg eOD-GT8 60mer + AS01B
-20,Group 1,PubID_014,20 µg eOD-GT8 60mer + AS01B
-21,Group 1,PubID_180,DPBS sucrose
-22,Group 1,PubID_079,20 µg eOD-GT8 60mer + AS01B
-23,Group 1,PubID_114,20 µg eOD-GT8 60mer + AS01B
-0,Group 2,PubID_191,100 µg eOD-GT8 60mer + AS01B
-1,Group 2,PubID_009,100 µg eOD-GT8 60mer + AS01B
-2,Group 2,PubID_062,100 µg eOD-GT8 60mer + AS01B
-3,Group 2,PubID_060,100 µg eOD-GT8 60mer + AS01B
-4,Group 2,PubID_080,DPBS sucrose
-5,Group 2,PubID_193,100 µg eOD-GT8 60mer + AS01B
-6,Group 2,PubID_172,100 µg eOD-GT8 60mer + AS01B
-7,Group 2,PubID_121,DPBS sucrose
-8,Group 2,PubID_165,DPBS sucrose
-9,Group 2,PubID_177,100 µg eOD-GT8 60mer + AS01B
-10,Group 2,PubID_070,100 µg eOD-GT8 60mer + AS01B
-11,Group 2,PubID_113,100 µg eOD-GT8 60mer + AS01B
-12,Group 2,PubID_163,100 µg eOD-GT8 60mer + AS01B
-13,Group 2,PubID_198,DPBS sucrose
-14,Group 2,PubID_116,100 µg eOD-GT8 60mer + AS01B
-15,Group 2,PubID_092,100 µg eOD-GT8 60mer + AS01B
-16,Group 2,PubID_064,100 µg eOD-GT8 60mer + AS01B
-17,Group 2,PubID_030,DPBS sucrose
-18,Group 2,PubID_068,100 µg eOD-GT8 60mer + AS01B
-19,Group 2,PubID_112,100 µg eOD-GT8 60mer + AS01B
-20,Group 2,PubID_032,100 µg eOD-GT8 60mer + AS01B
-21,Group 2,PubID_117,100 µg eOD-GT8 60mer + AS01B
-22,Group 2,PubID_152,DPBS sucrose
-23,Group 2,PubID_059,100 µg eOD-GT8 60mer + AS01B
+,Group,Volunteer Study ID,Treatment,site
+0,Group 1,PubID_036,20 µg eOD-GT8 60mer + AS01B,VRC
+1,Group 1,PubID_023,20 µg eOD-GT8 60mer + AS01B,VRC
+2,Group 1,PubID_151,20 µg eOD-GT8 60mer + AS01B,VRC
+3,Group 1,PubID_088,DPBS sucrose,VRC
+4,Group 1,PubID_005,20 µg eOD-GT8 60mer + AS01B,VRC
+5,Group 1,PubID_051,20 µg eOD-GT8 60mer + AS01B,VRC
+6,Group 1,PubID_001,DPBS sucrose,VRC
+7,Group 1,PubID_187,20 µg eOD-GT8 60mer + AS01B,VRC
+8,Group 1,PubID_153,20 µg eOD-GT8 60mer + AS01B,VRC
+9,Group 1,PubID_164,DPBS sucrose,VRC
+10,Group 1,PubID_056,20 µg eOD-GT8 60mer + AS01B,VRC
+11,Group 1,PubID_046,20 µg eOD-GT8 60mer + AS01B,VRC
+12,Group 1,PubID_185,DPBS sucrose,FHCRC
+13,Group 1,PubID_077,20 µg eOD-GT8 60mer + AS01B,FHCRC
+14,Group 1,PubID_100,20 µg eOD-GT8 60mer + AS01B,FHCRC
+15,Group 1,PubID_028,20 µg eOD-GT8 60mer + AS01B,FHCRC
+16,Group 1,PubID_110,20 µg eOD-GT8 60mer + AS01B,FHCRC
+17,Group 1,PubID_154,20 µg eOD-GT8 60mer + AS01B,FHCRC
+18,Group 1,PubID_016,DPBS sucrose,FHCRC
+19,Group 1,PubID_047,20 µg eOD-GT8 60mer + AS01B,FHCRC
+20,Group 1,PubID_014,20 µg eOD-GT8 60mer + AS01B,FHCRC
+21,Group 1,PubID_180,DPBS sucrose,FHCRC
+22,Group 1,PubID_079,20 µg eOD-GT8 60mer + AS01B,FHCRC
+23,Group 1,PubID_114,20 µg eOD-GT8 60mer + AS01B,FHCRC
+0,Group 2,PubID_191,100 µg eOD-GT8 60mer + AS01B,VRC
+1,Group 2,PubID_009,100 µg eOD-GT8 60mer + AS01B,VRC
+2,Group 2,PubID_062,100 µg eOD-GT8 60mer + AS01B,VRC
+3,Group 2,PubID_060,100 µg eOD-GT8 60mer + AS01B,VRC
+4,Group 2,PubID_080,DPBS sucrose,VRC
+5,Group 2,PubID_193,100 µg eOD-GT8 60mer + AS01B,VRC
+6,Group 2,PubID_172,100 µg eOD-GT8 60mer + AS01B,VRC
+7,Group 2,PubID_121,DPBS sucrose,VRC
+8,Group 2,PubID_165,DPBS sucrose,VRC
+9,Group 2,PubID_177,100 µg eOD-GT8 60mer + AS01B,VRC
+10,Group 2,PubID_070,100 µg eOD-GT8 60mer + AS01B,VRC
+11,Group 2,PubID_113,100 µg eOD-GT8 60mer + AS01B,VRC
+12,Group 2,PubID_163,100 µg eOD-GT8 60mer + AS01B,FHCRC
+13,Group 2,PubID_198,DPBS sucrose,FHCRC
+14,Group 2,PubID_116,100 µg eOD-GT8 60mer + AS01B,FHCRC
+15,Group 2,PubID_092,100 µg eOD-GT8 60mer + AS01B,FHCRC
+16,Group 2,PubID_064,100 µg eOD-GT8 60mer + AS01B,FHCRC
+17,Group 2,PubID_030,DPBS sucrose,FHCRC
+18,Group 2,PubID_068,100 µg eOD-GT8 60mer + AS01B,FHCRC
+19,Group 2,PubID_112,100 µg eOD-GT8 60mer + AS01B,FHCRC
+20,Group 2,PubID_032,100 µg eOD-GT8 60mer + AS01B,FHCRC
+21,Group 2,PubID_117,100 µg eOD-GT8 60mer + AS01B,FHCRC
+22,Group 2,PubID_152,DPBS sucrose,FHCRC
+23,Group 2,PubID_059,100 µg eOD-GT8 60mer + AS01B,FHCRC
