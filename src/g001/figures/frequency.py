@@ -3,9 +3,77 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 
 from g001.data import Data
-from g001.figures.util import adjust_boxplot, adjusts_axis
+from g001.figures.util import adjust_boxplot, adjusts_axis, MinorSymLogLocator
 import matplotlib.ticker as mtick
 import math
+
+
+def plot_response_panel(
+    row_axis: plt.axes,
+    plottable_df: pd.DataFrame,
+    combined_timepoints: dict,
+    palette: dict,
+    annotate_args: dict,
+    y_min: int,
+    y_max: int,
+    x_value: str = "Treatment",
+    y_value: str = "Response",
+    y_label: str = "% VRC01-class response\namong participant",
+    labelpad: int = 4,
+    plot_x_labels: bool = True,
+    skip_header: bool = True,
+):
+    """
+    Logic that handles resonse counts per timepoint - usually panel C
+    """
+    # top row panel A is VRC01 class counts
+    timepoints = list(combined_timepoints.values())
+    if isinstance(y_label, str):
+        y_label = y_label
+    elif isinstance(y_label, list) and len(y_label) == 3:
+        y_label_pbmc, y_label_gc, y_label_pb = y_label
+        y_label_pad_pbmc, y_label_pad_gc, y_label_pad_pb = labelpad
+    else:
+        raise ValueError("y_label must be a string or a list of 3 strings")
+
+    # keep a counter since it won't enumerate when we skip the dummies
+    weeks_index = 0
+    for ax_index, ax in enumerate(row_axis):
+        # remove the dummy axis
+        if ax_index == 5 or ax_index == 8:
+            ax.remove()
+            continue
+
+        # week lookup is interger of week
+        week = timepoints[weeks_index]
+
+        # Plotting df is only the week we are interested in
+        plotting_df = plottable_df[plottable_df["weeks_post"] == week]
+        sns.pointplot(ax=ax, data=plotting_df, x=x_value, y=y_value, palette=palette, ci="wilson")
+
+        weeks_index += 1
+        ax.set_ylim(y_min, y_max)
+        ax = adjusts_axis(
+            ax, ax_index, week, y_label, annotate_args, plot_x_labels=plot_x_labels, skip_header=skip_header
+        )
+
+        # add the ticks at every 0.1
+        ax.yaxis.set_major_locator(mtick.MultipleLocator(base=0.1))
+
+        # take the 0.1 and X by 100
+        ax.yaxis.set_major_formatter(mtick.FuncFormatter(lambda y, _: str(int(float(y) * 100))))
+        if ax_index > 0:
+            ax.set_yticklabels([])
+        if ax_index == 0 and isinstance(y_label, str):
+            ax.set_ylabel(y_label, labelpad=labelpad)
+        elif ax_index in [0, 6, 9] and isinstance(y_label, list):
+            if ax_index == 0:
+                ax.set_ylabel(y_label_pbmc, labelpad=y_label_pad_pbmc)
+            elif ax_index == 6:
+                ax.set_ylabel(y_label_gc, labelpad=y_label_pad_gc)
+            else:
+                ax.set_ylabel(y_label_pb, labelpad=y_label_pad_pb)
+    return row_axis
 
 
 def plot_frequency_panel(
@@ -83,13 +151,12 @@ def plot_frequency_panel(
         baseline_df = baseline_df[baseline_df[y_value] == thresh]
 
         # baseline df may not contain any values for certain timepoints so this just puts in na's if it doesn't have a value for that treatment
-        baseline_df = baseline_df.append(
-            pd.DataFrame(plotting_df["Treatment"].unique(), columns=["Treatment"])
-        ).sort_values("Treatment")[::-1]
+        new_dfs = pd.DataFrame(plotting_df["Treatment"].unique(), columns=["Treatment"]).sort_values("Treatment")[::-1]
+        baseline_df = pd.concat([baseline_df, new_dfs])
 
         # replace all 0's with np.nan in the plotting df that we calculate stats on
         if replace_0_with_nan:
-            plotting_df = plotting_df.replace(0, np.nan)
+            plotting_df = plotting_df.replace(0, math.nan)
 
         box_df = []
         for _, g_df in plotting_df.groupby(x_value):
@@ -139,7 +206,6 @@ def plot_frequency_panel(
         # make markers triangles for placebos
         if plot_placebos_seperate:
             for marker, placebo in [("^", placebo_1), ("s", placebo_2)]:
-                np.random.seed(1000)
                 sns.stripplot(
                     ax=ax,
                     data=placebo,
@@ -178,7 +244,6 @@ def plot_frequency_panel(
         )
         if plot_placebos_seperate:
             for marker, placebo in [("^", placebo_1), ("s", placebo_2)]:
-                np.random.seed(1000)
                 sns.stripplot(
                     ax=ax,
                     data=placebo,
@@ -259,6 +324,201 @@ def plot_frequency_panel(
                 ax.set_ylabel(y_label_pb, labelpad=y_label_pad_pb)
 
     return ax
+
+
+def plot_count_panel(
+    row_axis: plt.axes,
+    plottable_df: pd.DataFrame,
+    combined_timepoints: dict,
+    palette: dict,
+    annotate_args: dict,
+    y_min: int,
+    y_max: int,
+    x_value: str = "Treatment",
+    y_value: str | list[str] = "Number of epitope-specific (KO-GT8++) sequenced IgG BCRs that are VRC01-class",
+    y_label: str = "Number of VRC01-class B cells",
+    baseline_jitter: int = 0.35,
+    baseline_alpha: int = 0.9,
+    value_jitter: int = 0.1,
+    value_alpha: int = 0.9,
+    strip_size: int = 4,
+    jitter_buff: int = 0.1,
+    scale: str = "symlog",
+    skip_header: bool = False,
+    plot_x_labels: bool = False,
+    major_formattter: mtick.Formatter = None,
+    plot_placebos_seperate: bool = True,
+    labelpad: int = 4,
+):
+    """
+    Logic that handles sequence counts per timepoint - usually panel A
+    """
+    # top row panel A is VRC01 class counts
+    timepoints = list(combined_timepoints.values())
+
+    if isinstance(y_label, str):
+        y_label = y_label
+    elif isinstance(y_label, list) and len(y_label) == 3:
+        y_label_pbmc, y_label_gc, y_label_pb = y_label
+        y_label_pad_pbmc, y_label_pad_gc, y_label_pad_pb = labelpad
+    else:
+        raise ValueError("y_label must be a string or a list of 3 strings")
+    if isinstance(y_value, str):
+        y_value = y_value
+    elif isinstance(y_value, list) and len(y_label) == 3:
+        y_value_pbmc, y_value_gc, y_value_pb = y_value
+    else:
+        raise ValueError("y_label must be a string or a list of 3 strings")
+    # keep a counter since it won't enumerate when we skip the dummies
+    weeks_index = 0
+    for ax_index, ax in enumerate(row_axis):
+        # remove the dummy axis
+        if ax_index == 5 or ax_index == 8:
+            ax.remove()
+            continue
+
+        if (ax_index >= 0 and ax_index <= 5) and isinstance(y_value, list):
+            y_value_sub = y_value_pbmc
+        elif ax_index in [6, 7] and isinstance(y_value, list):
+            y_value_sub = y_value_gc
+        elif ax_index == 9 and isinstance(y_value, list):
+            y_value_sub = y_value_pb
+        else:
+            y_value_sub = y_value
+
+        # week lookup is interger of week
+        week = timepoints[weeks_index]
+
+        # Plotting df is only the week we are interested in
+        plotting_df = plottable_df[plottable_df["weeks_post"] == week]
+
+        box_df = []
+        for _, g_df in plotting_df.groupby(x_value):
+            if len(g_df[~g_df[y_value_sub].isna()]) > 3:
+                box_df.append(g_df)
+            else:
+                print(f"Skipping, {week},{x_value}")
+        if box_df:
+            box_df = pd.concat(box_df)
+            # boxplot first
+            sns.boxplot(
+                ax=ax,
+                data=box_df,
+                x=x_value,
+                y=y_value_sub,
+                fliersize=0,
+                whis=0,
+                palette=palette,
+                order=plotting_df[x_value].unique(),
+            )
+
+        if plot_placebos_seperate:
+            placebo_1 = plotting_df[plotting_df["PubID"] == "PubID_001"]
+            placebo_2 = plotting_df[plotting_df["PubID"] == "PubID_080"]
+            not_placebos = plotting_df[~plotting_df["PubID"].isin(["PubID_001", "PubID_080"])]
+        else:
+            not_placebos = plotting_df
+        # make markers circles for not placebos
+        sns.stripplot(
+            ax=ax,
+            data=not_placebos.query(f"`{y_value_sub}` > 0"),
+            x=x_value,
+            y=y_value_sub,
+            edgecolor="black",
+            linewidth=0.5,
+            palette=palette,
+            marker="o",
+            s=strip_size,
+            jitter=value_jitter,
+            alpha=value_alpha,
+            order=plotting_df[x_value].unique(),
+        )
+
+        # make markers triangles for placebos
+        if plot_placebos_seperate:
+            for marker, placebo in zip(["^", "s"], [placebo_1, placebo_2]):
+                sns.stripplot(
+                    ax=ax,
+                    data=placebo.query(f"`{y_value_sub}` > 0"),
+                    x=x_value,
+                    y=y_value_sub,
+                    edgecolor="black",
+                    linewidth=0.5,
+                    palette=palette,
+                    s=strip_size,
+                    jitter=value_jitter + jitter_buff,
+                    alpha=value_alpha,
+                    marker=marker,
+                    order=plotting_df[x_value].unique(),
+                )
+
+        # plot baseline sep
+        sns.stripplot(
+            ax=ax,
+            data=not_placebos.query(f"`{y_value_sub}` == 0"),
+            x=x_value,
+            y=y_value_sub,
+            edgecolor="black",
+            linewidth=0.5,
+            palette=palette,
+            marker="o",
+            s=strip_size,
+            jitter=baseline_jitter,
+            alpha=baseline_alpha,
+            order=plotting_df[x_value].unique(),
+        )
+
+        # make markers triangles for placebos baselines
+        if plot_placebos_seperate:
+            for marker, placebo in zip(["^", "s"], [placebo_1, placebo_2]):
+                sns.stripplot(
+                    ax=ax,
+                    data=placebo.query(f"`{y_value}` == 0"),
+                    x=x_value,
+                    y=y_value_sub,
+                    edgecolor="black",
+                    linewidth=0.5,
+                    palette=palette,
+                    s=strip_size,
+                    jitter=baseline_jitter,
+                    alpha=baseline_alpha,
+                    marker=marker,
+                    order=plotting_df["Treatment"].unique(),
+                )
+
+        # stripplot se
+        weeks_index += 1
+
+        ax = adjusts_axis(
+            ax, ax_index, week, y_label, annotate_args, plot_x_labels=plot_x_labels, skip_header=skip_header
+        )
+        ax = adjust_boxplot(ax)
+        # this is a little weird, but essenttially 1-10 is linear > 10 is log, the custom SymLocLocator helps with that
+        if scale == "symlog":
+            ax.set_ylim(y_min, y_max)
+            ax.set_yscale("symlog", linthresh=10)
+            if major_formattter:
+                ax.yaxis.set_major_formatter(major_formattter)
+            else:
+                ax.yaxis.set_major_formatter(mtick.ScalarFormatter())  # 10 and 100 are major ticks on a sym log
+
+            ax.yaxis.set_minor_locator(MinorSymLogLocator(10))  # custom class to handle sym log ticks.
+        else:
+            ax.set_yscale("log")
+            ax.set_ylim(y_min, y_max)
+        if ax_index > 0:
+            ax.set_yticklabels([])
+        if ax_index == 0 and isinstance(y_label, str):
+            ax.set_ylabel(y_label)
+        elif ax_index in [0, 6, 9] and isinstance(y_label, list):
+            if ax_index == 0:
+                ax.set_ylabel(y_label_pbmc, labelpad=y_label_pad_pbmc)
+            elif ax_index == 6:
+                ax.set_ylabel(y_label_gc, labelpad=y_label_pad_gc)
+            else:
+                ax.set_ylabel(y_label_pb, labelpad=y_label_pad_pb)
+
+    return row_axis
 
 
 def plot_flow_frequencies(data: Data) -> plt.figure:
@@ -368,6 +628,103 @@ def plot_flow_frequencies(data: Data) -> plt.figure:
         labelpad=[10, 0, 0],
         plot_placebos_seperate=False,
     )
+    fig.subplots_adjust(hspace=0.1, left=0.11, right=0.975, top=0.9)
+    return fig
+
+
+def plot_count_frequency_response(
+    data: Data,
+) -> plt.figure:
+    """Figure 2 of Paper 1. Plotting FACS counts of epitope specific, frequencies of VRC01 class and vaccine response.
+    stratified by timepoint and treatment"""
+
+    # get 3 axes but with dummyies in between in order to add some psuedo spacing
+    fig, (row_ax1, row_ax2, row_ax3) = plt.subplots(
+        3,
+        10,
+        figsize=(8.5, 7.2),
+        gridspec_kw={
+            "width_ratios": [1, 1, 1, 1, 1, 0.4, 1, 1, 0.4, 1],
+            "height_ratios": [1, 1, 1],
+        },
+        sharex=False,
+        sharey=False,
+    )
+    frequency_df = data.get_flow_and_frequency_data()
+    plot_params = data.plot_parameters
+    combined_timepoints = plot_params.get_combined_timepoints()
+    frequency_pallete = plot_params.get_treatment_pallete()
+    small_annotate_args = plot_params.get_small_annotate_args()
+    gc_timepoints = plot_params.get_gc_visit_lookup().keys()  # noqa
+    not_gc_df = frequency_df.query("Visit not in @gc_timepoints")
+    gc_df = frequency_df.query("Visit in @gc_timepoints")
+    not_gc_df = not_gc_df.rename(
+        columns={
+            "Percent of IgG+ B cells detected as VRC01-class (missing seq to 0)": "contrived_a",
+        }
+    ).reset_index(drop=True)
+    gc_df = gc_df.rename(
+        columns={
+            "Percent of IgG+ GC B cells detected as VRC01-class (missing seq to 0)": "contrived_a",
+        },
+    ).reset_index(drop=True)
+    contrived_df = pd.concat([not_gc_df, gc_df])
+    # plot pannel A which is sequencing count of epitope specific B cells
+    plot_count_panel(
+        row_ax1,
+        frequency_df,
+        combined_timepoints,
+        frequency_pallete,
+        small_annotate_args,
+        -0.5,
+        150,
+        "Treatment",
+        "Number of epitope-specific (KO-GT8++) sequenced IgG BCRs that are VRC01-class",
+        y_label=[
+            "Number of VRC01-class\nIgG$^{+}$ B cells",
+            "Number of VRC01-class\nIgG$^{+}$ GC B cells",
+            "Number of VRC01-class\nIgD$^{-}$ plasmablasts",
+        ],
+        labelpad=[9, 0, 0],
+    )
+    plot_frequency_panel(
+        row_ax2,
+        contrived_df,
+        combined_timepoints,
+        frequency_pallete,
+        small_annotate_args,
+        0.00008,
+        100,
+        "Treatment",
+        "contrived_a",
+        y_label=[
+            "% of IgG$^{+}$ memory B cells\ndetected as VRC01-class",
+            "% of IgG$^{+}$ GC B cells\ndetected as VRC01-class",
+            "% of IgD$^{-}$ plasmablasts\ndetected as VRC01-class",
+        ],
+        y_text_pos=50,
+        labelpad=[-5, 1, 1],
+        replace_0_with_nan=True,
+    )
+
+    plot_response_panel(
+        row_ax3,
+        frequency_df,
+        combined_timepoints,
+        frequency_pallete,
+        small_annotate_args,
+        0,
+        1.05,
+        "Treatment",
+        "Response (missing seq to 0)",
+        y_label=[
+            "% of participants with\nVRC01-class BCRs",
+            "% of participants with\nVRC01-class BCRs",
+            "% of participants with\nVRC01-class BCRs",
+        ],
+        labelpad=[10, 4, 4],
+    )
+
     fig.subplots_adjust(hspace=0.1, left=0.11, right=0.975, top=0.9)
     return fig
     # plt.savefig(outpath + ".pdf")

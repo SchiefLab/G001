@@ -13,8 +13,9 @@ import numpy as np
 
 # G001 package
 from g001.data import Data
+from g001.figures.frequency import plot_count_frequency_response, plot_flow_frequencies
+from g001.figures.overview import plot_overview
 from g001.sequence_pipeline.main import run_sequence_analysis
-from g001.figures import plot_flow_frequencies
 
 
 @click.group()
@@ -169,6 +170,27 @@ def plot_figure_1(ctx: click.Context, outpath: str | Path) -> None:
     figure = plot_flow_frequencies(data)
     figure.savefig(outpath + ".png", dpi=300)
     click.echo(f"Figure 1 generated to {outpath}.png")
+
+
+@figures.command("fig2")
+@click.pass_context
+@click.option(
+    "--outpath",
+    "-o",
+    default="figures/figure2",
+    type=click.Path(file_okay=True, resolve_path=True),
+    help="Output path for figure",
+    show_default=True,
+)
+def plot_figure_2(ctx: click.Context, outpath: str | Path) -> None:
+    data = ctx.obj["data"]
+    figure = plot_count_frequency_response(data)
+    figure.savefig(outpath + ".png", dpi=300)
+    click.echo(f"Figure 2A-C generated to {outpath}.png")
+
+    figure_d = plot_overview(data)
+    figure_d.savefig(outpath + "_d.png", dpi=300)
+    click.echo(f"Figure 2D generated to {outpath}_d.png")
 
 
 if __name__ == "__main__":
