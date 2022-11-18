@@ -17,12 +17,14 @@ class RScript:
         if self.verbose:
             self.console.print(f"Running command:\n{' '.join(cmd)}")
         try:
-            proc = subprocess.run(cmd, capture_output=True, encoding="utf-8", shell=True)
+            proc = subprocess.run(cmd, capture_output=True, encoding="utf-8")
         except CalledProcessError:
             self.console.print_exception(show_locals=True)
         else:
-            # ignore ugly R warnings
+            # ignore ugly R warnings from cytoqc :: even they are still trying to figure out how to remove them.
             stderr = "\n".join([e for e in proc.stderr.replace(":\n", ":").split("\n") if not e.startswith("Warning")])
+            # ignore ugly R column renames
+            stderr = "\n".join([e for e in stderr.split("\n") if not e.startswith("New names:")])
             if stderr:
                 self.console.print(stderr)
             self.console.print(proc.stdout)
@@ -102,7 +104,7 @@ class RScript:
         cmd = [
             "Rscript",
             str(self.rpath / "Collate_Flow_Data.R"),
-            # "data/flow/processed_flow",
-            str(collate_output_dir),
+            "data/flow/processed_flow",  # BUG: hard coded since
+            # str(collate_output_dir),
         ]
         self.__run_cmd(cmd)
