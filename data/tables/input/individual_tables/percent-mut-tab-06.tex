@@ -1,0 +1,179 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{table}[!h]
+
+\caption[(Percent Mutation Report Table 6): non-VRC01-class \%aa mutations testing]{\label{tab:percent-mut-tab-06}(Percent Mutation Report Table 6): non-VRC01-class \%aa mutations testing between selected time points by treatment and VH or VK/VL, among the median mutation values. Testing was done using Wilcoxon signed-rank test for paired data (two-sided, $\alpha$ = 0.05) and p values less than 0.05 are highlighted.}
+\centering
+\fontsize{6.5}{8.5}\selectfont
+\begin{tabular}[t]{ll>{\raggedright\arraybackslash}p{3.75cm}>{\raggedleft\arraybackslash}p{1cm}ll}
+\toprule
+ &  & Comparison & Number of Pairs & Median (Range) & P Value\\
+\midrule
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{VH}}\\
+\hspace{1em} & 20µg & Wk-4 (V02) vs. Wk3 (V05) & 8 & 7.6531 [3.0612, 11.3402] vs. 2.0305 [1.0204, 4.0816] & \cellcolor{yellow}{0.0078}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk-4 (V02) vs. Wk4 (V06) & 15 & 9.1837 [3.0612, 22.4617] vs. 3.0303 [1.0204, 7.1429] & \cellcolor{yellow}{0.0002}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk-4 (V02) vs. Wk8 (V07) & 15 & 9.1837 [3.0612, 22.4617] vs. 4.0404 [0.0000, 11.7347] & \cellcolor{yellow}{0.0006}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk4 (V06) vs. Wk8 (V07) & 18 & 3.0458 [1.0204, 7.1429] vs. 3.7934 [0.0000, 11.7347] & 0.4617\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk9 (V07A) & 14 & 3.3196 [0.0000, 6.1224] vs. 5.1020 [2.0619, 7.1429] & \cellcolor{yellow}{0.0067}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk10 (V08) & 17 & 3.5464 [0.0000, 11.7347] vs. 4.0816 [0.5102, 8.0808] & 0.6099\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk11 (V09) & 11 & 3.0612 [0.0000, 11.7347] vs. 7.1429 [3.0928, 12.3711] & \cellcolor{yellow}{0.0244}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk16 (V10) & 16 & 3.5872 [0.0000, 11.7347] vs. 3.5508 [3.0303, 6.1856] & 0.8799\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk3 (V05) vs. Wk11 (V09) & 5 & 2.0202 [1.0204, 4.0816] vs. 7.2165 [3.0928, 12.3711] & 0.0625\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk10 (V08) vs. Wk16 (V10) & 16 & 4.0816 [2.0202, 8.0808] vs. 3.5508 [3.0303, 6.1856] & 0.3496\\
+\cmidrule{2-6}
+\hspace{1em} & 100µg & Wk-4 (V02) vs. Wk3 (V05) & 9 & 9.1837 [2.0619, 16.3265] vs. 2.0408 [1.0309, 5.1020] & \cellcolor{yellow}{0.0039}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk-4 (V02) vs. Wk4 (V06) & 12 & 9.1837 [2.0619, 16.3265] vs. 2.5615 [1.0204, 5.5762] & \cellcolor{yellow}{0.0024}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk-4 (V02) vs. Wk8 (V07) & 12 & 9.1837 [2.0619, 16.3265] vs. 4.0713 [1.0204, 8.3333] & \cellcolor{yellow}{0.0103}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk4 (V06) vs. Wk8 (V07) & 17 & 2.0408 [0.0000, 5.5762] vs. 3.0770 [1.0101, 8.3333] & \cellcolor{yellow}{0.0005}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk9 (V07A) & 13 & 3.0612 [1.0101, 8.3333] vs. 4.0816 [2.0202, 8.1633] & 0.0803\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk10 (V08) & 17 & 3.0770 [1.0101, 8.3333] vs. 4.0816 [1.0204, 7.2165] & 0.2842\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk11 (V09) & 10 & 3.5611 [1.0204, 6.6642] vs. 8.1817 [4.0816, 12.8866] & \cellcolor{yellow}{0.0039}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk16 (V10) & 16 & 3.0691 [1.0101, 8.3333] vs. 4.0816 [1.5203, 6.6327] & 0.1365\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk3 (V05) vs. Wk11 (V09) & 8 & 2.0408 [1.0204, 3.0612] vs. 7.1613 [4.0816, 12.8866] & \cellcolor{yellow}{0.0078}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk10 (V08) vs. Wk16 (V10) & 16 & 4.0816 [1.0204, 7.2165] vs. 4.0816 [1.5203, 6.6327] & 0.5039\\
+\cmidrule{1-6}
+\addlinespace[0.3em]
+\multicolumn{6}{l}{\textbf{VK/VL}}\\
+\hspace{1em} & 20µg & Wk-4 (V02) vs. Wk3 (V05) & 8 & 6.1869 [0.0000, 20.8333] vs. 1.5467 [0.5102, 4.2329] & \cellcolor{yellow}{0.0391}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk-4 (V02) vs. Wk4 (V06) & 15 & 7.2917 [0.0000, 24.5943] vs. 2.0619 [0.0000, 4.8020] & \cellcolor{yellow}{0.0007}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk-4 (V02) vs. Wk8 (V07) & 15 & 7.2917 [0.0000, 24.5943] vs. 2.0330 [0.0000, 5.2637] & \cellcolor{yellow}{0.0020}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk4 (V06) vs. Wk8 (V07) & 18 & 2.0726 [0.0000, 4.8020] vs. 2.0781 [0.0000, 5.2637] & 0.2935\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk9 (V07A) & 14 & 2.0474 [0.0000, 5.1020] vs. 3.0931 [2.0408, 5.2083] & \cellcolor{yellow}{0.0166}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk10 (V08) & 17 & 2.0619 [0.0000, 5.2637] vs. 2.1165 [1.0526, 4.2105] & 0.7467\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk11 (V09) & 11 & 2.0619 [0.0000, 5.2637] vs. 4.2105 [3.0612, 7.4468] & \cellcolor{yellow}{0.0049}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk16 (V10) & 16 & 2.0474 [0.0000, 5.2637] vs. 2.0943 [1.0582, 4.2553] & 1.0000\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk3 (V05) vs. Wk11 (V09) & 5 & 2.0408 [0.5102, 4.2329] vs. 4.7368 [4.0816, 7.4468] & 0.0625\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk10 (V08) vs. Wk16 (V10) & 16 & 2.1109 [1.0526, 4.2105] vs. 2.0943 [1.0582, 4.2553] & 0.9797\\
+\cmidrule{2-6}
+\hspace{1em} & 100µg & Wk-4 (V02) vs. Wk3 (V05) & 9 & 4.2105 [2.6316, 11.2245] vs. 2.0408 [0.0000, 3.1579] & \cellcolor{yellow}{0.0039}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk-4 (V02) vs. Wk4 (V06) & 12 & 5.2637 [2.6316, 11.2245] vs. 2.1053 [0.0000, 4.5918] & \cellcolor{yellow}{0.0010}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk-4 (V02) vs. Wk8 (V07) & 12 & 5.2637 [2.6316, 11.2245] vs. 2.3770 [0.0000, 3.6791] & \cellcolor{yellow}{0.0024}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk4 (V06) vs. Wk8 (V07) & 17 & 1.9901 [0.0000, 4.5918] vs. 2.1053 [0.0000, 3.6791] & 0.1577\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk9 (V07A) & 13 & 2.1053 [0.0000, 3.6791] vs. 3.0928 [1.0365, 7.9208] & \cellcolor{yellow}{0.0215}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk10 (V08) & 17 & 2.1053 [0.0000, 3.6791] vs. 2.1053 [0.4950, 5.0000] & 0.3778\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk11 (V09) & 10 & 2.0943 [0.0000, 3.1579] vs. 4.5131 [2.0833, 11.5789] & \cellcolor{yellow}{0.0059}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk8 (V07) vs. Wk16 (V10) & 16 & 2.0943 [0.0000, 3.6791] vs. 2.8449 [1.0526, 4.6563] & 0.0536\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk3 (V05) vs. Wk11 (V09) & 8 & 1.0526 [0.0000, 3.1579] vs. 4.3031 [2.0833, 11.5789] & \cellcolor{yellow}{0.0156}\\
+\cmidrule{3-6}
+\hspace{1em} &  & Wk10 (V08) vs. Wk16 (V10) & 16 & 2.3271 [1.0153, 5.0000] vs. 2.8449 [1.0526, 4.6563] & 0.4476\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

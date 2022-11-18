@@ -1,0 +1,85 @@
+\documentclass[11pt]{article}
+\usepackage{etex}
+\reserveinserts{28}
+\usepackage{lastpage}
+\usepackage[hmargin=2cm, top=2.7cm, bottom=3.5cm, footskip=0.5cm]{geometry}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{float}
+\usepackage[maxfloats=50]{morefloats}
+\usepackage{parskip}
+\usepackage[citestyle=authoryear-comp,natbib=true]{biblatex}
+\usepackage{pdflscape}
+\usepackage[absolute]{textpos}
+\usepackage{rotating} %for xtable sideways
+\usepackage{verbatim}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{lipsum}
+%\usepackage[acronym,nomain]{glossaries}
+\usepackage{fancyhdr, graphicx, lastpage, ifthen, lscape}
+\usepackage[table]{xcolor}
+\usepackage{soul}
+\usepackage{booktabs}
+\usepackage{setspace}
+\usepackage{relsize}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+%\makeglossaries
+\usepackage{caption}
+
+\begin{document}
+\captionsetup{labelformat=empty}
+\begin{table}[!h]
+
+\caption[Response rate summary by HIV-1 isolate, treatment, and time point.]{\label{tab:response-rate-summary}: Response rate summary by HIV-1 isolate, treatment, and time point.}
+\centering
+\resizebox{\linewidth}{!}{
+\fontsize{8}{10}\selectfont
+\begin{tabular}[t]{lllll}
+\toprule
+\multicolumn{2}{c}{ } & \multicolumn{3}{c}{Response Fraction = Response Rate; (95\% Wilson score CI)} \\
+\cmidrule(l{3pt}r{3pt}){3-5}
+HIV-1 isolate & Treatment & Day 0 & Day 14 & Day 70\\
+\midrule
+MW965.26 & DPBS sucrose & 0/12 = 0\%; (0\%, 24.2\%) & 0/12 = 0\%; (0\%, 24.2\%) & 0/11 = 0\%; (0\%, 25.9\%)\\
+ & 20 µg eOD-GT8 60mer + AS01B & 0/18 = 0\%; (0\%, 17.6\%) & 0/18 = 0\%; (0\%, 17.6\%) & 0/16 = 0\%; (0\%, \vphantom{6} 19.4\%)\\
+ & 100 µg eOD-GT8 60mer + AS01B & 0/18 = 0\%; (0\%, 17.6\%) & 0/18 = 0\%; (0\%, 17.6\%) & 0/17 = 0\%; (0\%, \vphantom{6} 18.4\%)\\
+\hline
+MN.3 & DPBS sucrose & 0/12 = 0\%; (0\%, 24.2\%) & 0/12 = 0\%; (0\%, 24.2\%) & 0/11 = 0\%; (0\%, 25.9\%)\\
+ & 20 µg eOD-GT8 60mer + AS01B & 0/18 = 0\%; (0\%, 17.6\%) & 0/18 = 0\%; (0\%, 17.6\%) & 0/16 = 0\%; (0\%, \vphantom{5} 19.4\%)\\
+ & 100 µg eOD-GT8 60mer + AS01B & 0/18 = 0\%; (0\%, 17.6\%) & 0/18 = 0\%; (0\%, 17.6\%) & 0/17 = 0\%; (0\%, \vphantom{5} 18.4\%)\\
+\hline
+426c.N276D/293S/GnTI- & DPBS sucrose & 0/12 = 0\%; (0\%, 24.2\%) & 0/12 = 0\%; (0\%, 24.2\%) & 0/11 = 0\%; (0\%, 25.9\%)\\
+ & 20 µg eOD-GT8 60mer + AS01B & 0/18 = 0\%; (0\%, 17.6\%) & 0/18 = 0\%; (0\%, 17.6\%) & 0/16 = 0\%; (0\%, \vphantom{4} 19.4\%)\\
+ & 100 µg eOD-GT8 60mer + AS01B & 0/18 = 0\%; (0\%, 17.6\%) & 0/18 = 0\%; (0\%, 17.6\%) & 0/17 = 0\%; (0\%, \vphantom{4} 18.4\%)\\
+\hline
+426c.N276D.N460D.N463D/293S/GnTI- & DPBS sucrose & 0/12 = 0\%; (0\%, 24.2\%) & 0/12 = 0\%; (0\%, 24.2\%) & 0/11 = 0\%; (0\%, 25.9\%)\\
+ & 20 µg eOD-GT8 60mer + AS01B & 0/18 = 0\%; (0\%, 17.6\%) & 0/18 = 0\%; (0\%, 17.6\%) & 0/16 = 0\%; (0\%, \vphantom{3} 19.4\%)\\
+ & 100 µg eOD-GT8 60mer + AS01B & 0/18 = 0\%; (0\%, 17.6\%) & 0/18 = 0\%; (0\%, 17.6\%) & 0/17 = 0\%; (0\%, \vphantom{3} 18.4\%)\\
+\hline
+426c.S278R.G471S.N460D.N463D/293S/GnTI- & DPBS sucrose & 0/12 = 0\%; (0\%, 24.2\%) & 0/12 = 0\%; (0\%, 24.2\%) & 0/11 = 0\%; (0\%, 25.9\%)\\
+ & 20 µg eOD-GT8 60mer + AS01B & 0/18 = 0\%; (0\%, 17.6\%) & 0/18 = 0\%; (0\%, 17.6\%) & 0/16 = 0\%; (0\%, \vphantom{2} 19.4\%)\\
+ & 100 µg eOD-GT8 60mer + AS01B & 0/18 = 0\%; (0\%, 17.6\%) & 0/18 = 0\%; (0\%, 17.6\%) & 0/17 = 0\%; (0\%, \vphantom{2} 18.4\%)\\
+\hline
+CH0505s.G458Y.N279K.2/293S/GnTI- & DPBS sucrose & 0/12 = 0\%; (0\%, 24.2\%) & 0/12 = 0\%; (0\%, 24.2\%) & 0/11 = 0\%; (0\%, 25.9\%)\\
+ & 20 µg eOD-GT8 60mer + AS01B & 0/18 = 0\%; (0\%, 17.6\%) & 0/18 = 0\%; (0\%, 17.6\%) & 0/16 = 0\%; (0\%, \vphantom{1} 19.4\%)\\
+ & 100 µg eOD-GT8 60mer + AS01B & 0/18 = 0\%; (0\%, 17.6\%) & 0/18 = 0\%; (0\%, 17.6\%) & 0/17 = 0\%; (0\%, \vphantom{1} 18.4\%)\\
+\hline
+CH0505s.G458Y.N279K.N280D.6/293S/GnTI- & DPBS sucrose &  &  & 0/5 = 0\%; (0\%, 43.4\%)\\
+ & 20 µg eOD-GT8 60mer + AS01B &  &  & 0/16 = 0\%; (0\%, 19.4\%)\\
+\hline
+CH0505TF.gly4/293S/GnTI- & DPBS sucrose & 0/12 = 0\%; (0\%, 24.2\%) & 0/12 = 0\%; (0\%, 24.2\%) & 0/11 = 0\%; (0\%, 25.9\%)\\
+ & 20 µg eOD-GT8 60mer + AS01B & 0/18 = 0\%; (0\%, 17.6\%) & 0/18 = 0\%; (0\%, 17.6\%) & 0/16 = 0\%; (0\%, 19.4\%)\\
+ & 100 µg eOD-GT8 60mer + AS01B & 0/18 = 0\%; (0\%, 17.6\%) & 0/18 = 0\%; (0\%, 17.6\%) & 0/17 = 0\%; (0\%, 18.4\%)\\
+\hline
+CH0505TF.gly4.S365P.2/293S/GnTI- & DPBS sucrose &  &  & 0/5 = 0\%; (0\%, 43.4\%)\\
+ & 20 µg eOD-GT8 60mer + AS01B &  &  & 1/16 = 6.3\%; (1.1\%, 28.3\%)\\
+\bottomrule
+\end{tabular}}
+\end{table}
+\thispagestyle{empty}
+\pagenumbering{gobble}
+\end{document}

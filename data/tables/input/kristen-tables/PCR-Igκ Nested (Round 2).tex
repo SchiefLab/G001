@@ -1,0 +1,54 @@
+\documentclass{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8x]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage{geometry}%
+\geometry{margin=1in}%
+\usepackage{booktabs}%
+\usepackage{longtable}%
+\usepackage{adjustbox}%
+\usepackage{multirow}%
+\usepackage{caption}%
+%
+%
+%
+\begin{document}%
+\normalsize%
+\fontsize{7}{12}%
+\selectfont%
+\captionsetup{labelformat=empty,justification=raggedright,margin=0cm,font=normalsize}%
+\begin{longtable}{cll}
+\caption{Table S16: Ig$\kappa$ Nested (Round 2)}\\
+\toprule
+{} &          Primer &                  Sequence 5’ to 3’ \\
+Direction &                 &                                    \\
+\midrule
+\endfirsthead
+\caption[]{Table S16: Ig$\kappa$ Nested (Round 2)} \\
+\toprule
+{} &          Primer &                  Sequence 5’ to 3’ \\
+Direction &                 &                                    \\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+Forward   &   5’ L-Vk1.1-MS &             TGC TGC TCT GGY TCC CA \\
+Forward   &   5’ L-Vk1.2-MS &            TCT GKY TCY CAG GTG CCA \\
+Forward   &   5’ L-Vk1.3-MS &              CTR CTR CTC TGG STC C \\
+Forward   &     5’ L-Vk2-MS &            TGG GGC TGC TAA TGC TCT \\
+Forward   &     5’ L-Vk3-MS &            CTG GCT CMC AGA TAC CAC \\
+Forward   &  5’L Vk4 Tiller &  ATT TCT CTG TTG CTC TGG ATC TCT G \\
+Forward   &     5’ L-Vk5-MS &     CCT CCT TTG GAT CTC TGA TAC CA \\
+Forward   &      5’L-Vk6-MS &          TTC TGC TSC TCT GGG TTC C \\
+Reverse   &        3'CK 494 &      GTG CTG TCC TTG CTG TCC TGC T \\
+\end{longtable}
+%
+\pagenumbering{gobble}%
+\end{document}

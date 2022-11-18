@@ -1,0 +1,53 @@
+\documentclass{article}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8x]{inputenc}%
+\usepackage{lmodern}%
+\usepackage{textcomp}%
+\usepackage{lastpage}%
+\usepackage{geometry}%
+\geometry{margin=1in}%
+\usepackage{booktabs}%
+\usepackage{longtable}%
+\usepackage{adjustbox}%
+\usepackage{multirow}%
+\usepackage{caption}%
+%
+%
+%
+\begin{document}%
+\normalsize%
+\fontsize{7}{12}%
+\selectfont%
+\captionsetup{labelformat=empty,justification=raggedright,margin=0cm,font=normalsize}%
+\begin{longtable}{cll}
+\caption{Table S18: Ig$\lambda$ Nested (Round 2)}\\
+\toprule
+{} &      Primer &                      Sequence 5’ to 3’ \\
+Direction &             &                                        \\
+\midrule
+\endfirsthead
+\caption[]{Table S18: Ig$\lambda$ Nested (Round 2)} \\
+\toprule
+{} &      Primer &                      Sequence 5’ to 3’ \\
+Direction &             &                                        \\
+\midrule
+\endhead
+\midrule
+\multicolumn{3}{r}{{Continued on next page}} \\
+\midrule
+\endfoot
+
+\bottomrule
+\endlastfoot
+Forward   &    5'L Vl 1 &         GGT CCT GGG CCC AGT CTG TGC TG \\
+Forward   &    5'L Vl 2 &         GGT CCT GGG CCC AGT CTG CCC TG \\
+Forward   &    5'L Vl 3 &         GCT CTG TGA CCT CCT ATG AGC TG \\
+Forward   &  5'L Vl 4/5 &         GGT CTC TCT CSC AGC YTG TGC TG \\
+Forward   &    5'L Vl 6 &         GTT CTT GGG CCA ATT TTA TGC TG \\
+Forward   &    5'L Vl 7 &         GGT CCA ATT CYC AGG CTG TGG TG \\
+Forward   &    5'L Vl 8 &         GAG TGG ATT CTC AGA CTG TGG TG \\
+Reverse   &   3'XhoI Cl &  CTC CTC ACT CGA GGG YGG GAA CAG AGT G \\
+\end{longtable}
+%
+\pagenumbering{gobble}%
+\end{document}
