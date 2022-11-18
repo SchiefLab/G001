@@ -31,7 +31,10 @@ from g001.utils import RScript
 
 @click.group()
 @click.pass_context
-def main(ctx: click.Context) -> None:
+@click.option(
+    "--data-path", "-d", type=click.Path(exists=True, dir_okay=True), default=Path("./data"), show_default=True
+)
+def main(ctx: click.Context, data_path: Path) -> None:
     """
     Generate G001
     """
@@ -40,7 +43,7 @@ def main(ctx: click.Context) -> None:
         datefmt="%m-%d-%Y %I:%M%p",
         format="%(name)s:%(levelname)s:%(asctime)s--> %(message)s",
     )
-    data = Data(Path("data"))
+    data = Data(data_path)
 
     # make empty context object
     ctx.obj = {"data": data}
@@ -102,35 +105,35 @@ def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resum
     default=False,
     help="Prints logs to console",
 )
-@click.argument(
-    "gate",
-    type=str,
+@click.option(
+    "--site",
+    "-s",
     required=True,
+    type=click.Choice(["FHCRC", "VRC"]),
 )
 @click.option(
     "--manifest",
     "-m",
-    type=click.Path(dir_okay=False, readable=True, exists=None, resolve_path=True),
-    required=False,
-    default=Path(__file__).parent.parent.parent / "flow_input/{gate_lower}/{gate_upper}_Flow_Manifest.csv",
+    type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
+    required=True,
     show_default=True,
-    help="Path to read the flow manifest for specified gate",
+    help="Path to read the flow manifest for specified site",
 )
 @click.option(
     "--flow-input-dir",
     "-i",
     type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=True),
     required=False,
-    default=Path(__file__).parent.parent.parent / f"flow_input",
+    default="flow_input",
     show_default=True,
     help="Path to read the flow_input directory",
 )
 @click.option(
     "--flow-output-dir",
     "-o",
-    type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=True),
+    type=click.Path(dir_okay=True, readable=True, resolve_path=True),
     required=False,
-    default=Path(__file__).parent.parent.parent / f"flow_output",
+    default=Path("flow_output"),
     show_default=True,
     help="Path to create the flow_output directory",
 )
@@ -138,18 +141,19 @@ def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resum
 def process_flow(
     ctx: click.Context,
     verbose: bool,
-    gate: str,
+    site: str,
     manifest: Path | str,
     flow_input_dir: Path | str,
     flow_output_dir: Path | str,
     force_overwrite_output_dir: str,
 ) -> None:
     """
-    GATE: FHCRC or VRC
+    Process flow data
     """
-    manifest = Path(str(manifest).format(gate_lower=gate.lower(), gate_upper=gate.upper()))
+    if not Path(flow_output_dir).exists():
+        Path(flow_output_dir).mkdir()
     RScript(verbose=verbose).flow_processing(
-        gate=gate,
+        gate=site,
         manifest=manifest,
         flow_input_dir=flow_input_dir,
         flow_output_dir=flow_output_dir,

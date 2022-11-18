@@ -82,11 +82,11 @@ wget https://iavig001public.s3.us-west-2.amazonaws.com/flow_input.tgz
 # extract the files
 tar -xvzf flow_input.tgz
 
-# Run for FHCRC defaults
-g001 process-flow fhcrc
+# Run for FHCRC
+g001 process-flow -s FHCRC -m FHCRC_manifest_file.csv -i flow_input/fhcrc/
 
-# Run for VRC defaults 
-g001 process-flow vrc 
+# Run for VRC
+g001 process-flow -s VRC -m VRC_manifest_file.csv -i flow_input/vrc/
 ```
 
 ## Collation of Flow Data
@@ -94,7 +94,7 @@ g001 process-flow vrc
 The following will combine the VRC and FHCRC flow data.
 
 ```bash
-g001 collate 
+g001 collate
 ```
 
 ## Sequencing Pipeline
@@ -115,5 +115,11 @@ Rscript src/g001/R/Combine_Flow_and_Seq_Results.R data/sequence data/flow/collat
 
 ```bash
 # Genarate Figure 1
-G001 figurs fig1-d data/ -o figures_output
+g001 figures fig1 -d data/ -o figures/fig1
+g001 figures fig1 -d data/ -o figures/fig1
+g001 figures fig1 -d data/ -o figures/fig1
+g001 figures fig1 -d data/ -o figures/fig1
+g001 figures fig1 -d data/ -o figures/fig1
+g001 figures fig1 ta/ -o figures/fig1
+g001 figures fig2  -o figures/fig1
 ```
