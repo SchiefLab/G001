@@ -1,0 +1,31 @@
+name: Testing complex build for cross-platform
+
+on:
+  push:
+    branches:
+      - "*"
+      - "!main"
+
+jobs:
+  build-linux:
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -l {0} # this is necessary to use the shell paths that ocnda setups
+    strategy:
+      matrix:
+        os: [Ubuntu-22.04] #, ubuntu-20.04, ubuntu-18.04]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Setup Env and Test
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          miniconda-version: "latest"
+          environment-file: environment_cross_platform.yml
+          activate-environment: G001
+          auto-activate-base: false
+      - run: |
+          Rscript -e "remotes::install_github('thebioengineer/colortable', dependencies = FALSE)"
+          Rscript -e "remotes::install_github('RGLab/cytoqc', dependencies = FALSE)"
+          pip install .

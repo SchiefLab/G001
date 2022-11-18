@@ -7,7 +7,7 @@ from pathlib import Path
 import subprocess
 
 # third party
-import click
+import rich_click as click
 import seaborn as sns
 import numpy as np
 
@@ -15,6 +15,7 @@ import numpy as np
 from g001.data import Data
 from g001.sequence_pipeline.main import run_sequence_analysis
 from g001.figures import plot_flow_frequencies
+from g001.utils import RScript
 
 
 @click.group()
@@ -80,66 +81,115 @@ def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resum
     run_sequence_analysis(data, cache_path, resume, skip_csv)
 
 
-@main.command("fhcrc")
+@main.command("process-flow")
 @click.pass_context
 @click.option(
-    "--flow-output",
+    "--verbose",
+    "-v",
+    is_flag=True,
+    required=False,
+    default=False,
+    help="Prints logs to console",
+)
+@click.argument(
+    "gate",
+    type=str,
+    required=True,
+)
+@click.option(
+    "--manifest",
+    "-m",
+    type=click.Path(dir_okay=False, readable=True, exists=None, resolve_path=True),
+    required=False,
+    default=Path(__file__).parent.parent.parent / "flow_input/{gate_lower}/{gate_upper}_Flow_Manifest.csv",
+    show_default=True,
+    help="Path to read the flow manifest for specified gate",
+)
+@click.option(
+    "--flow-input-dir",
+    "-i",
+    type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=True),
+    required=False,
+    default=Path(__file__).parent.parent.parent / f"flow_input",
+    show_default=True,
+    help="Path to read the flow_input directory",
+)
+@click.option(
+    "--flow-output-dir",
     "-o",
     type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=True),
     required=False,
-    default="flow_output",
+    default=Path(__file__).parent.parent.parent / f"flow_output",
+    show_default=True,
     help="Path to create the flow_output directory",
 )
-def fhcrc(ctx: click.Context, flow_output: Path | str) -> None:
+@click.option("-f", "--force_overwrite_output_dir", default=True, is_flag=True, help="Force overwrite output directory")
+def fhcrc(
+    ctx: click.Context,
+    verbose: bool,
+    gate: str,
+    manifest: Path | str,
+    flow_input_dir: Path | str,
+    flow_output_dir: Path | str,
+    force_overwrite_output_dir: str,
+) -> None:
     """
-    Run for FHCRC
+    GATE: FHCRC or VRC
     """
-    cmd = [
-        "Rscript",
-        "src/g001/R/Flow_Processing.R",
-        "FHCRC",
-        "flow_input/fhcrc/FHCRC_Flow_Manifest.csv",
-        "flow_input/fhcrc/",
-        "yes",
-        flow_output,
-    ]
-    stdout = subprocess.run(cmd, capture_output=True)
-    print(stdout.stdout.decode("utf-8"))
-
-
-@main.command("vrc")
-@click.pass_context
-def vcr(ctx: click.Context) -> None:
-    """
-    Run for VRC
-    """
-    cmd = [
-        "Rscript",
-        "src/g001/R/Flow_Processing.R",
-        "VRC",
-        "flow_input/vrc/VRC_Flow_Manifest.csv",
-        "flow_input/vrc/",
-        "yes",
-        "flow_output",
-    ]
-    stdout = subprocess.run(cmd, capture_output=True)
-    print(stdout.stdout.decode("utf-8"))
+    manifest = Path(str(manifest).format(gate_lower=gate.lower(), gate_upper=gate.upper()))
+    RScript(verbose=verbose).flow_processing(
+        gate=gate,
+        manifest=manifest,
+        flow_input_dir=flow_input_dir,
+        flow_output_dir=flow_output_dir,
+        force_overwrite_output_dir=force_overwrite_output_dir,
+    )
 
 
 @main.command("collate")
 @click.pass_context
-def collate(ctx: click.Context) -> None:
-    """
-    Collation of Flow Data
-    """
-    cmd = [
-        "Rscript",
-        "src/g001/R/Collate_Flow_Data.R",
-        "data/flow/processed_flow/",
-    ]
-    stdout = subprocess.run(cmd, capture_output=True)
-    # TODO: collate doesnt seem to have an stdout
-    print(stdout.stdout.decode("utf-8"))
+@click.option(
+    "--verbose",
+    "-v",
+    is_flag=True,
+    required=False,
+    default=False,
+    help="Prints final command that was run to console",
+)
+@click.option(
+    "--collate-output-dir",
+    "-o",
+    type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=False),
+    required=False,
+    default=Path(__file__).parent.parent.parent / "data/flow/processed_flow",
+    show_default=True,
+    help="Path to create the collated output directory",
+)
+def collate(
+    ctx: click.Context,
+    verbose: bool,
+    collate_output_dir: Path | str,
+) -> None:
+    """ """
+    RScript(verbose=verbose).collate_flow(
+        collate_output_dir=collate_output_dir,
+    )
+
+
+# @main.command("collate")
+# @click.pass_context
+# def collate(ctx: click.Context) -> None:
+#     """
+#     Collation of Flow Data
+#     """
+#     cmd = [
+#         "Rscript",
+#         "src/g001/R/Collate_Flow_Data.R",
+#         "data/flow/processed_flow/",
+#     ]
+#     stdout = subprocess.run(cmd, capture_output=True)
+#     # TODO: collate doesnt seem to have an stdout
+#     print(stdout.stdout.decode("utf-8"))
 
 
 if __name__ == "__main__":
