@@ -94,12 +94,14 @@ g001 process-flow -s VRC -m VRC_manifest_file.csv -i flow_input/vrc/
 The following will combine the VRC and FHCRC flow data.
 
 ```bash
-g001 collate
+g001 collate -f data/flow/processed_flow/
+
+# output will be in data/flow/processed_flow/Combined_Flow/
 ```
 
 ## Sequencing Pipeline
 
-Analyze Fastq sequences from Sanger sequencing.
+Analyze FASTQ sequences from Sanger sequencing.
 
 ```bash
 G001 sequence_analysis -d data/ -r -o sequence_analysis_output
