@@ -4,7 +4,7 @@ channels:
   - bioconda
   - r
 dependencies:
-  - python>=3.9,<3.10.0a0
+  - python==3.10
   - pip
   # Python dependencies
   - biopython==1.79
