@@ -135,7 +135,7 @@ def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resum
     help="Path to create the flow_output directory",
 )
 @click.option("-f", "--force_overwrite_output_dir", default=True, is_flag=True, help="Force overwrite output directory")
-def fhcrc(
+def process_flow(
     ctx: click.Context,
     verbose: bool,
     gate: str,
