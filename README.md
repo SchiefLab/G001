@@ -135,7 +135,3 @@ g001 figures fig6
 g001 figures fig7
 g001 figures fig8
 ```
-
-```
-
-```
