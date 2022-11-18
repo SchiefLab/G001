@@ -388,15 +388,7 @@ def plot_figure_8(ctx: click.Context, outpath: str | Path) -> None:
     click.echo(f"Figure 8 generated to {outpath}.png")
 
 
-@main.group("paper1")
-def paper1():
-    """
-    Generate for first paper figures.
-    """
-    pass
-
-
-@paper1.command("ST")
+@main.command("supptables")
 @click.pass_context
 @click.option(
     "--outpath",
@@ -404,11 +396,18 @@ def paper1():
     type=click.Path(file_okay=True, resolve_path=True),
     help="Output path for Sup Tables for Paper 1",
     show_default=True,
+    required=True,
 )
 @click.option("-c", "--cleanheaders", is_flag=True, default=False)
 def generate_st1(ctx: click.Context, cleanheaders: bool, outpath: str) -> None:
     data = ctx.obj["data"]
-    table_output = data.table_data_paths.table_out
+    if not outpath:
+        table_output = data.table_data_paths.table_out
+    else:
+        if not Path(outpath).exists():
+            Path(outpath).mkdir(parents=True)
+            (Path(outpath) / Path("pdfs")).mkdir()
+        table_output = Path(outpath)
     table_src = data.table_data_paths.table_src
 
     pdf_order = [
