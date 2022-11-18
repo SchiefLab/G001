@@ -8,9 +8,9 @@
 - [Pipeline](#pipeline)
   - [Installation Pre-requisites](#installation-pre-requisites)
   - [Installation](#installation)
-  - [Flow Processing](#flow-processing)
-  - [Collation of Flow Data](#collation-of-flow-data)
-  - [Sequencing Pipeline](#sequencing-pipeline)
+  - [FACS Analysis](#facs-analysis)
+    - [Collation of Flow Data](#collation-of-flow-data)
+  - [BCR Sequence Analysis](#bcr-sequence-analysis)
   - [Combine Flow and Sequence Data](#combine-flow-and-sequence-data)
   - [Figures](#figures)
 
@@ -71,9 +71,9 @@ git-lfs install
 git-lfs pull
 ```
 
-## Flow Processing
+## FACS Analysis
 
-The flow processing needs to be run on for each of the sites independently.
+The flow processing needs to be run for the two sites (VRC,FHCRC) independently.
 
 ```bash
 # get all raw flow files from public S3 bucket
@@ -89,7 +89,7 @@ g001 process-flow -s FHCRC -m FHCRC_manifest_file.csv -i flow_input/fhcrc/
 g001 process-flow -s VRC -m VRC_manifest_file.csv -i flow_input/vrc/
 ```
 
-## Collation of Flow Data
+### Collation of Flow Data
 
 The following will combine the VRC and FHCRC flow data.
 
@@ -99,12 +99,12 @@ g001 collate -f data/flow/processed_flow/
 # output will be in data/flow/processed_flow/Combined_Flow/
 ```
 
-## Sequencing Pipeline
+## BCR Sequence Analysis
 
 Analyze FASTQ sequences from Sanger sequencing.
 
 ```bash
-G001 sequence_analysis -d data/ -r -o sequence_analysis_output
+g001 sequence_analysis -d data/ -r -o sequence_analysis_output
 ```
 
 ## Combine Flow and Sequence Data
