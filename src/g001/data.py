@@ -254,6 +254,9 @@ class FigureDataPaths(BaseModel):
     vrc01_reference_airr_path: Path = base_path / Path("controls/vrc01_class_bnabs_ref_airr.feather")
     human_naive_path: Path = base_path / Path("controls/human_naive_vrc01_class.feather")
     cottrell_path: Path = base_path / Path("controls/cottrell.json")
+    igl_spr_path: Path = base_path / Path("figures/binding/igl_spr.feather")
+    clk_spr_path: Path = base_path / Path("figures/binding/clk_spr.feather")
+    mature_spr_path: Path = base_path / Path("figures/binding/mature_spr.feather")
 
     @validator("*", always=True)
     def validate_paths(cls, v: Path):
@@ -460,3 +463,34 @@ class Data:
             the cottrell path
         """
         return self.figure_data_paths.cottrell_path
+
+
+    def get_igl_spr_df(self) -> pd.DataFrame:
+        """Get the igl spr dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the igl spr dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.igl_spr_path)
+
+    def get_clk_spr_df(self) -> pd.DataFrame:
+        """Get the clk/hugl (human naives) spr dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the clk/hugl spr dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.clk_spr_path)
+
+    def get_mature_spr_df(self) -> pd.DataFrame:
+        """Get the mature spr dataframe
+
+        Returns
+        -------
+        pd.DataFrame
+            the mature spr dataframe
+        """
+        return pd.read_feather(self.figure_data_paths.mature_spr_path)
