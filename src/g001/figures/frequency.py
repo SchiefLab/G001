@@ -1,3 +1,4 @@
+from __future__ import annotations
 import pandas as pd
 from matplotlib import pyplot as plt
 import seaborn as sns
@@ -728,6 +729,7 @@ def plot_count_frequency_response(
     fig.subplots_adjust(hspace=0.1, left=0.11, right=0.975, top=0.9)
     return fig
 
+
 def plot_vrc01_among_epitope_specific(
     data: Data,
 ) -> plt.figure:
@@ -802,6 +804,7 @@ def plot_vrc01_among_epitope_specific(
     )
     fig.subplots_adjust(hspace=0.1, left=0.11, right=0.97, top=0.85, bottom=0.1)
     return fig
+
 
 # @todo for v 1.1
 # @dataclass

@@ -350,10 +350,14 @@ def plot_figure_5_and_s26(ctx: click.Context, aa_outpath: str, nt_outpath: str) 
         fig = plot_somatic_mutation_frequencies(unblind_df, palette, ab_type, molecule, sup_title)
         new_outpath = outpath_ + f"_{ab_type}_{molecule}.png"
         fig.savefig(new_outpath, dpi=300)
-        click.echo(f"Figure 2 generated to {new_outpath}")
+        if molecule == "nt":
+            _figure = "S20"
+        else:
+            _figure = "2"
+        click.echo(f"Figure {_figure} generated to {new_outpath}")
         fig = plot_somatic_mutation_frequencies_violin(unblind_df, palette, ab_type, molecule, sup_title)
         new_outpath = outpath_ + f"_{ab_type}_{molecule}_violin.png"
-        click.echo(f"Figure S20 generated to {new_outpath}")
+        click.echo(f"Figure {_figure} generated to {new_outpath}")
         fig.savefig(new_outpath, dpi=300)
 
 
@@ -408,15 +412,7 @@ def plot_figure_8(ctx: click.Context, outpath: str | Path) -> None:
     click.echo(f"Figure 8 generated to {outpath}.png")
 
 
-@main.group("paper1")
-def paper1():
-    """
-    Generate for first paper figures.
-    """
-    pass
-
-
-@paper1.command("ST")
+@main.command("supptables")
 @click.pass_context
 @click.option(
     "--outpath",
@@ -424,11 +420,18 @@ def paper1():
     type=click.Path(file_okay=True, resolve_path=True),
     help="Output path for Sup Tables for Paper 1",
     show_default=True,
+    required=True,
 )
 @click.option("-c", "--cleanheaders", is_flag=True, default=False)
 def generate_st1(ctx: click.Context, cleanheaders: bool, outpath: str) -> None:
     data = ctx.obj["data"]
-    table_output = data.table_data_paths.table_out
+    if not outpath:
+        table_output = data.table_data_paths.table_out
+    else:
+        if not Path(outpath).exists():
+            Path(outpath).mkdir(parents=True)
+            (Path(outpath) / Path("pdfs")).mkdir()
+        table_output = Path(outpath)
     table_src = data.table_data_paths.table_src
 
     pdf_order = [

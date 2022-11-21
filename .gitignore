@@ -44,6 +44,7 @@ figures/figureS20_vrc01_nt.png
 figures/figure6.png
 figures/figure7.png
 figures/figure8.png
+supp_tables/
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
@@ -66,3 +67,4 @@ figures/figure8.png
 *.synctex.gz
 *.synctex.gz(busy)
 *.pdfsync
+
