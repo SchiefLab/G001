@@ -1,0 +1,13 @@
+,PTID,VISIT,INX_Population,Population,Parent,Count,ParentCount,proportion,INX_Number_Of_Cells,Percent_Sorted
+0,PubID_154,V06,Antigen-Specific,/Lymphocytes,root,1937086,2220289,0.872447685864318,,
+1,PubID_154,V06,Antigen-Specific,/Lymphocytes/Singlets,/Lymphocytes,1930360,1937086,0.996527774192782,,
+2,PubID_154,V06,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-,/Lymphocytes/Singlets,1889135,1930360,0.97864387989805,,
+3,PubID_154,V06,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,/Lymphocytes/Singlets/Live|Dump-,1832177,1889135,0.969849693113515,,
+4,PubID_154,V06,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,461772,1832177,0.252034601460448,,
+5,PubID_154,V06,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-,283,461772,0.0006128565612466,,
+6,PubID_154,V06,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO/GT8++KO-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO,153,283,0.540636042402827,,
+7,PubID_154,V06,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,207152,1832177,0.113063312114495,,
+8,PubID_154,V06,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,186875,207152,0.902115354908473,,
+9,PubID_154,V06,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-/eODGT8Double+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-,100,186875,0.0005351170568561,100.0,100.0
+10,PubID_154,V06,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,188,207152,0.0009075461496871,,
+11,PubID_154,V06,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO/GT8++KO-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO,100,188,0.531914893617021,,

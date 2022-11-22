@@ -1,0 +1,14 @@
+,PTID,VISIT,INX_Population,Population,Parent,Count,ParentCount,proportion,INX_Number_Of_Cells,Percent_Sorted
+0,PubID_080,V02,Antigen-Specific,/Lymphocytes,root,7846598,9254401,0.847877458519465,,
+1,PubID_080,V02,Antigen-Specific,/Lymphocytes/Singlets,/Lymphocytes,7737291,7846598,0.986069504261592,,
+2,PubID_080,V02,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-,/Lymphocytes/Singlets,7503876,7737291,0.96983246461843,,
+3,PubID_080,V02,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,/Lymphocytes/Singlets/Live|Dump-,7199438,7503876,0.959429233638722,,
+4,PubID_080,V02,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,2360362,7199438,0.327853646354063,,
+5,PubID_080,V02,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-,57,2360362,2.41488381866849e-05,,
+6,PubID_080,V02,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO/GT8++KO-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO,42,57,0.736842105263158,,
+7,PubID_080,V02,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,1251714,7199438,0.173862737619242,,
+8,PubID_080,V02,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/BB515vsBV711,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,1237123,1251714,0.988343183826337,,
+9,PubID_080,V02,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,1242458,1251714,0.992605339558397,,
+10,PubID_080,V02,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-/eODGT8Double+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-,18,1242458,1.44874112444847e-05,23.0,127.78
+11,PubID_080,V02,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,27,1251714,2.15704226364809e-05,,
+12,PubID_080,V02,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO/GT8++KO-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO,21,27,0.777777777777778,,

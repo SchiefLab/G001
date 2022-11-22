@@ -1,0 +1,13 @@
+,PTID,VISIT,INX_Population,Population,Parent,Count,ParentCount,proportion,INX_Number_Of_Cells,Percent_Sorted
+0,PubID_079,V10,Antigen-Specific,/Lymphocytes,root,2411249,2822241,0.854373882315507,,
+1,PubID_079,V10,Antigen-Specific,/Lymphocytes/Singlets,/Lymphocytes,2406717,2411249,0.998120476151571,,
+2,PubID_079,V10,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-,/Lymphocytes/Singlets,2339463,2406717,0.972055709084201,,
+3,PubID_079,V10,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,/Lymphocytes/Singlets/Live|Dump-,2265163,2339463,0.968240574866967,,
+4,PubID_079,V10,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,585099,2265163,0.258303265592807,,
+5,PubID_079,V10,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-,3156,585099,0.0053939589710459,,
+6,PubID_079,V10,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO/GT8++KO-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO,514,3156,0.162864385297845,,
+7,PubID_079,V10,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,337381,2265163,0.148943365223606,,
+8,PubID_079,V10,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,332202,337381,0.984649402307777,,
+9,PubID_079,V10,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-/eODGT8Double+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-,291,332202,0.0008759730525403,238.0,81.79
+10,PubID_079,V10,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,2215,337381,0.0065652778312945,,
+11,PubID_079,V10,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO/GT8++KO-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO,293,2215,0.132279909706546,,

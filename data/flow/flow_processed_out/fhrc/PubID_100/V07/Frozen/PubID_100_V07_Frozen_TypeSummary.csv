@@ -1,0 +1,13 @@
+,PTID,VISIT,INX_Population,Population,Parent,Count,ParentCount,proportion,INX_Number_Of_Cells,Percent_Sorted
+0,PubID_100,V07,Antigen-Specific,/Lymphocytes,root,1895101,2679561,0.707243089446368,,
+1,PubID_100,V07,Antigen-Specific,/Lymphocytes/Singlets,/Lymphocytes,1880307,1895101,0.99219355591074,,
+2,PubID_100,V07,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-,/Lymphocytes/Singlets,1791947,1880307,0.953007673746893,,
+3,PubID_100,V07,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,/Lymphocytes/Singlets/Live|Dump-,1662044,1791947,0.927507342572074,,
+4,PubID_100,V07,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,326422,1662044,0.196397929296697,,
+5,PubID_100,V07,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-,692,326422,0.0021199551500818,,
+6,PubID_100,V07,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO/GT8++KO-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO,304,692,0.439306358381503,,
+7,PubID_100,V07,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,201746,1662044,0.121384271415197,,
+8,PubID_100,V07,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,199318,201746,0.987965064982701,,
+9,PubID_100,V07,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-/eODGT8Double+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-,252,199318,0.0012643113015382,209.0,82.94
+10,PubID_100,V07,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,578,201746,0.0028649886490934,,
+11,PubID_100,V07,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO/GT8++KO-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO,253,578,0.437716262975779,,

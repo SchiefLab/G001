@@ -1,0 +1,14 @@
+,PTID,VISIT,Population,Parent,Count,ParentCount,proportion
+0,PubID_046,V08,/Lymphocytes,root,2315995,2857384,0.810529841281396
+1,PubID_046,V08,/Lymphocytes/Singlets,/Lymphocytes,2303046,2315995,0.994408882575308
+2,PubID_046,V08,/Lymphocytes/Singlets/Live|Dump-,/Lymphocytes/Singlets,2265891,2303046,0.983867017853747
+3,PubID_046,V08,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,/Lymphocytes/Singlets/Live|Dump-,2064694,2265891,0.911206231897298
+4,PubID_046,V08,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,615218,2064694,0.297970546725084
+5,PubID_046,V08,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-,1418,615218,0.0023048740446475
+6,PubID_046,V08,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO/GT8++KO-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO,373,1418,0.263046544428773
+7,PubID_046,V08,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,301592,2064694,0.146071040066954
+8,PubID_046,V08,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/BB515vsBV711,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,285833,301592,0.947747287726465
+9,PubID_046,V08,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,284719,301592,0.944053555797236
+10,PubID_046,V08,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-/eODGT8Double+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-,268,284719,0.0009412789452056
+11,PubID_046,V08,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,1208,301592,0.0040054112841189
+12,PubID_046,V08,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO/GT8++KO-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO,271,1208,0.224337748344371

@@ -1,0 +1,11 @@
+,name,Population,Parent,Count,ParentCount,PTID,VISIT,TUBE,proportion,Min_Time,Max_Time
+0,PubID_185_V07A_01_003.fcs,/Lymphocytes,root,2369593,10000000,PubID_185,V07A,1,0.2369593,31.3999996185303,133641
+1,PubID_185_V07A_01_003.fcs,/Lymphocytes/Singlets,/Lymphocytes,2321090,2369593,PubID_185,V07A,1,0.979531084030042,31.3999996185303,133641
+2,PubID_185_V07A_01_003.fcs,/Lymphocytes/Singlets/Live|Dump-,/Lymphocytes/Singlets,597634,2321090,PubID_185,V07A,1,0.257479890913321,31.3999996185303,133641
+3,PubID_185_V07A_01_003.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo,/Lymphocytes/Singlets/Live|Dump-,12303,597634,PubID_185,V07A,1,0.0205861781625543,31.3999996185303,133641
+4,PubID_185_V07A_01_003.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo,433,12303,PubID_185,V07A,1,0.0351946679671625,31.3999996185303,133641
+5,PubID_185_V07A_01_003.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-IgG+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi,23,433,PubID_185,V07A,1,0.0531177829099307,31.3999996185303,133641
+6,PubID_185_V07A_01_003.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-IgG+/eODKO11-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-IgG+,23,23,PubID_185,V07A,1,1.0,31.3999996185303,133641
+7,PubID_185_V07A_01_003.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-IgG+/eODKO11-/eODGT8Double+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-IgG+/eODKO11-,0,23,PubID_185,V07A,1,0.0,31.3999996185303,133641
+8,PubID_185_V07A_01_003.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-IgG+/GT8++noKO,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-IgG+,0,23,PubID_185,V07A,1,0.0,31.3999996185303,133641
+9,PubID_185_V07A_01_003.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-IgG+/GT8++noKO/GT8++KO-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-IgG+/GT8++noKO,0,0,PubID_185,V07A,1,0.0,31.3999996185303,133641

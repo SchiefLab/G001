@@ -1,0 +1,14 @@
+,name,Population,Parent,Count,ParentCount,PTID,VISIT,TUBE,proportion,Min_Time,Max_Time
+0,PubID_193_V07_01_002.fcs,/Lymphocytes,root,3556595,4433624,PubID_193,V07,1,0.802186879176042,52,145309.203125
+1,PubID_193_V07_01_002.fcs,/Lymphocytes/Singlets,/Lymphocytes,3546039,3556595,PubID_193,V07,1,0.99703199267839,52,145309.203125
+2,PubID_193_V07_01_002.fcs,/Lymphocytes/Singlets/Live|Dump-,/Lymphocytes/Singlets,3408152,3546039,PubID_193,V07,1,0.961115204880713,52,145309.203125
+3,PubID_193_V07_01_002.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,/Lymphocytes/Singlets/Live|Dump-,3195239,3408152,PubID_193,V07,1,0.937528314464848,52,145309.203125
+4,PubID_193_V07_01_002.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,275657,3195239,PubID_193,V07,1,0.086271167821875,52,145309.203125
+5,PubID_193_V07_01_002.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,236254,275657,PubID_193,V07,1,0.857057865390685,52,145309.203125
+6,PubID_193_V07_01_002.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-/eODGT8Double+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/eODKO11-,62,236254,PubID_193,V07,1,0.0002624294191844,52,145309.203125
+7,PubID_193_V07_01_002.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/BB515vsBV711,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,224366,275657,PubID_193,V07,1,0.813931806556699,52,145309.203125
+8,PubID_193_V07_01_002.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+,189,275657,PubID_193,V07,1,0.0006856346836829,52,145309.203125
+9,PubID_193_V07_01_002.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO/GT8++KO-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-IgG+/GT8++noKO,39,189,PubID_193,V07,1,0.206349206349206,52,145309.203125
+10,PubID_193_V07_01_002.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+,586827,3195239,PubID_193,V07,1,0.183656684210477,52,145309.203125
+11,PubID_193_V07_01_002.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-,277,586827,PubID_193,V07,1,0.0004720300872318,52,145309.203125
+12,PubID_193_V07_01_002.fcs,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO/GT8++KO-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20+/IgD-/GT8++noKO,80,277,PubID_193,V07,1,0.288808664259928,52,145309.203125

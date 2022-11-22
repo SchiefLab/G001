@@ -1,0 +1,17 @@
+,PTID,VISIT,INX_Population,Population,Parent,Count,ParentCount,proportion,INX_Number_Of_Cells,Percent_Sorted
+0,PubID_036,V05,Bulk,/Lymphocytes,root,34567,72061,0.479690817501839,,
+1,PubID_036,V05,Bulk,/Lymphocytes/Singlets,/Lymphocytes,34532,34567,0.99898747360199,,
+2,PubID_036,V05,Bulk,/Lymphocytes/Singlets/CD14-CD3+,/Lymphocytes/Singlets,10911,34532,0.315967797984478,,
+3,PubID_036,V05,Bulk,/Lymphocytes/Singlets/CD14-CD3+/CD19-CD4+,/Lymphocytes/Singlets/CD14-CD3+,8628,10911,0.790761616717075,,
+4,PubID_036,V05,Bulk,/Lymphocytes/Singlets/CD14-CD3+/CD19-CD4+/CXCR5hiPD1hi,/Lymphocytes/Singlets/CD14-CD3+/CD19-CD4+,186,8628,0.021557719054242,,
+5,PubID_036,V05,Bulk,/Lymphocytes/Singlets/CD14-CD3+/CD19-CD4+/CXCR5hiPD1hi/CD45RO+,/Lymphocytes/Singlets/CD14-CD3+/CD19-CD4+/CXCR5hiPD1hi,0,186,0.0,,
+6,PubID_036,V05,Bulk,/Lymphocytes/Singlets/Live|CD14-CD3-,/Lymphocytes/Singlets,22298,34532,0.645719911965713,,
+7,PubID_036,V05,Bulk,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+,/Lymphocytes/Singlets/Live|CD14-CD3-,7178,22298,0.321912279128173,,
+8,PubID_036,V05,Bulk,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+,3029,7178,0.421983839509613,,
+9,PubID_036,V05,Bulk,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-/CD20hiCD38hi,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-,643,3029,0.212281280950809,,
+10,PubID_036,V05,Bulk,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-/CD20hiCD38hi/GT8++noKO,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-/CD20hiCD38hi,46,643,0.0715396578538103,,
+11,PubID_036,V05,Bulk,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+,1101,7178,0.153385344106994,,
+12,PubID_036,V05,Bulk,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+/CD20hiCD38hi,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+,184,1101,0.167120799273388,170.0,92.39
+13,PubID_036,V05,Bulk,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+/CD20hiCD38hi/eODKO11-,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+/CD20hiCD38hi,183,184,0.994565217391304,,
+14,PubID_036,V05,Bulk,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+/CD20hiCD38hi/eODKO11-/eODGT8Double+,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+/CD20hiCD38hi/eODKO11-,25,183,0.136612021857924,,
+15,PubID_036,V05,Bulk,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+/CD20hiCD38hi/GT8++noKO,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+/CD20hiCD38hi,26,184,0.141304347826087,,
