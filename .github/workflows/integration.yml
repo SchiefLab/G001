@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: bash -l {0} # this is necessary to use the shell paths that ocnda setups
+        shell: bash -l {0} # this is necessary to use the shell paths that conda setups
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2

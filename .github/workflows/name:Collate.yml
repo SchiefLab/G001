@@ -1,0 +1,30 @@
+name: Collate
+on:
+  push:
+    branches: [main]
+    tags:
+      - "*"
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0} # this is necessary to use the shell paths that conda setups
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Setup Env and Test
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          miniconda-version: "latest"
+          environment-file: environment_cross_platform.yml
+          activate-environment: G001
+          auto-activate-base: false
+      - run: |
+          conda install pytest
+          pip install -e .
+      - name: Test Colalte
+        run: pytest -x -s --log-cli-level INFO tests/integration/test_collate_integration.py
