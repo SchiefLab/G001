@@ -100,22 +100,35 @@ class RScript:
         ]
         self.__run_cmd(cmd)
 
-    def collate_flow(self, fhcrc_manifest: Path | str, vrc_manifest: Path | str, flow_output_dir: Path | str) -> None:
+    def collate_flow(
+        self,
+        fhcrc_manifest: Path | str,
+        vrc_manifest: Path | str,
+        flow_processed_dir: Path | str,
+        collated_output_dir: Path | str,
+    ) -> None:
         """Collate Flow
 
         Parameters
         ----------
+        fhcrc_manifest : Path | str
+            Path to the FHCRC manifest
+        vrc_manifest : Path | str
+            Path to the VRC manifest
+        flow_processed_dir : Path | str
+            Path to the directory containing the flow data for FHCRC and VRC
         collate_output_dir : Path | str
             Path to the directory where the collated flow data will be written
         """
-        flow_output_dir = Path(flow_output_dir)
-        if not flow_output_dir.exists():
-            raise ValueError(f"collate_output_dir {flow_output_dir} does not exist")
+        flow_processed_dir = Path(flow_processed_dir)
+        if not flow_processed_dir.exists():
+            raise ValueError(f"flow_processed_dir {flow_processed_dir} does not exist")
         cmd = [
             "Rscript",
             str(self.rpath / "Collate_Flow_Data.R"),
             str(fhcrc_manifest),
             str(vrc_manifest),
-            str(flow_output_dir),
+            str(flow_processed_dir),
+            str(collated_output_dir),
         ]
         self.__run_cmd(cmd)
