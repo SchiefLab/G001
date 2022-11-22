@@ -170,7 +170,7 @@ manually_adj_gates <- function(ws_in, IgD_color_in, visit_in) {
   if (any(gates_here == "Live|CD14-CD3+"))
     ws_in <- singel_gate_fix(ws_in, "Live|CD14-CD3+", color_in = 'G660-A')
   if (any(gates_here == "CD14-CD3+"))
-    ws_in <- singel_gate_fix(ws_in, "CD14-CD3+", color_in = 'G660-A')
+    ws_in <- singel_gate_fix(ws_in, "CD14-CD3+", color_in = 'B660-A')
 
 
   # Adding new gates for IgD- cells

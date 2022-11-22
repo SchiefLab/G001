@@ -45,7 +45,7 @@ if (!interactive()) {
 print(paste("Processing",key,"flow data"))
 print(paste("Reading",key,"manifest"))
 read_manifest <- function(x){
-  read.csv(x)
+  read.csv(x, na.strings = c(NA,''))
 }
 
 # fh_manifest <- "sample_manifests/Flow/FHCRC/FHCRC_Flow_Manifest_20191121.xls"
@@ -237,6 +237,7 @@ if (any(!(flow_manifest$File %in% files_df$basename))) {
 
 # Adding path to manifest and writing out and saving
 flow_manifest_w_paths <- flow_manifest %>%
+  rename(Path_short = Path) %>%
   left_join(files_df, by = c('File' = 'basename', 'EXPERIMENT_NAME')) %>%
   # dropping junk file type
   filter(FileType %in% c('.fcs','.xml','.csv'))
@@ -454,13 +455,13 @@ for (i in 1:nrow(run_exp_id_vis)) {
 
   # linking the experiment and index names ------------------------------------------------------
   inx_to_link <- tibble(inx_name = basename(index_files)) %>%
-    separate(inx_name, into = c("PTID", "INX","VISIT", "TUBE", "TUBE2"),
+    separate(inx_name, into = c("PTID1", "PTID2", "INX","VISIT", "TUBE", "TUBE2"),
              remove = FALSE, extra = 'drop', sep = "_") %>%
     select(inx_name, TUBE, TUBE2, VISIT)
   # left_join(fcs_times, by = c('inx_name' = 'diva_name'))
 
   exp_to_link <- tibble(exp_name = basename(experiment_files)) %>%
-    separate(exp_name, into = c("PTID","VISIT", "TUBE", "TUBE2"),
+    separate(exp_name, into = c("PTID1", "PTID2","VISIT", "TUBE", "TUBE2"),
              remove = FALSE, extra = 'drop', sep = "_") %>%
     mutate(TUBE2 = TUBE2 %>% str_replace('.fcs', '')) %>%
     select(exp_name, TUBE, TUBE2, VISIT)
@@ -529,6 +530,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
                                        na.omit(fcs_files_linked$inx_name)),
                             worksheet = 'global',
                             scale_level = scale_param,
+                            emptyValue = FALSE,
                             truncate_max_range = FALSE)
       )
   } else {
@@ -539,6 +541,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
                             subset = need_local_gates[current_exp == names(need_local_gates)],
                             worksheet = 'normal',
                             scale = scale_param,
+                            emptyValue = FALSE,
                             truncate_max_range = FALSE)
       )
     # gate_exp_global <- manually_adj_gates(gate_exp_global,
@@ -604,9 +607,11 @@ for (i in 1:nrow(run_exp_id_vis)) {
     gs_pop_get_count_fast(experimental_samples_global) %>%
     dplyr::filter(!grepl("INX", name)) %>%
     dplyr::mutate(tosplit = name) %>%
-    separate(tosplit, into = c("PTID", "VISIT", "TUBE"), sep = "_", extra = 'drop') %>%
-    dplyr::mutate(proportion = Count / ParentCount,
+    separate(tosplit, into = c("PTID1","PTID2", "VISIT", "TUBE"), sep = "_", extra = 'drop') %>%
+    dplyr::mutate(PTID = paste0(PTID1,'_',PTID2),
+                  proportion = Count / ParentCount,
                   proportion = ifelse(is.nan(proportion), 0, proportion)) %>%
+    dplyr::select(-PTID1,PTID2) %>%
     full_join(exp_time, by = 'name')
 
 
@@ -686,8 +691,9 @@ for (i in 1:nrow(run_exp_id_vis)) {
                       run_inx_stats_fun) %>%
       dplyr::filter(!grepl("INX", name)) %>%
       dplyr::mutate(tosplit = name) %>%
-      separate(tosplit, into = c("PTID", "VISIT", "TUBE"), sep = "_", extra = 'drop') %>%
-      dplyr::mutate(proportion = Count / ParentCount,
+      separate(tosplit, into = c("PTID1","PTID2", "VISIT", "TUBE"), sep = "_", extra = 'drop') %>%
+      dplyr::mutate(PTID = paste0(PTID1,'_',PTID2),
+                    proportion = Count / ParentCount,
                     proportion = ifelse(is.nan(proportion), 0, proportion)) %>%
       left_join(current_manifest %>% select(PTID:File, INX_Population:INX_Number_Of_Cells),
                 by = c('PTID', 'VISIT' = 'Visit', 'INX_File' = 'File')) %>%
@@ -703,6 +709,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
         ),
         Percent_Sorted = round(INX_Number_Of_Cells / Count * 100, 2)
       ) %>%
+      dplyr::select(-PTID1,PTID2) %>%
       arrange(Min_Time, INX_Population)
 
 
