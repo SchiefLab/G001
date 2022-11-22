@@ -101,7 +101,7 @@ g001 process-flow -s VRC -m VRC_manifest_file.csv -i flow_input/vrc/
 The following will combine the VRC and FHCRC flow data.
 
 ```bash
-g001 collate -f data/flow/processed_flow/
+g001 collate -f data/flow/flow_processed_out
 
 # output will be in data/flow/processed_flow/Combined_Flow/
 ```
