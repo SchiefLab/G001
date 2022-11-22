@@ -268,7 +268,7 @@ class FigureDataPaths(BaseModel):
 
 class FlowDataPaths(BaseModel):
     base_path: Path = Path("data/flow")
-    processed_flow_path: Path = base_path / Path("processed_flow")
+    processed_flow_path: Path = base_path / Path("flow_processed_out")
 
     @validator("*", always=True)
     def validate_paths(cls, v: Path):

@@ -1,0 +1,15 @@
+,PTID,VISIT,Population,Parent,Count,ParentCount,proportion
+0,PubID_051,V05,/Lymphocytes,root,767570,919647,0.834635463389757
+1,PubID_051,V05,/Lymphocytes/Singlets,/Lymphocytes,765691,767570,0.997552014799953
+2,PubID_051,V05,/Lymphocytes/Singlets/CD14-CD3+,/Lymphocytes/Singlets,611057,765691,0.798046470443038
+3,PubID_051,V05,/Lymphocytes/Singlets/CD14-CD3+/CD19-CD4+,/Lymphocytes/Singlets/CD14-CD3+,445104,611057,0.728416497969911
+4,PubID_051,V05,/Lymphocytes/Singlets/CD14-CD3+/CD19-CD4+/CXCR5hiPD1hi,/Lymphocytes/Singlets/CD14-CD3+/CD19-CD4+,1976,445104,0.0044394119127215
+5,PubID_051,V05,/Lymphocytes/Singlets/CD14-CD3+/CD19-CD4+/CXCR5hiPD1hi/CD45RO+,/Lymphocytes/Singlets/CD14-CD3+/CD19-CD4+/CXCR5hiPD1hi,1,1976,0.0005060728744939
+6,PubID_051,V05,/Lymphocytes/Singlets/Live|CD14-CD3-,/Lymphocytes/Singlets,136513,765691,0.178287324782451
+7,PubID_051,V05,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+,/Lymphocytes/Singlets/Live|CD14-CD3-,55229,136513,0.404569528176804
+8,PubID_051,V05,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+,25262,55229,0.457404624382118
+9,PubID_051,V05,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-/CD20hiCD38hi,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-,5566,25262,0.220330931834376
+10,PubID_051,V05,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+,12023,55229,0.217693602998425
+11,PubID_051,V05,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+/CD20hiCD38hi,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+,2432,12023,0.202278965316477
+12,PubID_051,V05,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+/CD20hiCD38hi/eODKO11-,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+/CD20hiCD38hi,2200,2432,0.904605263157895
+13,PubID_051,V05,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+/CD20hiCD38hi/eODKO11-/eODGT8Double+,/Lymphocytes/Singlets/Live|CD14-CD3-/CD19+CD20+/IgD-IgG+/CD20hiCD38hi/eODKO11-,768,2200,0.349090909090909

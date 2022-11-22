@@ -1,0 +1,11 @@
+,PTID,VISIT,INX_Population,Population,Parent,Count,ParentCount,proportion,INX_Number_Of_Cells,Percent_Sorted
+0,PubID_064,V07A,Antigen-Specific,/Lymphocytes,root,5020003,17330699,0.289659580378149,,
+1,PubID_064,V07A,Antigen-Specific,/Lymphocytes/Singlets,/Lymphocytes,4966536,5020003,0.989349209552265,,
+2,PubID_064,V07A,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-,/Lymphocytes/Singlets,1077304,4966536,0.216912552330236,,
+3,PubID_064,V07A,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo,/Lymphocytes/Singlets/Live|Dump-,663065,1077304,0.615485508268789,,
+4,PubID_064,V07A,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo,9330,663065,0.0140710186784101,,
+5,PubID_064,V07A,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi,8792,9330,0.942336548767417,,
+6,PubID_064,V07A,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-/eODKO11-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-,6182,8792,0.703139217470428,,
+7,PubID_064,V07A,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-/eODKO11-/eODGT8Double+,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-/eODKO11-,325,6182,0.0525719831769654,262.0,80.62
+8,PubID_064,V07A,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-/GT8++noKO,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-,2313,8792,0.263080072793449,,
+9,PubID_064,V07A,Antigen-Specific,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-/GT8++noKO/GT8++KO-,/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-/GT8++noKO,325,2313,0.140510159965413,,
