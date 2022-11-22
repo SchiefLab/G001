@@ -204,12 +204,12 @@ def collate(
 ) -> None:
     """Collated Flow Data from sites FHCRC & VRC"""
     data = ctx.obj["data"]
-    if not fhcrc_manifest:
-        fhcrc_manifest = data.flow_data_paths.processed_flow_path / Path("fhrc/fhcrc_manifest.csv")
-    if not vrc_manifest:
-        vrc_manifest = data.flow_data_paths.processed_flow_path / Path("vrc/vrc_manifest.csv")
     if not flow_output_dir:
         flow_output_dir = data.get_processed_flow_paths()
+    if not fhcrc_manifest:
+        fhcrc_manifest = flow_output_dir / Path("fhrc/fhcrc_manifest.csv")
+    if not vrc_manifest:
+        vrc_manifest = flow_output_dir / Path("vrc/vrc_manifest.csv")
     RScript(verbose=verbose).collate_flow(
         fhcrc_manifest=fhcrc_manifest,
         vrc_manifest=vrc_manifest,
