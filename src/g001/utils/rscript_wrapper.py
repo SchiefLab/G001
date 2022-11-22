@@ -98,6 +98,7 @@ class RScript:
             str(force_overwrite_output_dir),
             str(flow_output_dir),
         ]
+        print("Running...\n", " ".join(cmd))
         self.__run_cmd(cmd)
 
     def collate_flow(

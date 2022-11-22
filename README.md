@@ -67,7 +67,11 @@ cd G001
 
 # activate environment
 conda activate G001
+```
 
+Optional - If you'd like to run the figure generation code, you must pull the large input files using `git-lfs`.
+
+```bash
 # initialize git-lfs
 git-lfs install
 
