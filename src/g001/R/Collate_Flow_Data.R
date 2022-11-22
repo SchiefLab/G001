@@ -13,6 +13,8 @@ library(wCorr)
 fhcrc_manifest_path <- args[1]
 vrc_manifest_path <- args[2]
 flow_path <- args[3]
+output_path <- args[4]
+
 
 # Loading in manifest -------------------------------------------------------------------------
 # fhcrc_manifest <- read_csv(file.path(flow_path, "fhrc/fhcrc_manifest.csv"), col_select = -1)
@@ -242,25 +244,25 @@ qc_combined <- full_join(
 
 #string detect needs fhcrc and vrc specisl
 
-dir.create(file.path(flow_path, 'Combined_Results'), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(output_path), recursive = TRUE, showWarnings = FALSE)
 
-write_csv(flow_data_by_inx_files %>% filter(Site == 'fhrc'), file.path(flow_path, 'Combined_Results','FHCRC_Flow_Results_by_Index_File.csv'), na = '')
-write_csv(flow_data_by_type %>% filter(Site == 'fhrc'), file.path(flow_path, 'Combined_Results','FHCRC_Flow_Results_by_Bulk_Antigen_Specific.csv'), na = '')
+write_csv(flow_data_by_inx_files %>% filter(Site == 'fhrc'), file.path(output_path,'FHCRC_Flow_Results_by_Index_File.csv'), na = '')
+write_csv(flow_data_by_type %>% filter(Site == 'fhrc'), file.path(output_path,'FHCRC_Flow_Results_by_Bulk_Antigen_Specific.csv'), na = '')
 
-write_csv(flow_data_by_file %>% filter(Site == 'fhrc'), file.path(flow_path, 'Combined_Results','FHCRC_Flow_Results_by_Experiment.csv'), na = '')
-write_csv(flow_data_by_PTID %>% filter(Site == 'fhrc'), file.path(flow_path, 'Combined_Results','FHCRC_Flow_Results_by_PTID_Visit.csv'), na = '')
+write_csv(flow_data_by_file %>% filter(Site == 'fhrc'), file.path(output_path,'FHCRC_Flow_Results_by_Experiment.csv'), na = '')
+write_csv(flow_data_by_PTID %>% filter(Site == 'fhrc'), file.path(output_path,'FHCRC_Flow_Results_by_PTID_Visit.csv'), na = '')
 
-write_csv(qc_combined %>% filter(Site == 'fhrc'), file.path(flow_path, 'Combined_Results','FHCRC_QC_Concordance.csv'), na = '')
+write_csv(qc_combined %>% filter(Site == 'fhrc'), file.path(output_path,'FHCRC_QC_Concordance.csv'), na = '')
 
 
 
-write_csv(flow_data_by_inx_files %>% filter(Site == 'vrc'), file.path(flow_path, 'Combined_Results','VRC_Flow_Results_by_Index_File.csv'), na = '')
-write_csv(flow_data_by_type %>% filter(Site == 'vrc'), file.path(flow_path, 'Combined_Results','VRC_Flow_Results_by_Bulk_Antigen_Specific.csv'), na = '')
+write_csv(flow_data_by_inx_files %>% filter(Site == 'vrc'), file.path(output_path,'VRC_Flow_Results_by_Index_File.csv'), na = '')
+write_csv(flow_data_by_type %>% filter(Site == 'vrc'), file.path(output_path,'VRC_Flow_Results_by_Bulk_Antigen_Specific.csv'), na = '')
 
-write_csv(flow_data_by_file %>% filter(Site == 'vrc'), file.path(flow_path, 'Combined_Results','VRC_Flow_Results_by_Experiment.csv'), na = '')
-write_csv(flow_data_by_PTID %>% filter(Site == 'vrc'), file.path(flow_path, 'Combined_Results','VRC_Flow_Results_by_PTID_Visit.csv'), na = '')
+write_csv(flow_data_by_file %>% filter(Site == 'vrc'), file.path(output_path,'VRC_Flow_Results_by_Experiment.csv'), na = '')
+write_csv(flow_data_by_PTID %>% filter(Site == 'vrc'), file.path(output_path,'VRC_Flow_Results_by_PTID_Visit.csv'), na = '')
 
-write_csv(qc_combined %>% filter(Site == 'vrc'), file.path(flow_path, 'Combined_Results','VRC_QC_Concordance.csv'), na = '')
+write_csv(qc_combined %>% filter(Site == 'vrc'), file.path(output_path,'VRC_QC_Concordance.csv'), na = '')
 
 
 
@@ -424,7 +426,7 @@ final_flow_data <- flow_data_by_PTID %>%
 
 
 write_csv(final_flow_data,
-          file.path(flow_path, 'Combined_Results',
+          file.path(output_path,
                     'Wide_Flow_Data_to_Merge.csv'),
           na = '')
 
@@ -536,7 +538,7 @@ final_flow_data_by_type <- flow_data_by_type %>%
 
 
 write_csv(final_flow_data_by_type,
-          file.path(flow_path, 'Combined_Results',
+          file.path(output_path,
                     'Wide_Flow_Data_by_Type_to_Merge.csv'),
           na = '')
 
