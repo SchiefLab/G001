@@ -153,7 +153,7 @@ def process_flow(
     if not Path(flow_output_dir).exists():
         Path(flow_output_dir).mkdir()
     RScript(verbose=verbose).flow_processing(
-        gate=site,
+        site=site,
         manifest=manifest,
         flow_input_dir=flow_input_dir,
         flow_output_dir=flow_output_dir,
@@ -172,6 +172,22 @@ def process_flow(
     help="Prints final command that was run to console",
 )
 @click.option(
+    "--fhcrc-manifest",
+    "-1",
+    type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
+    required=False,
+    show_default=True,
+    help="Path to read the flow manifest for specified site",
+)
+@click.option(
+    "--vrc-manifest",
+    "-2",
+    type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
+    required=False,
+    show_default=True,
+    help="Path to read the flow manifest for specified site",
+)
+@click.option(
     "--flow-output-dir",
     "-f",
     type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=False),
@@ -182,14 +198,22 @@ def process_flow(
 def collate(
     ctx: click.Context,
     verbose: bool,
+    fhcrc_manifest: Path | str,
+    vrc_manifest: Path | str,
     flow_output_dir: Path | str,
 ) -> None:
-    """ """
+    """Collated Flow Data from sites FHCRC & VRC"""
+    data = ctx.obj["data"]
+    if not fhcrc_manifest:
+        fhcrc_manifest = data.flow_data_paths.processed_flow_path / Path("fhrc/fhcrc_manifest.csv")
+    if not vrc_manifest:
+        vrc_manifest = data.flow_data_paths.processed_flow_path / Path("vrc/vrc_manifest.csv")
     if not flow_output_dir:
-        data = ctx.obj["data"]
         flow_output_dir = data.get_processed_flow_paths()
     RScript(verbose=verbose).collate_flow(
-        collate_output_dir=flow_output_dir,
+        fhcrc_manifest=fhcrc_manifest,
+        vrc_manifest=vrc_manifest,
+        flow_output_dir=flow_output_dir,
     )
 
 
