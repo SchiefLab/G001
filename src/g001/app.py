@@ -200,7 +200,7 @@ def process_flow(
     "-o",
     type=click.Path(dir_okay=True, readable=True, exists=False, resolve_path=False),
     required=False,
-    default="Combined_Flow",
+    default="collated_flow",
     help="Output path for the collated flow data",
 )
 def collate(
@@ -222,10 +222,89 @@ def collate(
     if not Path(collated_output_dir).exists():
         Path(collated_output_dir).mkdir()
     RScript(verbose=verbose).collate_flow(
-        fhcrc_manifest=fhcrc_manifest,
-        vrc_manifest=vrc_manifest,
-        flow_processed_dir=flow_processed_dir,
-        collated_output_dir=collated_output_dir,
+        fhcrc_manifest=Path(fhcrc_manifest),
+        vrc_manifest=Path(vrc_manifest),
+        flow_processed_dir=Path(flow_processed_dir),
+        collated_output_dir=Path(collated_output_dir),
+    )
+
+
+@main.command("combine")
+@click.pass_context
+@click.option(
+    "--verbose",
+    "-v",
+    is_flag=True,
+    required=False,
+    default=False,
+    help="Prints final command that was run to console",
+)
+@click.option(
+    "--fhcrc-manifest",
+    "-1",
+    type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
+    required=False,
+    show_default=True,
+    help="Path to read the flow manifest for specified site",
+)
+@click.option(
+    "--vrc-manifest",
+    "-2",
+    type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
+    required=False,
+    show_default=True,
+    help="Path to read the flow manifest for specified site",
+)
+@click.option(
+    "--seq-dir",
+    "-s",
+    type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=False),
+    required=False,
+    default=None,
+    help="Path to the processed flow directory containing both FHCRC and VRC data",
+)
+@click.option(
+    "--collated-output-dir",
+    "-c",
+    type=click.Path(dir_okay=True, readable=True, exists=False, resolve_path=False),
+    required=False,
+    default="collated_flow",
+    help="Output path for the collated flow data",
+)
+@click.option(
+    "--combined-output-dir",
+    "-o",
+    type=click.Path(dir_okay=True, readable=True, exists=False, resolve_path=False),
+    required=False,
+    default="combined_flow_seq",
+    help="Output path containing the combined flow data and sequence data",
+)
+def collate(
+    ctx: click.Context,
+    verbose: bool,
+    fhcrc_manifest: Path,
+    vrc_manifest: Path,
+    seq_dir: Path,
+    collated_output_dir: Path,
+    combined_output_dir: Path,
+) -> None:
+    """Collated Flow Data from sites FHCRC & VRC"""
+    data = ctx.obj["data"]
+    flow_processed_dir = data.get_processed_flow_paths()
+    if not fhcrc_manifest:
+        fhcrc_manifest = flow_processed_dir / Path("fhrc/fhcrc_manifest.csv")
+    if not vrc_manifest:
+        vrc_manifest = flow_processed_dir / Path("vrc/vrc_manifest.csv")
+    if not seq_dir:
+        seq_dir = data.sequence_data_paths.base_sequence_path
+    if not Path(combined_output_dir).exists():
+        Path(combined_output_dir).mkdir()
+    RScript(verbose=verbose).combine_data_seq(
+        fhcrc_manifest=Path(fhcrc_manifest),
+        vrc_manifest=Path(vrc_manifest),
+        seq_dir=Path(seq_dir),
+        collated_output_dir=Path(collated_output_dir),
+        combined_output_dir=Path(combined_output_dir),
     )
 
 
