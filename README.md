@@ -104,10 +104,10 @@ The following will combine the VRC and FHCRC flow data.
 ```bash
 # Dyanmic input and outputs
 g001 collate \
-  --fhcrc-manifest fhcrc_manifest.csv --vrc-manifest vrc_manifest.csv -f data/flow/flow_processed_out/ \
-  -o combined_results 
+  --fhcrc-manifest flow_input/fhcrc/fhcrc_manifest.csv --vrc-manifest flow_input/vrc/vrc_manifest.csv -f data/flow/flow_processed_out/ \
+  -o collated_flow 
 # Use default inputs from ./install.sh and specify output
-g001 collate -o combined_results
+g001 collate -o collated_flow
 ```
 
 ## BCR sequence analysis
@@ -125,7 +125,12 @@ This code combines the sequencing and flow processing results and computes B cel
 As above, we are working to upgrade the code to work on deidentified data. Please check back for updates. In the meantime, we are providing deidentified versions of the output of the original code which can be found [here](data/figures/flow_summary/flow_and_sequences.csv.gz).
 
 ```bash
-Rscript src/g001/R/Combine_Flow_and_Seq_Results.R data/sequence data/flow/collated_flow
+# Dyanmic input and outputs
+g001 combine \
+  --fhcrc-manifest flow_input/fhcrc/fhcrc_manifest.csv --vrc-manifest flow_input/vrc/vrc_manifest.csv -s data/sequence \
+  -c collated_flow -o combined_flow_seq
+# Use default inputs from ./install.sh and specify output
+g001 collate -c collated_flow -o combined_flow_seq
 ```
 
 ## Figures
