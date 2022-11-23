@@ -1,7 +1,7 @@
 # The IAVI G001 Clinical Trial Repository
 
 [![Sequence Analysis Pipeline](https://github.com/SchiefLab/G001/workflows/Sequence%20Analysis%20Pipeline/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/integration.yml)
-[![Collate](https://github.com/SchiefLab/G001/actions/workflows/name:Collate.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/name:Collate.yml)
+[![Collate](https://github.com/SchiefLab/G001/actions/workflows/collate_combine.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/collate_combine.yml)
 [![Sequence and Flow Combine](https://github.com/SchiefLab/G001/actions/workflows/combine.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/combine.yml)
 [![DOI](https://zenodo.org/badge/517925817.svg)](https://zenodo.org/badge/latestdoi/517925817)
 
