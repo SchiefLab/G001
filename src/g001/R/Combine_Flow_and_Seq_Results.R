@@ -1,21 +1,24 @@
 #' Combine processed flow and sequence data
 args = commandArgs(trailingOnly = TRUE);
 
-library(MIMOSA)
-library(data.table)
-library(tidyr)
-library(purrr)
-library(readr)
-library(stringr)
-library(forcats)
-library(readxl)
-library(arrow)
-library(here)
-library(dplyr)
+library(MIMOSA, warn.conflicts = FALSE)
+library(data.table, warn.conflicts = FALSE)
+library(tidyr, warn.conflicts = FALSE)
+library(purrr, warn.conflicts = FALSE)
+library(readr, warn.conflicts = FALSE)
+library(stringr, warn.conflicts = FALSE)
+library(forcats, warn.conflicts = FALSE)
+library(readxl, warn.conflicts = FALSE)
+library(arrow, warn.conflicts = FALSE)
+library(here, warn.conflicts = FALSE)
+library(dplyr, warn.conflicts = FALSE)
 
-seq_path <- args[1]
-flow_path <- args[2]
-output_path <- args[3]
+fhcrc_manifest_path <- args[1]
+vrc_manifest_path <- args[2]
+seq_path <- args[3]
+collated_output_path <- args[4]
+output_path <- args[5]
+
 
 # Sequence Data Loading and Setup -------------------------------------------------------------
 
@@ -111,30 +114,22 @@ seq_results <- seq_results_long %>%
 
 
 flow_data <- read_csv(file.path(
-  flow_path,
-  'Wide_Flow_Data_to_Merge.csv'
-)) %>%
+  collated_output_path,
+  'Wide_Flow_Data_to_Merge.csv'), show_col_types = FALSE) %>%
   rename(Visit = VISIT)
 
 
 flow_data_by_type <- read_csv(file.path(
-  flow_path,
-  'Wide_Flow_Data_by_Type_to_Merge.csv'
-)) %>%
+  collated_output_path,
+  'Wide_Flow_Data_by_Type_to_Merge.csv'), show_col_types = FALSE) %>%
   rename(Visit = VISIT)
 
 
 # Manifests -----------------------------------------------------------------------------------
 
 # Need all manifest index plate counts for QC
-fhcrc_flow_manifest <- read_csv(file.path(
-  'data','flow','flow_processed_out',
-  'fhrc',
-  'fhcrc_manifest.csv'), col_select = -1)
-vrc_flow_manifest <- read_csv(file.path(
-  'data','flow','flow_processed_out',
-  'vrc',
-  'vrc_manifest.csv'), col_select = -1) %>% 
+fhcrc_flow_manifest <- read_csv(file.path(fhcrc_manifest_path), col_select = -1, show_col_types = FALSE)
+vrc_flow_manifest <- read_csv(file.path(vrc_manifest_path), col_select = -1, show_col_types = FALSE) %>% 
   mutate(Tube = as.character(Tube))
 
 flow_manifest_long <- bind_rows(fhcrc_flow_manifest, vrc_flow_manifest) %>%
@@ -161,7 +156,7 @@ flow_manifest <- flow_manifest_long %>%
 #Getting treatment
 treat_path <- 'data/groups/G001treatment.csv'
 
-treat_info <- read_csv(treat_path, col_select = -1) %>% 
+treat_info <- read_csv(treat_path, col_select = -1, show_col_types = FALSE) %>% 
   rename(Site = site)
 
 
@@ -1153,7 +1148,7 @@ final_results_by_type <- combined_results_by_type %>%
 
 
 write_csv(final_results_by_type,
-          file.path(output_path,'Flow_Seq_Results_by_Plate_Type.csv'),
+          file.path(output_path, 'Flow_Seq_Results_by_Plate_Type.csv'),
           na = '')
 
 
