@@ -18,6 +18,7 @@ This repository includes data and code used to produce the manuscript Leggat, Co
   - [Combined B cell frequency and BCR sequence analysis](#combined-b-cell-frequency-and-bcr-sequence-analysis)
   - [Figures](#figures)
   - [Tables](#tables)
+  - [Testing For Development](#testing-for-development)
 
 # Data Access
 
@@ -159,4 +160,13 @@ The following code generates all supplementary tables in the Leggat et al manusc
 
 ```
 g001 supptables -c -o supp_tables
+```
+
+
+## Testing For Development
+
+```bash
+# Run all tests
+pip install -e '.[dev]'
+pytest -svv tests/ --order-scope-level=0
 ```
