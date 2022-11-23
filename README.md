@@ -136,7 +136,7 @@ g001 combine \
   --fhcrc-manifest flow_input/fhcrc/fhcrc_manifest.csv --vrc-manifest flow_input/vrc/vrc_manifest.csv -s data/sequence \
   -c collated_flow -o combined_flow_seq
 # Use default inputs from ./install.sh and specify output
-g001 collate -c collated_flow -o combined_flow_seq
+g001 combine -c collated_flow -o combined_flow_seq
 ```
 
 ## Figures
