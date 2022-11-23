@@ -1,8 +1,7 @@
 # The IAVI G001 Clinical Trial Repository
 
 [![Sequence Analysis Pipeline](https://github.com/SchiefLab/G001/workflows/Sequence%20Analysis%20Pipeline/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/integration.yml)
-[![Collate](https://github.com/SchiefLab/G001/actions/workflows/name:Collate.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/name:Collate.yml)
-[![Sequence and Flow Combine](https://github.com/SchiefLab/G001/actions/workflows/combine.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/combine.yml)
+[![Collate](https://github.com/SchiefLab/G001/actions/workflows/collate_combine.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/collate_combine.yml)
 [![DOI](https://zenodo.org/badge/517925817.svg)](https://zenodo.org/badge/latestdoi/517925817)
 
 This repository includes data and code used to produce the manuscript Leggat, Cohen, Willis, Fulp, deCamp et al. Science (2022). All data has been deidentified.
@@ -136,7 +135,7 @@ g001 combine \
   --fhcrc-manifest flow_input/fhcrc/fhcrc_manifest.csv --vrc-manifest flow_input/vrc/vrc_manifest.csv -s data/sequence \
   -c collated_flow -o combined_flow_seq
 # Use default inputs from ./install.sh and specify output
-g001 collate -c collated_flow -o combined_flow_seq
+g001 combine -c collated_flow -o combined_flow_seq
 ```
 
 ## Figures
