@@ -256,54 +256,55 @@ def collate(
     help="Path to read the flow manifest for specified site",
 )
 @click.option(
-    "--seq-dir",
+    "--sequence-dir",
     "-s",
-    type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=False),
+    type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=True),
     required=False,
-    default=None,
-    help="Path to the processed flow directory containing both FHCRC and VRC data",
+    show_default=True,
+    help="Path to read the sequencing data",
 )
 @click.option(
-    "--collated-output-dir",
+    "--collated-dir",
     "-c",
-    type=click.Path(dir_okay=True, readable=True, exists=False, resolve_path=False),
+    type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=True),
     required=False,
-    default="collated_flow",
-    help="Output path for the collated flow data",
+    show_default=True,
+    help="path to the collated directory",
 )
 @click.option(
     "--combined-output-dir",
     "-o",
-    type=click.Path(dir_okay=True, readable=True, exists=False, resolve_path=False),
+    type=click.Path(dir_okay=True, readable=True, exists=False, resolve_path=True),
     required=False,
-    default="combined_flow_seq",
-    help="Output path containing the combined flow data and sequence data",
+    default="combined_data",
 )
-def collate(
+def combine(
     ctx: click.Context,
     verbose: bool,
     fhcrc_manifest: Path,
     vrc_manifest: Path,
-    seq_dir: Path,
-    collated_output_dir: Path,
+    sequence_dir: Path,
+    collated_dir: Path,
     combined_output_dir: Path,
 ) -> None:
     """Collated Flow Data from sites FHCRC & VRC"""
-    data = ctx.obj["data"]
+    data: Data = ctx.obj["data"]
     flow_processed_dir = data.get_processed_flow_paths()
     if not fhcrc_manifest:
         fhcrc_manifest = flow_processed_dir / Path("fhrc/fhcrc_manifest.csv")
     if not vrc_manifest:
         vrc_manifest = flow_processed_dir / Path("vrc/vrc_manifest.csv")
-    if not seq_dir:
-        seq_dir = data.sequence_data_paths.base_sequence_path
+    if not sequence_dir:
+        sequence_dir = data.get_data_sequence_path()
+    if not collated_dir:
+        collated_dir = data.get_collated_data_path()
     if not Path(combined_output_dir).exists():
         Path(combined_output_dir).mkdir()
-    RScript(verbose=verbose).combine_data_seq(
+    RScript(verbose=verbose).combine_flow_and_sequence(
         fhcrc_manifest=Path(fhcrc_manifest),
         vrc_manifest=Path(vrc_manifest),
-        seq_dir=Path(seq_dir),
-        collated_output_dir=Path(collated_output_dir),
+        sequence_dir=Path(sequence_dir),
+        collated_dir=Path(collated_dir),
         combined_output_dir=Path(combined_output_dir),
     )
 

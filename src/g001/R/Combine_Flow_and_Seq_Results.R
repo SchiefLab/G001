@@ -216,7 +216,7 @@ combined_results <-
 
 
 write_csv(combined_results,
-          file.path('data', 'combined_results', 'Wide_Flow_Seq_Data.csv'), na = '')
+          file.path(output_path, 'Wide_Flow_Seq_Data.csv'), na = '')
 
 
 
@@ -520,7 +520,7 @@ final_results <- combined_results %>%
 
 
 write_csv(final_results,
-          file.path('data', 'combined_results', 'Flow_Seq_Results.csv'),
+          file.path(output_path, 'Flow_Seq_Results.csv'),
           na = '')
 
 
@@ -680,7 +680,7 @@ final_results_with_calls <- final_results %>%
     select(-contains('Population'), everything(), contains('Population'))
 
 write_csv(final_results_with_calls,
-          file.path('data', 'combined_results', 'Flow_Seq_Results_with_calls.csv'),
+          file.path(output_path,'Flow_Seq_Results_with_calls.csv'),
           na = '')
 
 
@@ -814,7 +814,7 @@ combined_results_by_type <-
 
 
 write_csv(combined_results_by_type,
-          file.path('data', 'combined_results', 'Wide_Flow_Seq_Data_by_Plate_Type.csv'),
+          file.path(output_path, 'Wide_Flow_Seq_Data_by_Plate_Type.csv'),
           na = '')
 
 

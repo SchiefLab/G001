@@ -2,6 +2,7 @@
 
 [![Sequence Analysis Pipeline](https://github.com/SchiefLab/G001/workflows/Sequence%20Analysis%20Pipeline/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/integration.yml)
 [![Collate](https://github.com/SchiefLab/G001/actions/workflows/name:Collate.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/name:Collate.yml)
+[![Sequence and Flow Combine](https://github.com/SchiefLab/G001/actions/workflows/combine.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/combine.yml)
 [![DOI](https://zenodo.org/badge/517925817.svg)](https://zenodo.org/badge/latestdoi/517925817)
 
 This repository includes data and code used to produce the manuscript Leggat, Cohen, Willis, Fulp, deCamp et al. Science (2022). All data has been deidentified.
@@ -17,6 +18,7 @@ This repository includes data and code used to produce the manuscript Leggat, Co
   - [Combined B cell frequency and BCR sequence analysis](#combined-b-cell-frequency-and-bcr-sequence-analysis)
   - [Figures](#figures)
   - [Tables](#tables)
+  - [Testing For Development](#testing-for-development)
 
 # Data Access
 
@@ -158,4 +160,13 @@ The following code generates all supplementary tables in the Leggat et al manusc
 
 ```
 g001 supptables -c -o supp_tables
+```
+
+
+## Testing For Development
+
+```bash
+# Run all tests
+pip install -e '.[dev]'
+pytest -svv tests/ --order-scope-level=0
 ```

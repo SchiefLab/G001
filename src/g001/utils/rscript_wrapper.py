@@ -138,12 +138,12 @@ class RScript:
         ]
         self.__run_cmd(cmd)
 
-    def combine_data_seq(
+    def combine_flow_and_sequence(
         self,
         fhcrc_manifest: Path,
         vrc_manifest: Path,
-        seq_dir: Path,
-        collated_output_dir: Path,
+        sequence_dir: Path,
+        collated_dir: Path,
         combined_output_dir: Path,
     ) -> None:
         """Combine Flow Data with Sequence Data
@@ -154,9 +154,9 @@ class RScript:
             Path to the FHCRC manifest
         vrc_manifest : Path | str
             Path to the VRC manifest
-        seq_dir : Path | str
+        sequence_dir : Path | str
             Path to the directory containing the sequence data
-        collate_output_dir : Path | str
+        collate_dir : Path | str
             Path to the directory where the collated flow data was be written
         combined_output_dir : Path | str
             Path to the directory where the combined data will be written
@@ -165,17 +165,17 @@ class RScript:
             raise ValueError(f"fhcrc_manifest {fhcrc_manifest} does not exist")
         if not vrc_manifest.exists():
             raise ValueError(f"vrc_manifest {vrc_manifest} does not exist")
-        if not collated_output_dir.exists():
-            raise ValueError(f"collated_output_dir {collated_output_dir} does not exist")
-        if not seq_dir.exists():
-            raise ValueError(f"sequence folder {seq_dir} does not exist")
+        if not collated_dir.exists():
+            raise ValueError(f"collated folder {collated_dir} does not exist")
+        if not sequence_dir.exists():
+            raise ValueError(f"sequence folder {sequence_dir} does not exist")
         cmd = [
             "Rscript",
             str(self.rpath / "Combine_Flow_and_Seq_Results.R"),
             str(fhcrc_manifest),
             str(vrc_manifest),
-            str(seq_dir),
-            str(collated_output_dir),
+            str(sequence_dir),
+            str(collated_dir),
             str(combined_output_dir),
         ]
         self.__run_cmd(cmd)

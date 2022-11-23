@@ -68,3 +68,5 @@ supp_tables/
 *.synctex.gz(busy)
 *.pdfsync
 
+combined_data/Flow_Seq_Results.csv
+combined_data/Wide_Flow_Seq_Data.csv

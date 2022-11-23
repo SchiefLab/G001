@@ -3,22 +3,28 @@ import pytest
 from g001.app import main
 
 
-@pytest.mark.order(1)
-def test_collate():
+@pytest.mark.order(2)
+def test_combine():
     """test collation directive"""
     runner = CliRunner()
     result = runner.invoke(
         main,
         [
-            "collate",
+            "combine",
+            "--verbose",
             "-1",
             "tests/data/manifests/FHCRC_Flow_Manifest.csv",
             "-2",
             "tests/data/manifests/VRC_Flow_Manifest.csv",
-            "-f",
-            "data/flow/flow_processed_out",
-            "-o",
+            "-s",
+            "data/sequence/",
+            "-c",
             "tests/data/flow/collated_flow/",
+            "-o",
+            "tests/data/flow/combined_data/",
         ],
     )
+    if result.exit_code != 0:
+        print(result.output)
+        print(result.stderr)
     assert result.exit_code == 0
