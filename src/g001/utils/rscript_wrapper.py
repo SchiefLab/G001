@@ -133,3 +133,19 @@ class RScript:
             str(collated_output_dir),
         ]
         self.__run_cmd(cmd)
+
+    def combine_flow_and_sequence(
+        self,
+        sequence_dir: Path, 
+        collated_flow_dir: Path,
+        combined_output_dir: Path,
+    ) -> None:
+        cmd = [
+            "Rscript",
+            str(self.rpath / "Combine_Flow_and_Seq_Results.R"),
+            str(sequence_dir),
+            str(collated_flow_dir),
+            str(combined_output_dir)
+            ]
+        self.__run_cmd(cmd)
+        return

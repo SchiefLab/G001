@@ -15,7 +15,7 @@ library(dplyr)
 
 seq_path <- args[1]
 flow_path <- args[2]
-
+output_path <- args[3]
 
 # Sequence Data Loading and Setup -------------------------------------------------------------
 
@@ -112,7 +112,6 @@ seq_results <- seq_results_long %>%
 
 flow_data <- read_csv(file.path(
   flow_path,
-  'Combined_Results',
   'Wide_Flow_Data_to_Merge.csv'
 )) %>%
   rename(Visit = VISIT)
@@ -120,7 +119,6 @@ flow_data <- read_csv(file.path(
 
 flow_data_by_type <- read_csv(file.path(
   flow_path,
-  'Combined_Results',
   'Wide_Flow_Data_by_Type_to_Merge.csv'
 )) %>%
   rename(Visit = VISIT)
@@ -130,11 +128,11 @@ flow_data_by_type <- read_csv(file.path(
 
 # Need all manifest index plate counts for QC
 fhcrc_flow_manifest <- read_csv(file.path(
-  'data','flow','processed_flow',
+  'data','flow','flow_processed_out',
   'fhrc',
   'fhcrc_manifest.csv'), col_select = -1)
 vrc_flow_manifest <- read_csv(file.path(
-  'data','flow','processed_flow',
+  'data','flow','flow_processed_out',
   'vrc',
   'vrc_manifest.csv'), col_select = -1) %>% 
   mutate(Tube = as.character(Tube))
@@ -223,7 +221,7 @@ combined_results <-
 
 
 write_csv(combined_results,
-          file.path('data', 'combined_results', 'Wide_Flow_Seq_Data.csv'), na = '')
+          file.path(output_path, 'Wide_Flow_Seq_Data.csv'), na = '')
 
 
 
@@ -527,7 +525,7 @@ final_results <- combined_results %>%
 
 
 write_csv(final_results,
-          file.path('data', 'combined_results', 'Flow_Seq_Results.csv'),
+          file.path(output_path, 'Flow_Seq_Results.csv'),
           na = '')
 
 
@@ -687,7 +685,7 @@ final_results_with_calls <- final_results %>%
     select(-contains('Population'), everything(), contains('Population'))
 
 write_csv(final_results_with_calls,
-          file.path('data', 'combined_results', 'Flow_Seq_Results_with_calls.csv'),
+          file.path(output_path,'Flow_Seq_Results_with_calls.csv'),
           na = '')
 
 
@@ -821,7 +819,7 @@ combined_results_by_type <-
 
 
 write_csv(combined_results_by_type,
-          file.path('data', 'combined_results', 'Wide_Flow_Seq_Data_by_Plate_Type.csv'),
+          file.path(output_path, 'Wide_Flow_Seq_Data_by_Plate_Type.csv'),
           na = '')
 
 
@@ -1155,7 +1153,7 @@ final_results_by_type <- combined_results_by_type %>%
 
 
 write_csv(final_results_by_type,
-          file.path('data', 'combined_results', 'Flow_Seq_Results_by_Plate_Type.csv'),
+          file.path(output_path,'Flow_Seq_Results_by_Plate_Type.csv'),
           na = '')
 
 
