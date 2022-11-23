@@ -129,7 +129,7 @@ This code combines the sequencing and flow processing results and computes B cel
 As above, we are working to upgrade the code to work on deidentified data. Please check back for updates. In the meantime, we are providing deidentified versions of the output of the original code which can be found [here](data/figures/flow_summary/flow_and_sequences.csv.gz).
 
 ```bash
-Rscript src/g001/R/Combine_Flow_and_Seq_Results.R data/sequence data/flow/collated_flow
+g001 combine --verbose -s data/sequence/ -c data/flow/collated_flow/ -o combined_data/ 
 ```
 
 ## Figures

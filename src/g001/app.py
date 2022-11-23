@@ -249,7 +249,7 @@ def collate(
 )
 @click.option(
     "--collate-dir",
-    "-f",
+    "-c",
     type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=True),
     required=False,
     show_default=True,
