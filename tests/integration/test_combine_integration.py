@@ -19,7 +19,7 @@ def test_combine():
             "-s",
             "data/sequence/",
             "-c",
-            "tests/data/flow/collated_flow/",
+            "data/flow/collated_flow/",  # TODO: this will eventually point to g001 collate output
             "-o",
             "tests/data/flow/combined_data/",
         ],
