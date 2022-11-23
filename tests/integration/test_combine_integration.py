@@ -1,11 +1,12 @@
 from click.testing import CliRunner
-import pytest
 from g001.app import main
+from pytest import TempdirFactory
 
 
-@pytest.mark.order(2)
-def test_combine():
+def test_combine(tmp_path_factory: TempdirFactory) -> None:
     """test collation directive"""
+    path = tmp_path_factory.mktemp("test_combine")
+    print(path)
     runner = CliRunner()
     result = runner.invoke(
         main,
@@ -19,12 +20,13 @@ def test_combine():
             "-s",
             "data/sequence/",
             "-c",
-            "tests/data/flow/collated_flow/",
+            "data/flow/collated_flow/",
             "-o",
-            "tests/data/flow/combined_data/",
+            "combined_data",
         ],
     )
     if result.exit_code != 0:
         print(result.output)
         print(result.stderr)
+    print(result.stdout)
     assert result.exit_code == 0
