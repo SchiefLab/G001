@@ -1,14 +1,14 @@
 #' Traverses the processed flow data an collates it into a single file.
 args = commandArgs(trailingOnly = TRUE);
 
-library(data.table)
-library(dplyr)
-library(tidyr)
-library(purrr)
-library(readr)
-library(stringr)
-library(janitor)
-library(wCorr)
+library(data.table, warn.conflicts = FALSE)
+library(dplyr, warn.conflicts = FALSE)
+library(tidyr, warn.conflicts = FALSE)
+library(purrr, warn.conflicts = FALSE)
+library(readr, warn.conflicts = FALSE)
+library(stringr, warn.conflicts = FALSE)
+library(janitor, warn.conflicts = FALSE)
+library(wCorr, warn.conflicts = FALSE)
 
 fhcrc_manifest_path <- args[1]
 vrc_manifest_path <- args[2]
@@ -20,8 +20,8 @@ output_path <- args[4]
 # fhcrc_manifest <- read_csv(file.path(flow_path, "fhrc/fhcrc_manifest.csv"), col_select = -1)
 # vrc_manifest <- read_csv(file.path(flow_path, "vrc/vrc_manifest.csv"), col_select = -1) %>% 
 #   mutate(Tube = as.character(Tube))
-fhcrc_manifest <- read_csv(file.path(fhcrc_manifest_path), col_select = -1)
-vrc_manifest <- read_csv(file.path(vrc_manifest_path), col_select = -1) %>% 
+fhcrc_manifest <- read_csv(file.path(fhcrc_manifest_path), col_select = -1, show_col_types = FALSE)
+vrc_manifest <- read_csv(file.path(vrc_manifest_path), col_select = -1, show_col_types = FALSE) %>% 
   mutate(Tube = as.character(Tube))
 
 # make full manifest
@@ -116,7 +116,7 @@ read_in_flow_results_fun <-
       full_join(
         file_names_in,
         map_dfr(file_names_in$filepath,
-                ~ read_csv(.x, col_types = col_types_in, col_select = -1) %>%
+                ~ read_csv(.x, col_types = col_types_in, col_select = -1, show_col_types = FALSE) %>%
                   # Dealing with Repeated experiments
                   mutate(nrep = if_else(.x %>% str_detect('Repeat'), 2, 1))),
         by = c('PTID', 'VISIT', 'nrep')
@@ -218,7 +218,7 @@ qc_level_cols <- cols(
 qc_combined <- full_join(
   QC_files,
   map_dfr(QC_files$filepath,
-          ~ read_csv(.x, col_types = qc_level_cols, col_select = -1) %>%
+          ~ read_csv(.x, col_types = qc_level_cols, col_select = -1, show_col_types = FALSE) %>%
             # Dealing with Repeated experiments
             mutate(nrep = if_else(.x %>% str_detect('Repeat'), 2, 1)) %>%
             group_by(`Tube Name`) %>%
@@ -541,6 +541,3 @@ write_csv(final_flow_data_by_type,
           file.path(output_path,
                     'Wide_Flow_Data_by_Type_to_Merge.csv'),
           na = '')
-
-
-

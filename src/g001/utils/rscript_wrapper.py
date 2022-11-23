@@ -103,10 +103,10 @@ class RScript:
 
     def collate_flow(
         self,
-        fhcrc_manifest: Path | str,
-        vrc_manifest: Path | str,
-        flow_processed_dir: Path | str,
-        collated_output_dir: Path | str,
+        fhcrc_manifest: Path,
+        vrc_manifest: Path,
+        flow_processed_dir: Path,
+        collated_output_dir: Path,
     ) -> None:
         """Collate Flow
 
@@ -124,6 +124,10 @@ class RScript:
         flow_processed_dir = Path(flow_processed_dir)
         if not flow_processed_dir.exists():
             raise ValueError(f"flow_processed_dir {flow_processed_dir} does not exist")
+        if not fhcrc_manifest.exists():
+            raise ValueError(f"fhcrc_manifest {fhcrc_manifest} does not exist")
+        if not vrc_manifest.exists():
+            raise ValueError(f"vrc_manifest {vrc_manifest} does not exist")
         cmd = [
             "Rscript",
             str(self.rpath / "Collate_Flow_Data.R"),
@@ -131,5 +135,47 @@ class RScript:
             str(vrc_manifest),
             str(flow_processed_dir),
             str(collated_output_dir),
+        ]
+        self.__run_cmd(cmd)
+
+    def combine_data_seq(
+        self,
+        fhcrc_manifest: Path,
+        vrc_manifest: Path,
+        seq_dir: Path,
+        collated_output_dir: Path,
+        combined_output_dir: Path,
+    ) -> None:
+        """Combine Flow Data with Sequence Data
+
+        Parameters
+        ----------
+        fhcrc_manifest : Path | str
+            Path to the FHCRC manifest
+        vrc_manifest : Path | str
+            Path to the VRC manifest
+        seq_dir : Path | str
+            Path to the directory containing the sequence data
+        collate_output_dir : Path | str
+            Path to the directory where the collated flow data was be written
+        combined_output_dir : Path | str
+            Path to the directory where the combined data will be written
+        """
+        if not fhcrc_manifest.exists():
+            raise ValueError(f"fhcrc_manifest {fhcrc_manifest} does not exist")
+        if not vrc_manifest.exists():
+            raise ValueError(f"vrc_manifest {vrc_manifest} does not exist")
+        if not collated_output_dir.exists():
+            raise ValueError(f"collated_output_dir {collated_output_dir} does not exist")
+        if not seq_dir.exists():
+            raise ValueError(f"sequence folder {seq_dir} does not exist")
+        cmd = [
+            "Rscript",
+            str(self.rpath / "Combine_Flow_and_Seq_Results.R"),
+            str(fhcrc_manifest),
+            str(vrc_manifest),
+            str(seq_dir),
+            str(collated_output_dir),
+            str(combined_output_dir),
         ]
         self.__run_cmd(cmd)
