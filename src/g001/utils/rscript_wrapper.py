@@ -30,6 +30,7 @@ class RScript:
             stderr = "\n".join([e for e in stderr.split("\n") if not e.startswith("New names:")])
             if stderr:
                 self.console.print(stderr)
+                raise CalledProcessError(proc.returncode, cmd, stderr)
             self.console.print(proc.stdout)
 
     def flow_processing(

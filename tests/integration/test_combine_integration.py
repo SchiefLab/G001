@@ -8,25 +8,21 @@ def test_combine(tmp_path_factory: TempdirFactory) -> None:
     path = tmp_path_factory.mktemp("test_combine")
     print(path)
     runner = CliRunner()
-    result = runner.invoke(
-        main,
-        [
-            "combine",
-            "--verbose",
-            "-1",
-            "tests/data/manifests/FHCRC_Flow_Manifest.csv",
-            "-2",
-            "tests/data/manifests/VRC_Flow_Manifest.csv",
-            "-s",
-            "data/sequence/",
-            "-c",
-            "data/flow/collated_flow/",
-            "-o",
-            "combined_data",
-        ],
-    )
-    if result.exit_code != 0:
-        print(result.output)
-        print(result.stderr)
+    args = [
+        "combine",
+        "--verbose",
+        "-1",
+        "data/flow/flow_processed_out/fhrc/fhcrc_manifest.csv",
+        "-2",
+        "data/flow/flow_processed_out/vrc/vrc_manifest.csv",
+        "-s",
+        "data/sequence/",
+        "-c",
+        "data/flow/collated_flow/",
+        "-o",
+        "combined_data",
+    ]
+    print("Running", "g001 combine", " ".join(args))
+    result = runner.invoke(main, args)
     print(result.stdout)
     assert result.exit_code == 0
