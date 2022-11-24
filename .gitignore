@@ -70,3 +70,4 @@ supp_tables/
 
 combined_data/Flow_Seq_Results.csv
 combined_data/Wide_Flow_Seq_Data.csv
+collated_flow/

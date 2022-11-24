@@ -1,9 +1,7 @@
 from click.testing import CliRunner
-import pytest
 from g001.app import main
 
 
-@pytest.mark.order(1)
 def test_collate():
     """test collation directive"""
     runner = CliRunner()
@@ -18,7 +16,7 @@ def test_collate():
             "-f",
             "data/flow/flow_processed_out",
             "-o",
-            "tests/data/flow/collated_flow/",
+            "collated_flow"
         ],
     )
     assert result.exit_code == 0
