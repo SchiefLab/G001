@@ -51,7 +51,6 @@ read_manifest <- function(x){
 # fh_manifest <- "sample_manifests/Flow/FHCRC/FHCRC_Flow_Manifest_20191121.xls"
 # vrc_manifest <- "sample_manifests/Flow/VRC/VRC_Flow_Manifest_Draft.xls"
 flow_manifest <- as.data.frame(read_manifest(manifest))
-print("hello")
 #check the columns
 if (!all(
   c(
@@ -89,10 +88,15 @@ flow_manifest$IgG_Gate <- as.character(flow_manifest$IgG_Gate)
 flow_manifest$Tissue_State <- as.character(flow_manifest$Tissue_State)
 flow_manifest$INX_Number_Of_Cells <- as.numeric(flow_manifest$INX_Number_Of_Cells)
 
+#Check for dup filenames but where one row is missing ptid/visit
+dup_files <- flow_manifest %>% dplyr::count(File) %>% filter(n == 2) %>% pull('File')
+flow_manifest <- flow_manifest %>% filter(!(File %in% dup_files & is.na(PTID)))
+
+
 #Check that the only files with no visit are the xml files
 #If not then infer the visit from the file name and record that change
 files_with_no_visit <-
-  flow_manifest %>% filter(Visit == "", FileType != ".xml")
+  flow_manifest %>% filter(is.na(Visit), FileType != ".xml")
 if (nrow(files_with_no_visit) > 0) {
   cat("The following files have no visit in the manifest:\n")
   inferred_visits <- files_with_no_visit %>% rowwise() %>% do({
@@ -220,11 +224,6 @@ if (length(files) == 0) {
   stop("quitting")
 }
 
-# VRC Oct 2019 download got re-uploaded in March 2020, so dropping Oct upload
-files <- files %>% str_subset('flow_data_transfer_04Oct2019', negate = TRUE) %>%
-  # VRC 191029_AB05_DL got re-uploaded in July 2020,, so dropping other files
-  str_subset('flow_data_transfer_09Mar2020/PKG - G001 Data Flow Data/Ready for VISC/191029_AB05_DL', negate = TRUE) %>%
-  str_subset('flow_data_transfer_09Jul2020/191029_AB06_DL', negate = TRUE)
 
 files_df <- tibble(Path = files, basename = basename(files)) %>%
   mutate(EXPERIMENT_NAME = basename(dirname(files)))

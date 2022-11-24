@@ -113,7 +113,8 @@ singel_gate_fix <- function(ws_here, gate_name, color_in = NA) {
           # rectangle gate
           if (any(slotNames(tmp_gate[[i_name]]) == 'min')) {
             #Setting min to -10, which should be lower than any point
-            tmp_gate[[i_name]]@min[tmp_color] = pmin(-10, tmp_gate[[i_name]]@min[tmp_color])
+            if (!is.na(tmp_gate[[i_name]]@min[tmp_color]))
+              tmp_gate[[i_name]]@min[tmp_color] = pmin(-10, tmp_gate[[i_name]]@min[tmp_color])
           }
           else {
             # polygonal gate
@@ -170,7 +171,7 @@ manually_adj_gates <- function(ws_in, IgD_color_in, visit_in) {
   if (any(gates_here == "Live|CD14-CD3+"))
     ws_in <- singel_gate_fix(ws_in, "Live|CD14-CD3+", color_in = 'G660-A')
   if (any(gates_here == "CD14-CD3+"))
-    ws_in <- singel_gate_fix(ws_in, "CD14-CD3+", color_in = 'B660-A')
+    ws_in <- singel_gate_fix(ws_in, "CD14-CD3+", color_in = 'G660-A')
 
 
   # Adding new gates for IgD- cells
