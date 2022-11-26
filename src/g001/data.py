@@ -270,6 +270,9 @@ class FlowDataPaths(BaseModel):
     base_path: Path = Path("data/flow")
     processed_flow_path: Path = base_path / Path("flow_processed_out")
     collated_flow_path: Path = base_path / Path("collated_flow")
+    swap_path: Path = base_path / Path("swap.csv")
+    fhcrc_processed_manifest_path: Path = processed_flow_path/Path("fhcrc/fhcrc_manifest.csv")
+    vrc_processed_manifest_path: Path = processed_flow_path/Path("vrc/vrc_manifest.csv")
 
     @validator("*", always=True)
     def validate_paths(cls, v: Path):
@@ -532,15 +535,27 @@ class Data:
         return pd.read_csv(self.figure_data_paths.boost_v_gt8_trend_path, index_col=0)
 
     def get_processed_flow_paths(self) -> Path:
-        '''Get path to the processed flow inside data, e.g data/flow/flow_processed_out'''
+        """Get path to the processed flow inside data, e.g data/flow/flow_processed_out"""
         return self.flow_data_paths.processed_flow_path
 
     def get_collated_data_path(self) -> Path:
-        '''Get path to the collated path inside data, e.g data/flow/collated_paths'''
+        """Get path to the collated path inside data, e.g data/flow/collated_paths"""
         return self.flow_data_paths.collated_flow_path
 
     def get_data_sequence_path(self) -> Path:
-        '''Get path to the data sequence path inside data, e.g data/sequence/'''
+        """Get path to the data sequence path inside data, e.g data/sequence/"""
         if not self.sequence_data_paths.base_sequence_path:
             raise ValueError("No sequence data path set")
         return self.sequence_data_paths.base_sequence_path
+
+    def get_sample_swap_file(self) -> Path:
+        """Get the sample swap file path for collate flow"""
+        return self.flow_data_paths.swap_path
+
+    def get_fhcrc_processed_manifest_path(self) -> Path:
+        """Get the fhcrc processed manifest path"""
+        return self.flow_data_paths.fhcrc_processed_manifest_path
+
+    def get_vrc_processed_manifest_path(self) -> Path:
+        """Get the vrc processed manifest path"""
+        return self.flow_data_paths.vrc_processed_manifest_path

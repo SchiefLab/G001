@@ -7,6 +7,10 @@ from subprocess import CalledProcessError
 from rich.console import Console
 
 
+class RProcessError(CalledProcessError):
+    pass
+
+
 @dataclass
 class RScript:
     """RScript Wrapper"""
@@ -29,9 +33,10 @@ class RScript:
             # ignore ugly R column renames
             stderr = "\n".join([e for e in stderr.split("\n") if not e.startswith("New names:")])
             if stderr:
+                # there could still be errors from R
                 self.console.print(stderr)
-                raise CalledProcessError(proc.returncode, cmd, stderr)
-            self.console.print(proc.stdout)
+                raise RProcessError(proc.returncode, " ".join(cmd), stderr)
+            self.console.print("Output from R:\n{proc.stdout}")
 
     def flow_processing(
         self,
@@ -108,6 +113,7 @@ class RScript:
         vrc_manifest: Path,
         flow_processed_dir: Path,
         collated_output_dir: Path,
+        swap_file: Path,
     ) -> None:
         """Collate Flow
 
@@ -123,18 +129,23 @@ class RScript:
             Path to the directory where the collated flow data will be written
         """
         flow_processed_dir = Path(flow_processed_dir)
+
+        # these generally shouldn't be called since click will handle theem
         if not flow_processed_dir.exists():
             raise ValueError(f"flow_processed_dir {flow_processed_dir} does not exist")
         if not fhcrc_manifest.exists():
             raise ValueError(f"fhcrc_manifest {fhcrc_manifest} does not exist")
         if not vrc_manifest.exists():
             raise ValueError(f"vrc_manifest {vrc_manifest} does not exist")
+        if not swap_file.exists():
+            raise ValueError(f"swap_file {swap_file} does not exist")
         cmd = [
             "Rscript",
             str(self.rpath / "Collate_Flow_Data.R"),
             str(fhcrc_manifest),
             str(vrc_manifest),
             str(flow_processed_dir),
+            str(swap_file),
             str(collated_output_dir),
         ]
         self.__run_cmd(cmd)
