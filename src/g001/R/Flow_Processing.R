@@ -553,6 +553,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
     #                                       IgD_color_in = ifelse(key == 'FHCRC', 'V780-A', 'V800-A'))
     imported_workspace_global <- gh_apply_to_new_fcs(gate_exp_global[[1]],
                                                      fcs_files,
+                                                     emptyValue = FALSE,
                                                      truncate_max_range = FALSE)
   }
   if (!inherits(imported_workspace_global, "try-error")) {
