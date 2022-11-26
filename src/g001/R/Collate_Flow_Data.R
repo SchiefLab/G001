@@ -13,7 +13,8 @@ library(wCorr, warn.conflicts = FALSE)
 fhcrc_manifest_path <- args[1]
 vrc_manifest_path <- args[2]
 flow_path <- args[3]
-output_path <- args[4]
+swap_info <- args[4]
+output_path <- args[5]
 
 
 # Loading in manifest -------------------------------------------------------------------------
@@ -410,19 +411,16 @@ final_flow_data <- flow_data_by_PTID %>%
 
     `.groups` = 'drop'
   )
-
+# Sample Swap
 
 # Sample Swap
-# if (length(args) > 1) {
-#   # Applying Sample Swap fix: 2 PTIDs were swapped for V08 and V10
-#   # From David Leggat email 11/06/2020
-#   swap_info <- read_csv(args[2])
-#   final_flow_data <- final_flow_data %>%
-#     full_join(swap_info,
-#               by = c('PTID' = 'Bad_PTID', 'VISIT')) %>%
-#     mutate(PTID = if_else(is.na(Correct_PTID), PTID, Correct_PTID)) %>%
-#     select(-Correct_PTID)
-# }
+# Applying Sample Swap fix: 2 PTIDs were swapped for V08 and V10
+# From David Leggat email 11/06/2020
+final_flow_data <- final_flow_data %>%
+  full_join(swap_info,
+            by = c('PTID' = 'Bad_PTID', 'VISIT')) %>%
+  mutate(PTID = if_else(is.na(Correct_PTID), PTID, Correct_PTID)) %>%
+  select(-Correct_PTID)
 
 
 write_csv(final_flow_data,

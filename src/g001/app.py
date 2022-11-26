@@ -203,6 +203,14 @@ def process_flow(
     default="collated_flow",
     help="Output path for the collated flow data",
 )
+@click.option(
+    "--swap-file",
+    "-s",
+    type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
+    required=False,
+    default=None,
+    help="Path to the sample swap file",
+)
 def collate(
     ctx: click.Context,
     verbose: bool,
@@ -210,22 +218,26 @@ def collate(
     vrc_manifest: Path | str,
     flow_processed_dir: Path | str,
     collated_output_dir: Path | str,
+    swap_file: Path | str,
 ) -> None:
     """Collated Flow Data from sites FHCRC & VRC"""
-    data = ctx.obj["data"]
+    data:Data = ctx.obj["data"]
     if not flow_processed_dir:
         flow_processed_dir = data.get_processed_flow_paths()
     if not fhcrc_manifest:
-        fhcrc_manifest = flow_processed_dir / Path("fhrc/fhcrc_manifest.csv")
+        fhcrc_manifest = data.get_fhcrc_processed_manifest_path()
     if not vrc_manifest:
-        vrc_manifest = flow_processed_dir / Path("vrc/vrc_manifest.csv")
+        vrc_manifest = data.get_vrc_processed_manifest_path()
     if not Path(collated_output_dir).exists():
         Path(collated_output_dir).mkdir()
+    if not swap_file:
+        swap_file = data.get_sample_swap_file()
     RScript(verbose=verbose).collate_flow(
         fhcrc_manifest=Path(fhcrc_manifest),
         vrc_manifest=Path(vrc_manifest),
         flow_processed_dir=Path(flow_processed_dir),
         collated_output_dir=Path(collated_output_dir),
+        swap_file = Path(swap_file),
     )
 
 
