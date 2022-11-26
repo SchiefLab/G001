@@ -1,7 +1,8 @@
 # The IAVI G001 Clinical Trial Repository
 
-[![Sequence Analysis Pipeline](https://github.com/SchiefLab/G001/workflows/Sequence%20Analysis%20Pipeline/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/integration.yml)
+[![Flow Process](https://github.com/SchiefLab/G001/actions/workflows/process.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/process.yml)
 [![Collate](https://github.com/SchiefLab/G001/actions/workflows/collate.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/collate.yml)
+[![Sequence Analysis Pipeline](https://github.com/SchiefLab/G001/workflows/Sequence%20Analysis%20Pipeline/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/integration.yml)
 [![Combine](https://github.com/SchiefLab/G001/actions/workflows/combine.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/combine.yml)
 [![DOI](https://zenodo.org/badge/517925817.svg)](https://zenodo.org/badge/latestdoi/517925817)
 
@@ -16,9 +17,10 @@ This repository includes data and code used to produce the manuscript Leggat, Co
     - [Collation of flow data](#collation-of-flow-data)
   - [BCR sequence analysis](#bcr-sequence-analysis)
   - [Combined B cell frequency and BCR sequence analysis](#combined-b-cell-frequency-and-bcr-sequence-analysis)
-  - [Figures](#figures)
+- [Figures and tables](#figures-and-tables)
+  - [Main figures](#main-figures)
   - [Tables](#tables)
-  - [Testing For Development](#testing-for-development)
+- [Testing For Development](#testing-for-development)
 
 # Data Access
 
@@ -139,7 +141,9 @@ g001 combine \
 g001 combine -c collated_flow -o combined_flow_seq
 ```
 
-## Figures
+# Figures and tables
+
+## Main figures
 
 The following code generates the main text figures from the data in this repository.
 
@@ -163,10 +167,10 @@ g001 supptables -c -o supp_tables
 ```
 
 
-## Testing For Development
+# Testing For Development
 
 ```bash
 # Run all tests
 pip install -e '.[dev]'
-pytest -svv tests/ --order-scope-level=0
+pytest -svv tests/
 ```
