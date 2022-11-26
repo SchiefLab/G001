@@ -1,4 +1,4 @@
-name: Collate & Combine
+name: Combine
 on:
   push:
     branches: [main]
