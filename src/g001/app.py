@@ -9,7 +9,6 @@ from pathlib import Path
 
 # third party
 import rich_click as click
-import seaborn as sns
 import numpy as np
 from g001.figures.binding import plot_boosting_binding, plot_gt8_binding
 from g001.figures.features import plot_sequence_features
@@ -221,7 +220,7 @@ def collate(
     swap_file: Path | str,
 ) -> None:
     """Collated Flow Data from sites FHCRC & VRC"""
-    data:Data = ctx.obj["data"]
+    data: Data = ctx.obj["data"]
     if not flow_processed_dir:
         flow_processed_dir = data.get_processed_flow_paths()
     if not fhcrc_manifest:
@@ -237,7 +236,7 @@ def collate(
         vrc_manifest=Path(vrc_manifest),
         flow_processed_dir=Path(flow_processed_dir),
         collated_output_dir=Path(collated_output_dir),
-        swap_file = Path(swap_file),
+        swap_file=Path(swap_file),
     )
 
 
@@ -326,12 +325,18 @@ def figures():
     """
     Generate for figures.
     """
-    sns.set_context("paper", font_scale=1)
-    sns.set_style("ticks")
-    sns.set_style({"font.family": "Arial"})
     import warnings
 
     warnings.simplefilter("ignore")
+
+    import seaborn as sns
+    from matplotlib import pyplot as plt
+
+    sns.set_context("paper", font_scale=1)
+    sns.set_style("ticks")
+    # arial not found on linux by deafult
+    # sns.set_style({"font.family": "Arial"})
+
     np.random.seed(1000)
     pass
 
@@ -348,7 +353,9 @@ def figures():
 )
 def plot_figure_1(ctx: click.Context, outpath: str | Path) -> None:
     data = ctx.obj["data"]
-    figure = plot_flow_frequencies(data)
+    figure: plt.figure = plot_flow_frequencies(data)
+    if not Path(outpath).exists():
+        Path(outpath).parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(outpath + ".png", dpi=300)
     click.echo(f"Figure 1 generated to {outpath}.png")
 
