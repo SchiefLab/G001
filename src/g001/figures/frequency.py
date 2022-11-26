@@ -7,6 +7,7 @@ from g001.data import Data
 from g001.figures.util import adjust_boxplot, adjusts_axis, MinorSymLogLocator
 import matplotlib.ticker as mtick
 import math
+from dataclasses import dataclass
 
 
 def plot_response_panel(
@@ -522,7 +523,7 @@ def plot_count_panel(
     return row_axis
 
 
-def plot_flow_frequencies(data: Data) -> plt.figure:
+def plot_flow_frequencies_old(data: Data) -> plt.figure:
     # get 3 axes but with dummyies in between in order to add some psuedo spacing
     fig, (row_ax1, row_ax2, row_ax3) = plt.subplots(
         3,
@@ -806,245 +807,158 @@ def plot_vrc01_among_epitope_specific(
     return fig
 
 
-# @todo for v 1.1
-# @dataclass
-# class FrequencyPlot:
-#     row_ax: plt.axes
-#     dataframe: pd.DataFrame
-#     color_palette: dict[str, str]
-#     y_value_pbmc: str
-#     y_value_gc: str
-#     y_value_pb: str
-#     x_value: str
-#     hue_value: str
-#     skip_header: bool
-#     skip_x_labels: bool
-#     plot_placebos_seperate: bool
-#     y_labels: list[str]
-#     y_min: float
-#     y_max: float
-#     combined_timepoints_and_weeks: dict[str, int]
-#     order: list[str]
-#     threshold: float = 0.0001
+@dataclass
+class FrequencyPlot:
+    row_ax: plt.axes
+    dataframe: pd.DataFrame
+    color_palette: dict[str, str]
+    y_value_pbmc: str
+    y_value_gc: str
+    y_value_pb: str
+    y_label_pbmc: str
+    y_label_gc: str
+    y_label_pb: str
+    x_value: str
+    hue_value: str
+    skip_header: bool
+    skip_x_labels: bool
+    plot_placebos_seperate: bool
+    y_min: float
+    y_max: float
+    combined_timepoints_and_weeks: dict[str, int]
+    order: list[str]
+    scale: str = "linear"
+    threshold: float = 0.0001
 
-#     def plot(self):
-#         # keep a counter since it won't enumerate when we skip the dummies
-#         weeks_index = 0
+    def plot(self):
 
-#         # just a list of the weeks in order
-#         weeks: list[int] = list(self.combined_timepoints_and_weeks.values())
+        # keep a counter since it won't enumerate when we skip the dummies
+        weeks_index = 0
 
-#         # enumerate through each ax
-#         for ax_index, ax in enumerate(self.row_ax):
-#             if ax_index == 5 or ax_index == 8:
-#                 ax.remove()
-#                 continue
+        # just a list of the weeks in order
+        weeks: list[int] = list(self.combined_timepoints_and_weeks.values())
 
-#             if ax_index < 5:
-#                 y_value = self.y_value_pbmc
-#             elif ax_index > 5 and ax_index < 8:
-#                 y_value = self.y_value_gc
-#             elif ax_index > 8:
-#                 y_value = self.y_value_pb
-#             else:
-#                 raise ValueError("ax_index must be between 0 and 9")
+        # enumerate through each ax
+        for ax_index, ax in enumerate(self.row_ax):
+            if ax_index == 5 or ax_index == 8:
+                ax.remove()
+                continue
 
-#             # get just the week of interest
-#             week = weeks[weeks_index]
-#             # Plotting df is only the week we are interested in
-#             plotting_df: pd.DataFrame = self.dataframe[self.dataframe["weeks_post"] == week]
+            if ax_index < 5:
+                y_value = self.y_value_pbmc
+            elif ax_index > 5 and ax_index < 8:
+                y_value = self.y_value_gc
+            elif ax_index > 8:
+                y_value = self.y_value_pb
+            else:
+                raise ValueError("ax_index must be between 0 and 9")
 
-#             # baseline df will take all 0's and replace with lowerbound thresh
-#             baseline_df: pd.DataFrame = (
-#                 plotting_df.replace(0, self.threshold).query(f"`{y_value}` == {self.threshold}").copy()
-#             )
+            y_label = ""
+            if ax_index == 0:
+                y_label = self.y_label_pbmc
+            elif ax_index == 6:
+                y_label = self.y_label_gc
+            elif ax_index == 9:
+                y_label = self.y_label_pb
 
-#             # baseline df may not contain any values for certain timepoints so this just puts in na's if it doesn't have a value for that treatment
-#             all_treatments = pd.DataFrame(plotting_df["Treatment"].unique(), columns=["Treatment"]).sort_values(
-#                 "Treatment"
-#             )[::-1]
-#             baseline_df: pd.DataFrame = pd.concat([all_treatments, baseline_df])
+            # get just the week of interest
+            week = weeks[weeks_index]
 
-#             # box df will just contain those groups which we will plot
-#             box_df: list[pd.DataFrame] = []
+            # Plotting df is only the week we are interested in
+            plotting_df: pd.DataFrame = self.dataframe[self.dataframe["weeks_post"] == week]
 
-#             # only plot things in boxplot that have more than three values
-#             for _, g_df in plotting_df.groupby(self.x_value):
+            # baseline df will take all 0's and replace with lowerbound thresh
+            baseline_df: pd.DataFrame = (
+                plotting_df.replace(0, self.threshold).query(f"`{y_value}` == {self.threshold}").copy()
+            )
 
-#                 if len(g_df[~g_df[y_value].isna()]) > 3:
-#                     box_df.append(g_df)
+            # baseline df may not contain any values for certain timepoints so this just puts in na's if it doesn't have a value for that treatment
+            all_treatments = pd.DataFrame(plotting_df["Treatment"].unique(), columns=["Treatment"]).sort_values(
+                "Treatment"
+            )[::-1]
+            baseline_df: pd.DataFrame = pd.concat([all_treatments, baseline_df])
 
-#             # if we have stuff in boxplot, atttempt to plot it
-#             if box_df:
-#                 box_df = pd.concat(box_df).reset_index().sort_values("Treatment")
+            # box df will just contain those groups which we will plot
+            box_df: list[pd.DataFrame] = []
 
-#                 # boxplot first
-#                 sns.boxplot(
-#                     ax=ax,
-#                     data=box_df,
-#                     x=self.x_value,
-#                     y=y_value,
-#                     fliersize=0,
-#                     whis=0,
-#                     palette=self.color_palette,
-#                     order=self.order,
-#                 )
+            # only plot things in boxplot that have more than three values
+            for _, g_df in plotting_df.groupby(self.x_value):
+
+                if len(g_df[~g_df[y_value].isna()]) > 3:
+                    box_df.append(g_df)
+
+            # if we have stuff in boxplot, atttempt to plot it
+            if box_df:
+                box_df = pd.concat(box_df).reset_index().sort_values("Treatment")
+
+                # boxplot first
+                sns.boxplot(
+                    ax=ax,
+                    data=box_df,
+                    x=self.x_value,
+                    y=y_value,
+                    fliersize=0,
+                    whis=0,
+                    palette=self.color_palette,
+                    order=self.order,
+                )
+            ax.set_ylim(self.y_min, self.y_max)
+            ax.set_yscale(self.scale)
+            ax.set_ylabel(y_label)
 
 
-# def plot_flow_frequencies(data: Data) -> plt.figure:
-#     """Figure 1. Plotting FACS frequencies stratified by timepoint and treatment"""
+def plot_flow_frequencies(data: Data) -> plt.figure:
+    """Figure 1. Plotting FACS frequencies stratified by timepoint and treatment"""
 
-#     # get 3 axes but with dummyies in between in order to add some psuedo spacing
-#     _width_ratios = [1, 1, 1, 1, 1, 0.4, 1, 1, 0.4, 1]
-#     _fig_size = (8.125, 6.8824)
+    # get 3 axes but with dummyies in between in order to add some psuedo spacing
+    _width_ratios = [1, 1, 1, 1, 1, 0.4, 1, 1, 0.4, 1]
+    _fig_size = (8.125, 6.8824)
 
-#     fig, (row_ax1, row_ax2, row_ax3) = plt.subplots(
-#         3,
-#         10,
-#         figsize=_fig_size,
-#         gridspec_kw={"width_ratios": _width_ratios},
-#         sharex=False,
-#         sharey=False,
-#     )
+    fig, (row_ax1, row_ax2, row_ax3) = plt.subplots(
+        3,
+        10,
+        figsize=_fig_size,
+        gridspec_kw={"width_ratios": _width_ratios},
+        sharex=False,
+        sharey=False,
+    )
 
-#     # frequency and sequence dataframe
-#     frequency_df = data.get_flow_and_frequency_data()
+    # frequency and sequence dataframe
+    frequency_df = data.get_flow_and_frequency_data()
 
-#     # get vist and weeks of everything
-#     combined_timepoints_and_weeks = data.plot_parameters.get_combined_timepoints()
+    # get vist and weeks of everything
+    combined_timepoints_and_weeks = data.plot_parameters.get_combined_timepoints()
 
-#     # just get the visit ids of the gc
-#     gc_timepoints = data.plot_parameters.get_gc_visit_lookup().keys()  # noqa
+    # just get the visit ids of the gc
+    gc_timepoints = data.plot_parameters.get_gc_visit_lookup().keys()  # noqa
 
-#     # get the palette we use
-#     frequency_pallete = data.plot_parameters.get_treatment_pallete()
+    # get the palette we use
+    treatment_palette = data.plot_parameters.get_treatment_pallete()
 
-#     # some frequent annotation arguments
-#     small_annotate_args = data.plot_parameters.get_small_annotate_args()
+    # some frequent annotation arguments
+    small_annotate_args = data.plot_parameters.get_small_annotate_args()
 
-#     # First, break up gc and non-gc
-#     not_gc_df = frequency_df.query("Visit not in @gc_timepoints")
-#     gc_df = frequency_df.query("Visit in @gc_timepoints")
-
-#     # rename the columns so we can plot them using the same y-value (contrived_a,b,c)
-#     not_gc_df = not_gc_df.rename(
-#         columns={
-#             "Percent of IgG+ B cells that are GT8++ (without regard to KO binding status)": "contrived_a",
-#             "Percent of IgG+ B cells that are epitope-specific (KO-GT8++)": "contrived_b",
-#             "Percent of GT8++IgG+ B cells that are KO-": "contrived_c",
-#         }
-#     ).reset_index(drop=True)
-#     gc_df = gc_df.rename(
-#         columns={
-#             "Percent of IgG+ GC B cells that are GT8++ (without regard to KO binding status)": "contrived_a",
-#             "Percent of IgG+ GC B cells that are epitope-specific (KO-GT8++)": "contrived_b",
-#             "Percent of GT8++IgG+ B cells that are KO-": "contrived_c",  # this one is the same but it's gated correctly?
-#         },
-#     ).reset_index(drop=True)
-
-#     # put them back together
-#     contrived_df = pd.concat([not_gc_df, gc_df])
-
-#     # Top Plot, IgG Antigen Spcific (GT8++)
-#     frequency_plot_top_row = FrequencyPlot(
-#         row_ax=row_ax1,
-#         dataframe=frequency_df,
-#         color_palette=frequency_pallete,
-#         y_value_pbmc="Percent of IgG+ B cells that are GT8++ (without regard to KO binding status)",
-#         y_value_pb="Percent of IgG+ B cells that are GT8++ (without regard to KO binding status)",
-#         y_value_gc="Percent of IgG+ GC B cells that are epitope-specific (KO-GT8++)",
-#         x_value="Treatment",
-#         hue_value="Treatment",
-#         y_labels=[
-#             "% GT8$^{++}$ among\nIgG$^{+}$ B cells",
-#             "% GT8$^{++}$ among\nIgG$^{+}$ GC B cells",
-#             "% GT8$^{++}$ among\nIgD$^{-}$ plasmablasts",
-#         ],
-#         skip_header=False,
-#         skip_x_labels=False,
-#         plot_placebos_seperate=False,
-#         y_min=0.00008,
-#         y_max=200,
-#         combined_timepoints_and_weeks=combined_timepoints_and_weeks,
-#         order=["DPBS sucrose", "20 µg eOD-GT8 60mer + AS01B", "100 µg eOD-GT8 60mer + AS01B"],
-#     )
-#     frequency_plot_top_row.plot()
-#     return fig
-
-#     # "top row:O % of IgG that are GT8++ (Jimmy PT figs 11, 12)"
-#     # # B cell row - Percent of IgG+ B cells that are GT8++ (without regard to KO binding status)
-#     # # GC cell row - Percent of IgG+ GC B cells that are GT8++ (without regard to KO binding status)
-#     # contrived_df = pd.concat([not_gc_df, gc_df])
-#     # _plot_frequency_panel(
-#     #     row_ax1,
-#     #     contrived_df,
-#     #     combined_timepoints,
-#     #     frequency_pallete,
-#     #     small_annotate_args,
-#     #     0.00008,
-#     #     200,
-#     #     "Treatment",
-#     #     "contrived_a",
-#     #     y_label=[
-#     #         "% GT8$^{++}$ among\nIgG$^{+}$ B cells",
-#     #         "% GT8$^{++}$ among\nIgG$^{+}$ GC B cells",
-#     #         "% GT8$^{++}$ among\nIgD$^{-}$ plasmablasts",
-#     #     ],
-#     #     y_text_pos=None,
-#     #     skip_header=False,
-#     #     scale="log",
-#     #     thresh=0.0001,
-#     #     labelpad=[-4, 0, 0],
-#     #     plot_placebos_seperate=False,
-#     # )
-
-#     # "middle row: % of IgG that are CD4bs-specific  (Jimmy PT figs 7, 8)"
-#     # _plot_frequency_panel(
-#     #     row_ax2,
-#     #     contrived_df,
-#     #     combined_timepoints,
-#     #     frequency_pallete,
-#     #     small_annotate_args,
-#     #     0.00008,
-#     #     200,
-#     #     "Treatment",
-#     #     "contrived_b",
-#     #     y_label=[
-#     #         "% CD4bs-specific among\nIgG$^{+}$ B cells",
-#     #         "% CD4bs-specific among\nIgG$^{+}$ GC B Cells",
-#     #         "% CD4bs-specific among\nIgD$^{-}$ plasmablasts",
-#     #     ],
-#     #     thresh=0.0001,
-#     #     y_text_pos=None,
-#     #     plot_placebos_seperate=False,
-#     #     labelpad=[-4, 0, 0],
-#     # )
-
-#     # "bottom row: % of GT8++ that are KO- (Jimmy PT figs 13, 14)"
-#     # "columna: Percent of GT8++IgG+ B cells that are KO-"
-#     # _plot_frequency_panel(
-#     #     row_ax3,
-#     #     contrived_df,
-#     #     combined_timepoints,
-#     #     frequency_pallete,
-#     #     small_annotate_args,
-#     #     -0.01,
-#     #     109,
-#     #     "Treatment",
-#     #     "contrived_c",
-#     #     y_label=[
-#     #         "% KO$^{-}$ among\nGT8$^{++}$IgG$^{+}$ B cells",
-#     #         "% KO$^{-}$ among\nGT8$^{++}$IgG$^{+}$ GC B cells",
-#     #         "% KO$^{-}$ among\nGT8$^{++}$IgD$^{-}$ plasmablasts",
-#     #     ],
-#     #     y_text_pos=None,
-#     #     x_tick_labels=True,
-#     #     thresh=0.01,
-#     #     scale="linear",
-#     #     labelpad=[10, 0, 0],
-#     #     plot_placebos_seperate=False,
-#     # )
-#     # plt.subplots_adjust(hspace=0.1, left=0.11, right=0.975, top=0.9)
-#     # plt.savefig(outpath + ".pdf")
-#     # plt.savefig(outpath + ".png", dpi=300)
-#     # plt.savefig(outpath + ".svg")
+    # Top Plot, IgG Antigen Spcific (GT8++)
+    frequency_plot_top_row = FrequencyPlot(
+        row_ax=row_ax1,
+        dataframe=frequency_df,
+        x_value="Treatment",
+        y_value_pbmc="Percent of IgG+ B cells that are GT8++ (without regard to KO binding status)",
+        y_value_gc="Percent of IgG+ GC B cells that are GT8++ (without regard to KO binding status)",
+        y_value_pb="Percent of IgG+ B cells that are GT8++ (without regard to KO binding status)",
+        y_label_pbmc="% GT8$^{++}$ among\nIgG$^{+}$ B cells",
+        y_label_gc="% GT8$^{++}$ among\nIgG$^{+}$ GC B cells",
+        y_label_pb="% GT8$^{++}$ among\nIgD$^{-}$ plasmablasts",
+        hue_value="Treatment",
+        skip_header=False,
+        skip_x_labels=True,
+        plot_placebos_seperate=False,
+        color_palette=treatment_palette,
+        combined_timepoints_and_weeks=combined_timepoints_and_weeks,
+        order=treatment_palette.keys(),
+        scale="log",
+        y_min=0.00008,
+        y_max=200,
+    )
+    frequency_plot_top_row.plot()
+    return fig
