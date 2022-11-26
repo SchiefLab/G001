@@ -22,10 +22,16 @@ if (!length(args) %in% 4:5) {
 source('src/g001/R/Flow_Functions.R')
 
 key = args[1]
+if (!key %in% c('vrc','fhrc')) {
+  stop('First argument must be vrc or fhrc')
+}
 manifest = args[2]
 flow_path = args[3]
 override = ifelse(args[4] == 'yes', TRUE, FALSE)
-output_path = ifelse(is.na(args[5]), file.path('..', 'flow_results'), args[5])
+output_path = file.path(
+  ifelse(is.na(args[5]), file.path('..', 'flow_results'), args[5]),
+  key
+  )
 
 
 
@@ -293,15 +299,15 @@ if (!interactive()) {
 
 # Getting number of experiments (total and to run)
 # Only want manifest entries that are listed as OK in the manifest
-if (!any(names(flow_manifest_w_paths) == 'Additional Notes'))
-  flow_manifest_w_paths$`Additional Notes` = NA
+if (!any(names(flow_manifest_w_paths) == 'Additional.Notes'))
+  flow_manifest_w_paths$`Additional.Notes` = NA
 
 manifest_to_run <- flow_manifest_w_paths %>%
   filter(Note %in% c('OK', 'OK.') |
            (Note %>% str_detect("EXPERIMENT_NAME doesn't match") &
               !Note %>% str_detect("Experiment folder missing csv, fcs, or xml files.") &
-              `Additional Notes` == 'RE-EXPORTED') |
-           `Additional Notes` == 'Confirmed Correct') %>%
+              `Additional.Notes` == 'RE-EXPORTED') |
+           `Additional.Notes` == 'Confirmed Correct') %>%
   group_by(EXPERIMENT_NAME) %>%
   mutate(All_3_File_Types = if_else(any(FileType == '.xml') &
                                       any(FileType == '.fcs') &
@@ -623,7 +629,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
                     "perfileTable.csv",
                     sep = "_")
             ),
-            row.names = FALSE)
+            row.names = TRUE)
 
   # Transform so that we can merge with diva output
   out_summary <- towrite_global %>%
@@ -668,7 +674,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
                     "PTIDSummary.csv",
                     sep = "_")
             ),
-            row.names = FALSE)
+            row.names = TRUE)
 
 
 
@@ -744,7 +750,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
                       "perINXfileTable.csv",
                       sep = "_")
               ),
-              row.names = FALSE,
+              row.names = TRUE,
               na = '')
 
 
@@ -774,7 +780,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
                       "TypeSummary.csv",
                       sep = "_")
               ),
-              row.names = FALSE,
+              row.names = TRUE,
               na = '')
 
 
@@ -888,7 +894,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
                     "concordance.csv",
                     sep = "_")
             ),
-            row.names = FALSE,
+            row.names = TRUE,
             na = '')
 
 
