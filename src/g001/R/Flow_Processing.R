@@ -54,8 +54,6 @@ read_manifest <- function(x){
   read.csv(x, na.strings = c(NA,''))
 }
 
-# fh_manifest <- "sample_manifests/Flow/FHCRC/FHCRC_Flow_Manifest_20191121.xls"
-# vrc_manifest <- "sample_manifests/Flow/VRC/VRC_Flow_Manifest_Draft.xls"
 flow_manifest <- as.data.frame(read_manifest(manifest))
 #check the columns
 if (!all(
@@ -549,8 +547,6 @@ for (i in 1:nrow(run_exp_id_vis)) {
                             emptyValue = FALSE,
                             truncate_max_range = FALSE)
       )
-    # gate_exp_global <- manually_adj_gates(gate_exp_global,
-    #                                       IgD_color_in = ifelse(key == 'FHCRC', 'V780-A', 'V800-A'))
     imported_workspace_global <- gh_apply_to_new_fcs(gate_exp_global[[1]],
                                                      fcs_files,
                                                      emptyValue = FALSE,
@@ -559,7 +555,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
   if (!inherits(imported_workspace_global, "try-error")) {
     imported_workspace_global <- manually_adj_gates(
       ws_in = imported_workspace_global,
-      IgD_color_in = ifelse(key == 'FHCRC', 'V780-A', 'V800-A'),
+      IgD_color_in = ifelse(key == 'fhrc', 'V780-A', 'V800-A'),
       visit_in = current_visit)
 
     experimental_samples_global <- imported_workspace_global[unique(fcs_files_linked$exp_name)]
