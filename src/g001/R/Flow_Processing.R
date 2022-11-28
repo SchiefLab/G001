@@ -22,10 +22,16 @@ if (!length(args) %in% 4:5) {
 source('src/g001/R/Flow_Functions.R')
 
 key = args[1]
+if (!key %in% c('vrc','fhrc')) {
+  stop('First argument must be vrc or fhrc')
+}
 manifest = args[2]
 flow_path = args[3]
 override = ifelse(args[4] == 'yes', TRUE, FALSE)
-output_path = ifelse(is.na(args[5]), file.path('..', 'flow_results'), args[5])
+output_path = file.path(
+  ifelse(is.na(args[5]), file.path('..', 'flow_results'), args[5]),
+  key
+  )
 
 
 
@@ -45,13 +51,10 @@ if (!interactive()) {
 print(paste("Processing",key,"flow data"))
 print(paste("Reading",key,"manifest"))
 read_manifest <- function(x){
-  read.csv(x)
+  read.csv(x, na.strings = c(NA,''))
 }
 
-# fh_manifest <- "sample_manifests/Flow/FHCRC/FHCRC_Flow_Manifest_20191121.xls"
-# vrc_manifest <- "sample_manifests/Flow/VRC/VRC_Flow_Manifest_Draft.xls"
 flow_manifest <- as.data.frame(read_manifest(manifest))
-print("hello")
 #check the columns
 if (!all(
   c(
@@ -89,10 +92,15 @@ flow_manifest$IgG_Gate <- as.character(flow_manifest$IgG_Gate)
 flow_manifest$Tissue_State <- as.character(flow_manifest$Tissue_State)
 flow_manifest$INX_Number_Of_Cells <- as.numeric(flow_manifest$INX_Number_Of_Cells)
 
+#Check for dup filenames but where one row is missing ptid/visit
+dup_files <- flow_manifest %>% dplyr::count(File) %>% filter(n == 2) %>% pull('File')
+flow_manifest <- flow_manifest %>% filter(!(File %in% dup_files & is.na(PTID)))
+
+
 #Check that the only files with no visit are the xml files
 #If not then infer the visit from the file name and record that change
 files_with_no_visit <-
-  flow_manifest %>% filter(Visit == "", FileType != ".xml")
+  flow_manifest %>% filter(is.na(Visit), FileType != ".xml")
 if (nrow(files_with_no_visit) > 0) {
   cat("The following files have no visit in the manifest:\n")
   inferred_visits <- files_with_no_visit %>% rowwise() %>% do({
@@ -220,11 +228,6 @@ if (length(files) == 0) {
   stop("quitting")
 }
 
-# VRC Oct 2019 download got re-uploaded in March 2020, so dropping Oct upload
-files <- files %>% str_subset('flow_data_transfer_04Oct2019', negate = TRUE) %>%
-  # VRC 191029_AB05_DL got re-uploaded in July 2020,, so dropping other files
-  str_subset('flow_data_transfer_09Mar2020/PKG - G001 Data Flow Data/Ready for VISC/191029_AB05_DL', negate = TRUE) %>%
-  str_subset('flow_data_transfer_09Jul2020/191029_AB06_DL', negate = TRUE)
 
 files_df <- tibble(Path = files, basename = basename(files)) %>%
   mutate(EXPERIMENT_NAME = basename(dirname(files)))
@@ -237,6 +240,7 @@ if (any(!(flow_manifest$File %in% files_df$basename))) {
 
 # Adding path to manifest and writing out and saving
 flow_manifest_w_paths <- flow_manifest %>%
+  rename(Path_short = Path) %>%
   left_join(files_df, by = c('File' = 'basename', 'EXPERIMENT_NAME')) %>%
   # dropping junk file type
   filter(FileType %in% c('.fcs','.xml','.csv'))
@@ -293,15 +297,15 @@ if (!interactive()) {
 
 # Getting number of experiments (total and to run)
 # Only want manifest entries that are listed as OK in the manifest
-if (!any(names(flow_manifest_w_paths) == 'Additional Notes'))
-  flow_manifest_w_paths$`Additional Notes` = NA
+if (!any(names(flow_manifest_w_paths) == 'Additional.Notes'))
+  flow_manifest_w_paths$`Additional.Notes` = NA
 
 manifest_to_run <- flow_manifest_w_paths %>%
   filter(Note %in% c('OK', 'OK.') |
            (Note %>% str_detect("EXPERIMENT_NAME doesn't match") &
               !Note %>% str_detect("Experiment folder missing csv, fcs, or xml files.") &
-              `Additional Notes` == 'RE-EXPORTED') |
-           `Additional Notes` == 'Confirmed Correct') %>%
+              `Additional.Notes` == 'RE-EXPORTED') |
+           `Additional.Notes` == 'Confirmed Correct') %>%
   group_by(EXPERIMENT_NAME) %>%
   mutate(All_3_File_Types = if_else(any(FileType == '.xml') &
                                       any(FileType == '.fcs') &
@@ -454,13 +458,13 @@ for (i in 1:nrow(run_exp_id_vis)) {
 
   # linking the experiment and index names ------------------------------------------------------
   inx_to_link <- tibble(inx_name = basename(index_files)) %>%
-    separate(inx_name, into = c("PTID", "INX","VISIT", "TUBE", "TUBE2"),
+    separate(inx_name, into = c("PTID1", "PTID2", "INX","VISIT", "TUBE", "TUBE2"),
              remove = FALSE, extra = 'drop', sep = "_") %>%
     select(inx_name, TUBE, TUBE2, VISIT)
   # left_join(fcs_times, by = c('inx_name' = 'diva_name'))
 
   exp_to_link <- tibble(exp_name = basename(experiment_files)) %>%
-    separate(exp_name, into = c("PTID","VISIT", "TUBE", "TUBE2"),
+    separate(exp_name, into = c("PTID1", "PTID2","VISIT", "TUBE", "TUBE2"),
              remove = FALSE, extra = 'drop', sep = "_") %>%
     mutate(TUBE2 = TUBE2 %>% str_replace('.fcs', '')) %>%
     select(exp_name, TUBE, TUBE2, VISIT)
@@ -529,6 +533,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
                                        na.omit(fcs_files_linked$inx_name)),
                             worksheet = 'global',
                             scale_level = scale_param,
+                            emptyValue = FALSE,
                             truncate_max_range = FALSE)
       )
   } else {
@@ -539,18 +544,18 @@ for (i in 1:nrow(run_exp_id_vis)) {
                             subset = need_local_gates[current_exp == names(need_local_gates)],
                             worksheet = 'normal',
                             scale = scale_param,
+                            emptyValue = FALSE,
                             truncate_max_range = FALSE)
       )
-    # gate_exp_global <- manually_adj_gates(gate_exp_global,
-    #                                       IgD_color_in = ifelse(key == 'FHCRC', 'V780-A', 'V800-A'))
     imported_workspace_global <- gh_apply_to_new_fcs(gate_exp_global[[1]],
                                                      fcs_files,
+                                                     emptyValue = FALSE,
                                                      truncate_max_range = FALSE)
   }
   if (!inherits(imported_workspace_global, "try-error")) {
     imported_workspace_global <- manually_adj_gates(
       ws_in = imported_workspace_global,
-      IgD_color_in = ifelse(key == 'FHCRC', 'V780-A', 'V800-A'),
+      IgD_color_in = ifelse(key == 'fhrc', 'V780-A', 'V800-A'),
       visit_in = current_visit)
 
     experimental_samples_global <- imported_workspace_global[unique(fcs_files_linked$exp_name)]
@@ -604,9 +609,11 @@ for (i in 1:nrow(run_exp_id_vis)) {
     gs_pop_get_count_fast(experimental_samples_global) %>%
     dplyr::filter(!grepl("INX", name)) %>%
     dplyr::mutate(tosplit = name) %>%
-    separate(tosplit, into = c("PTID", "VISIT", "TUBE"), sep = "_", extra = 'drop') %>%
-    dplyr::mutate(proportion = Count / ParentCount,
+    separate(tosplit, into = c("PTID1","PTID2", "VISIT", "TUBE"), sep = "_", extra = 'drop') %>%
+    dplyr::mutate(PTID = paste0(PTID1,'_',PTID2),
+                  proportion = Count / ParentCount,
                   proportion = ifelse(is.nan(proportion), 0, proportion)) %>%
+    dplyr::select(-PTID1,PTID2) %>%
     full_join(exp_time, by = 'name')
 
 
@@ -619,7 +626,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
                     "perfileTable.csv",
                     sep = "_")
             ),
-            row.names = FALSE)
+            row.names = TRUE)
 
   # Transform so that we can merge with diva output
   out_summary <- towrite_global %>%
@@ -664,7 +671,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
                     "PTIDSummary.csv",
                     sep = "_")
             ),
-            row.names = FALSE)
+            row.names = TRUE)
 
 
 
@@ -686,8 +693,9 @@ for (i in 1:nrow(run_exp_id_vis)) {
                       run_inx_stats_fun) %>%
       dplyr::filter(!grepl("INX", name)) %>%
       dplyr::mutate(tosplit = name) %>%
-      separate(tosplit, into = c("PTID", "VISIT", "TUBE"), sep = "_", extra = 'drop') %>%
-      dplyr::mutate(proportion = Count / ParentCount,
+      separate(tosplit, into = c("PTID1","PTID2", "VISIT", "TUBE"), sep = "_", extra = 'drop') %>%
+      dplyr::mutate(PTID = paste0(PTID1,'_',PTID2),
+                    proportion = Count / ParentCount,
                     proportion = ifelse(is.nan(proportion), 0, proportion)) %>%
       left_join(current_manifest %>% select(PTID:File, INX_Population:INX_Number_Of_Cells),
                 by = c('PTID', 'VISIT' = 'Visit', 'INX_File' = 'File')) %>%
@@ -703,6 +711,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
         ),
         Percent_Sorted = round(INX_Number_Of_Cells / Count * 100, 2)
       ) %>%
+      dplyr::select(-PTID1,PTID2) %>%
       arrange(Min_Time, INX_Population)
 
 
@@ -738,7 +747,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
                       "perINXfileTable.csv",
                       sep = "_")
               ),
-              row.names = FALSE,
+              row.names = TRUE,
               na = '')
 
 
@@ -768,7 +777,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
                       "TypeSummary.csv",
                       sep = "_")
               ),
-              row.names = FALSE,
+              row.names = TRUE,
               na = '')
 
 
@@ -882,7 +891,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
                     "concordance.csv",
                     sep = "_")
             ),
-            row.names = FALSE,
+            row.names = TRUE,
             na = '')
 
 
