@@ -7,6 +7,10 @@ from subprocess import CalledProcessError
 from rich.console import Console
 
 
+class RProcessError(CalledProcessError):
+    pass
+
+
 @dataclass
 class RScript:
     """RScript Wrapper"""
@@ -29,8 +33,10 @@ class RScript:
             # ignore ugly R column renames
             stderr = "\n".join([e for e in stderr.split("\n") if not e.startswith("New names:")])
             if stderr:
+                # there could still be errors from R
                 self.console.print(stderr)
-            self.console.print(proc.stdout)
+                raise RProcessError(proc.returncode, " ".join(cmd), stderr)
+            self.console.print("Output from R:\n{proc.stdout}")
 
     def flow_processing(
         self,
@@ -98,24 +104,90 @@ class RScript:
             str(force_overwrite_output_dir),
             str(flow_output_dir),
         ]
+        print("Running...\n", " ".join(cmd))
         self.__run_cmd(cmd)
 
-    def collate_flow(self, fhcrc_manifest: Path | str, vrc_manifest: Path | str, flow_output_dir: Path | str) -> None:
+    def collate_flow(
+        self,
+        fhcrc_manifest: Path,
+        vrc_manifest: Path,
+        flow_processed_dir: Path,
+        collated_output_dir: Path,
+        swap_file: Path,
+    ) -> None:
         """Collate Flow
 
         Parameters
         ----------
+        fhcrc_manifest : Path | str
+            Path to the FHCRC manifest
+        vrc_manifest : Path | str
+            Path to the VRC manifest
+        flow_processed_dir : Path | str
+            Path to the directory containing the flow data for FHCRC and VRC
         collate_output_dir : Path | str
             Path to the directory where the collated flow data will be written
         """
-        flow_output_dir = Path(flow_output_dir)
-        if not flow_output_dir.exists():
-            raise ValueError(f"collate_output_dir {flow_output_dir} does not exist")
+        flow_processed_dir = Path(flow_processed_dir)
+
+        # these generally shouldn't be called since click will handle theem
+        if not flow_processed_dir.exists():
+            raise ValueError(f"flow_processed_dir {flow_processed_dir} does not exist")
+        if not fhcrc_manifest.exists():
+            raise ValueError(f"fhcrc_manifest {fhcrc_manifest} does not exist")
+        if not vrc_manifest.exists():
+            raise ValueError(f"vrc_manifest {vrc_manifest} does not exist")
+        if not swap_file.exists():
+            raise ValueError(f"swap_file {swap_file} does not exist")
         cmd = [
             "Rscript",
             str(self.rpath / "Collate_Flow_Data.R"),
             str(fhcrc_manifest),
             str(vrc_manifest),
-            str(flow_output_dir),
+            str(flow_processed_dir),
+            str(swap_file),
+            str(collated_output_dir),
+        ]
+        self.__run_cmd(cmd)
+
+    def combine_flow_and_sequence(
+        self,
+        fhcrc_manifest: Path,
+        vrc_manifest: Path,
+        sequence_dir: Path,
+        collated_dir: Path,
+        combined_output_dir: Path,
+    ) -> None:
+        """Combine Flow Data with Sequence Data
+
+        Parameters
+        ----------
+        fhcrc_manifest : Path | str
+            Path to the FHCRC manifest
+        vrc_manifest : Path | str
+            Path to the VRC manifest
+        sequence_dir : Path | str
+            Path to the directory containing the sequence data
+        collate_dir : Path | str
+            Path to the directory where the collated flow data was be written
+        combined_output_dir : Path | str
+            Path to the directory where the combined data will be written
+        """
+        if not fhcrc_manifest.exists():
+            raise ValueError(f"fhcrc_manifest {fhcrc_manifest} does not exist")
+        if not vrc_manifest.exists():
+            raise ValueError(f"vrc_manifest {vrc_manifest} does not exist")
+        if not collated_dir.exists():
+            raise ValueError(f"collated folder {collated_dir} does not exist")
+        if not sequence_dir.exists():
+            raise ValueError(f"sequence folder {sequence_dir} does not exist")
+        cmd = [
+            "Rscript",
+            str(self.rpath / "Combine_Flow_and_Seq_Results.R"),
+            str(fhcrc_manifest),
+            str(vrc_manifest),
+            str(sequence_dir),
+            str(collated_dir),
+            str(combined_output_dir),
         ]
         self.__run_cmd(cmd)

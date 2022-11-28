@@ -1,30 +1,31 @@
-#' Traverses the processed flow data an collates it into a single file.
 args = commandArgs(trailingOnly = TRUE);
 
-library(data.table)
-library(dplyr)
-library(tidyr)
-library(purrr)
-library(readr)
-library(stringr)
-library(janitor)
-library(wCorr)
+library(data.table, warn.conflicts = FALSE,quietly=TRUE)
+library(dplyr, warn.conflicts = FALSE,quietly=TRUE)
+library(tidyr, warn.conflicts = FALSE,quietly=TRUE)
+library(purrr, warn.conflicts = FALSE,quietly=TRUE)
+library(readr, warn.conflicts = FALSE,quietly=TRUE)
+library(stringr, warn.conflicts = FALSE,quietly=TRUE)
+library(janitor, warn.conflicts = FALSE,quietly=TRUE)
+suppressMessages(library(wCorr, warn.conflicts = FALSE,quietly = TRUE))
 
 fhcrc_manifest_path <- args[1]
 vrc_manifest_path <- args[2]
 flow_path <- args[3]
+swap_info <- args[4]
+output_path <- args[5]
 
 # Loading in manifest -------------------------------------------------------------------------
 # fhcrc_manifest <- read_csv(file.path(flow_path, "fhrc/fhcrc_manifest.csv"), col_select = -1)
 # vrc_manifest <- read_csv(file.path(flow_path, "vrc/vrc_manifest.csv"), col_select = -1) %>% 
 #   mutate(Tube = as.character(Tube))
-fhcrc_manifest <- read_csv(file.path(fhcrc_manifest_path), col_select = -1)
-vrc_manifest <- read_csv(file.path(vrc_manifest_path), col_select = -1) %>% 
-  mutate(Tube = as.character(Tube))
+fhcrc_manifest <- suppressMessages(read_csv(file.path(fhcrc_manifest_path), col_select = -1, show_col_types = FALSE))
+
+vrc_manifest <- suppressMessages(read_csv(file.path(vrc_manifest_path), col_select = -1, show_col_types = FALSE) %>% 
+  mutate(Tube = as.character(Tube)))
 
 # make full manifest
 full_manifest <- bind_rows(fhcrc_manifest, vrc_manifest)
-
 
 # Reading and parsing out filenames -------------------------------------------------------------------------
 
@@ -37,8 +38,10 @@ full_manifest <- bind_rows(fhcrc_manifest, vrc_manifest)
 #' @return tibble of path, ptid, visit, tisse, and csv name
 #'
 get_filenames_fun <-
-  function(path_prefix_in = "flow_results",
+  function(path_prefix_in = flow_path,
            pattern_in = "perfileTable\\.csv") {
+    #print(path_prefix_in)
+    #print(pattern_in)
     tibble(
       filepath = list.files(
         file.path(path_prefix_in),
@@ -67,7 +70,6 @@ PTID_files <- get_filenames_fun(flow_path, "PTIDSummary\\.csv")
 inx_files <- get_filenames_fun(flow_path, "perINXfileTable\\.csv")
 type_files <- get_filenames_fun(flow_path, "TypeSummary\\.csv")
 QC_files <- get_filenames_fun(flow_path, "concordance\\.csv")
-
 
 # Fixing Gate Names ---------------------------------------------------------------------------
 
@@ -114,7 +116,7 @@ read_in_flow_results_fun <-
       full_join(
         file_names_in,
         map_dfr(file_names_in$filepath,
-                ~ read_csv(.x, col_types = col_types_in, col_select = -1) %>%
+                ~ read_csv(.x, col_types = col_types_in, col_select = -1, show_col_types = FALSE) %>%
                   # Dealing with Repeated experiments
                   mutate(nrep = if_else(.x %>% str_detect('Repeat'), 2, 1))),
         by = c('PTID', 'VISIT', 'nrep')
@@ -163,12 +165,10 @@ index_level_cols <- cols(
   Percent_Sorted = col_double()
 )
 
-
 # data by index file
-flow_data_by_inx_files <- read_in_flow_results_fun(inx_files, index_level_cols, merge_in_index_file_info = TRUE)
+flow_data_by_inx_files <- suppressMessages(read_in_flow_results_fun(inx_files, index_level_cols, merge_in_index_file_info = TRUE))
 #data by type (antigen specific/bulk)
-flow_data_by_type <- read_in_flow_results_fun(type_files, index_level_cols)
-
+flow_data_by_type <- suppressMessages(read_in_flow_results_fun(type_files, index_level_cols))
 
 # File level results -------------------------------------------------------------------------
 
@@ -185,10 +185,9 @@ file_level_cols <- cols(
 )
 
 # data by fcs file
-flow_data_by_file <- read_in_flow_results_fun(perfile_files, file_level_cols)
+flow_data_by_file <- suppressMessages(read_in_flow_results_fun(perfile_files, file_level_cols))
 # data by sample
-flow_data_by_PTID <- read_in_flow_results_fun(PTID_files, file_level_cols)
-
+flow_data_by_PTID <- suppressMessages(read_in_flow_results_fun(PTID_files, file_level_cols))
 
 # QC results -------------------------------------------------------------------------
 
@@ -213,10 +212,10 @@ qc_level_cols <- cols(
 
 
 # data by index file
-qc_combined <- full_join(
+qc_combined <- suppressMessages(full_join(
   QC_files,
   map_dfr(QC_files$filepath,
-          ~ read_csv(.x, col_types = qc_level_cols, col_select = -1) %>%
+          ~ read_csv(.x, col_types = qc_level_cols, col_select = -1, show_col_types = FALSE) %>%
             # Dealing with Repeated experiments
             mutate(nrep = if_else(.x %>% str_detect('Repeat'), 2, 1)) %>%
             group_by(`Tube Name`) %>%
@@ -231,40 +230,33 @@ qc_combined <- full_join(
             ) %>%
             ungroup()),
   by = c('PTID', 'VISIT', 'nrep')
-) %>%
+)) %>%
   mutate(prop_diff = abs(proportion * 100 - proportion_diva)) %>%
   select(-contains('cor'), everything(), -filepath)
-
-
-
 
 # Outputting Results --------------------------------------------------------------------------
 
 #string detect needs fhcrc and vrc specisl
 
-dir.create(file.path(flow_path, 'Combined_Results'), recursive = TRUE, showWarnings = FALSE)
+dir.create(file.path(output_path), recursive = TRUE, showWarnings = FALSE)
 
-write_csv(flow_data_by_inx_files %>% filter(Site == 'fhrc'), file.path(flow_path, 'Combined_Results','FHCRC_Flow_Results_by_Index_File.csv'), na = '')
-write_csv(flow_data_by_type %>% filter(Site == 'fhrc'), file.path(flow_path, 'Combined_Results','FHCRC_Flow_Results_by_Bulk_Antigen_Specific.csv'), na = '')
+write_csv(flow_data_by_inx_files %>% filter(Site == 'fhrc'), file.path(output_path,'FHCRC_Flow_Results_by_Index_File.csv'), na = '')
+write_csv(flow_data_by_type %>% filter(Site == 'fhrc'), file.path(output_path,'FHCRC_Flow_Results_by_Bulk_Antigen_Specific.csv'), na = '')
 
-write_csv(flow_data_by_file %>% filter(Site == 'fhrc'), file.path(flow_path, 'Combined_Results','FHCRC_Flow_Results_by_Experiment.csv'), na = '')
-write_csv(flow_data_by_PTID %>% filter(Site == 'fhrc'), file.path(flow_path, 'Combined_Results','FHCRC_Flow_Results_by_PTID_Visit.csv'), na = '')
+write_csv(flow_data_by_file %>% filter(Site == 'fhrc'), file.path(output_path,'FHCRC_Flow_Results_by_Experiment.csv'), na = '')
+write_csv(flow_data_by_PTID %>% filter(Site == 'fhrc'), file.path(output_path,'FHCRC_Flow_Results_by_PTID_Visit.csv'), na = '')
 
-write_csv(qc_combined %>% filter(Site == 'fhrc'), file.path(flow_path, 'Combined_Results','FHCRC_QC_Concordance.csv'), na = '')
-
-
-
-write_csv(flow_data_by_inx_files %>% filter(Site == 'vrc'), file.path(flow_path, 'Combined_Results','VRC_Flow_Results_by_Index_File.csv'), na = '')
-write_csv(flow_data_by_type %>% filter(Site == 'vrc'), file.path(flow_path, 'Combined_Results','VRC_Flow_Results_by_Bulk_Antigen_Specific.csv'), na = '')
-
-write_csv(flow_data_by_file %>% filter(Site == 'vrc'), file.path(flow_path, 'Combined_Results','VRC_Flow_Results_by_Experiment.csv'), na = '')
-write_csv(flow_data_by_PTID %>% filter(Site == 'vrc'), file.path(flow_path, 'Combined_Results','VRC_Flow_Results_by_PTID_Visit.csv'), na = '')
-
-write_csv(qc_combined %>% filter(Site == 'vrc'), file.path(flow_path, 'Combined_Results','VRC_QC_Concordance.csv'), na = '')
+write_csv(qc_combined %>% filter(Site == 'fhrc'), file.path(output_path,'FHCRC_QC_Concordance.csv'), na = '')
 
 
 
+write_csv(flow_data_by_inx_files %>% filter(Site == 'vrc'), file.path(output_path,'VRC_Flow_Results_by_Index_File.csv'), na = '')
+write_csv(flow_data_by_type %>% filter(Site == 'vrc'), file.path(output_path,'VRC_Flow_Results_by_Bulk_Antigen_Specific.csv'), na = '')
 
+write_csv(flow_data_by_file %>% filter(Site == 'vrc'), file.path(output_path,'VRC_Flow_Results_by_Experiment.csv'), na = '')
+write_csv(flow_data_by_PTID %>% filter(Site == 'vrc'), file.path(output_path,'VRC_Flow_Results_by_PTID_Visit.csv'), na = '')
+
+write_csv(qc_combined %>% filter(Site == 'vrc'), file.path(output_path,'VRC_QC_Concordance.csv'), na = '')
 
 # Getting Plate Level Data --------------------------------------------------------------------
 
@@ -317,8 +309,6 @@ ant_spec_pop <- c(
   '/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-/eODKO11-/eODGT8Double+',
   '/Lymphocytes/Singlets/Live|Dump-/CD19+CD20lo/CD27hiCD38hi/IgD-IgG+/eODKO11-/eODGT8Double+'
 )
-
-
 
 final_flow_data <- flow_data_by_PTID %>%
   # Dropping first run for visits with multiple rep V02, V06, V07
@@ -408,29 +398,22 @@ final_flow_data <- flow_data_by_PTID %>%
 
     `.groups` = 'drop'
   )
-
+# Sample Swap
 
 # Sample Swap
-# if (length(args) > 1) {
-#   # Applying Sample Swap fix: 2 PTIDs were swapped for V08 and V10
-#   # From David Leggat email 11/06/2020
-#   swap_info <- read_csv(args[2])
-#   final_flow_data <- final_flow_data %>%
-#     full_join(swap_info,
-#               by = c('PTID' = 'Bad_PTID', 'VISIT')) %>%
-#     mutate(PTID = if_else(is.na(Correct_PTID), PTID, Correct_PTID)) %>%
-#     select(-Correct_PTID)
-# }
-
+# Applying Sample Swap fix: 2 PTIDs were swapped for V08 and V10
+# From David Leggat email 11/06/2020
+swap_info <- suppressMessages(read_csv(swap_info,show_col_types = FALSE))
+final_flow_data <- final_flow_data %>%
+  full_join(swap_info,
+            by = c('PTID' = 'Bad_PTID', 'VISIT')) %>%
+  mutate(PTID = if_else(is.na(Correct_PTID), PTID, Correct_PTID)) %>%
+  select(-Correct_PTID)
 
 write_csv(final_flow_data,
-          file.path(flow_path, 'Combined_Results',
+          file.path(output_path,
                     'Wide_Flow_Data_to_Merge.csv'),
           na = '')
-
-
-
-
 
 # Final Flow Data by Bulk/Ant Specific
 
@@ -536,9 +519,7 @@ final_flow_data_by_type <- flow_data_by_type %>%
 
 
 write_csv(final_flow_data_by_type,
-          file.path(flow_path, 'Combined_Results',
+          file.path(output_path,
                     'Wide_Flow_Data_by_Type_to_Merge.csv'),
           na = '')
-
-
 

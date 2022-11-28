@@ -9,7 +9,6 @@ from pathlib import Path
 
 # third party
 import rich_click as click
-import seaborn as sns
 import numpy as np
 from g001.figures.binding import plot_boosting_binding, plot_gt8_binding
 from g001.figures.features import plot_sequence_features
@@ -188,32 +187,136 @@ def process_flow(
     help="Path to read the flow manifest for specified site",
 )
 @click.option(
-    "--flow-output-dir",
+    "--flow-processed-dir",
     "-f",
     type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=False),
     required=False,
     default=None,
-    help="Path to the processed flow directory",
+    help="Path to the processed flow directory containing both FHCRC and VRC data",
+)
+@click.option(
+    "--collated-output-dir",
+    "-o",
+    type=click.Path(dir_okay=True, readable=True, exists=False, resolve_path=False),
+    required=False,
+    default="collated_flow",
+    help="Output path for the collated flow data",
+)
+@click.option(
+    "--swap-file",
+    "-s",
+    type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
+    required=False,
+    default=None,
+    help="Path to the sample swap file",
 )
 def collate(
     ctx: click.Context,
     verbose: bool,
     fhcrc_manifest: Path | str,
     vrc_manifest: Path | str,
-    flow_output_dir: Path | str,
+    flow_processed_dir: Path | str,
+    collated_output_dir: Path | str,
+    swap_file: Path | str,
 ) -> None:
     """Collated Flow Data from sites FHCRC & VRC"""
-    data = ctx.obj["data"]
-    if not flow_output_dir:
-        flow_output_dir = data.get_processed_flow_paths()
+    data: Data = ctx.obj["data"]
+    if not flow_processed_dir:
+        flow_processed_dir = data.get_processed_flow_paths()
     if not fhcrc_manifest:
-        fhcrc_manifest = flow_output_dir / Path("fhrc/fhcrc_manifest.csv")
+        fhcrc_manifest = data.get_fhcrc_processed_manifest_path()
     if not vrc_manifest:
-        vrc_manifest = flow_output_dir / Path("vrc/vrc_manifest.csv")
+        vrc_manifest = data.get_vrc_processed_manifest_path()
+    if not Path(collated_output_dir).exists():
+        Path(collated_output_dir).mkdir()
+    if not swap_file:
+        swap_file = data.get_sample_swap_file()
     RScript(verbose=verbose).collate_flow(
-        fhcrc_manifest=fhcrc_manifest,
-        vrc_manifest=vrc_manifest,
-        flow_output_dir=flow_output_dir,
+        fhcrc_manifest=Path(fhcrc_manifest),
+        vrc_manifest=Path(vrc_manifest),
+        flow_processed_dir=Path(flow_processed_dir),
+        collated_output_dir=Path(collated_output_dir),
+        swap_file=Path(swap_file),
+    )
+
+
+@main.command("combine")
+@click.pass_context
+@click.option(
+    "--verbose",
+    "-v",
+    is_flag=True,
+    required=False,
+    default=False,
+    help="Prints final command that was run to console",
+)
+@click.option(
+    "--fhcrc-manifest",
+    "-1",
+    type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
+    required=False,
+    show_default=True,
+    help="Path to read the flow manifest for specified site",
+)
+@click.option(
+    "--vrc-manifest",
+    "-2",
+    type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
+    required=False,
+    show_default=True,
+    help="Path to read the flow manifest for specified site",
+)
+@click.option(
+    "--sequence-dir",
+    "-s",
+    type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=True),
+    required=False,
+    show_default=True,
+    help="Path to read the sequencing data",
+)
+@click.option(
+    "--collated-dir",
+    "-c",
+    type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=True),
+    required=False,
+    show_default=True,
+    help="path to the collated directory",
+)
+@click.option(
+    "--combined-output-dir",
+    "-o",
+    type=click.Path(dir_okay=True, readable=True, exists=False, resolve_path=True),
+    required=False,
+    default="combined_data",
+)
+def combine(
+    ctx: click.Context,
+    verbose: bool,
+    fhcrc_manifest: Path,
+    vrc_manifest: Path,
+    sequence_dir: Path,
+    collated_dir: Path,
+    combined_output_dir: Path,
+) -> None:
+    """Collated Flow Data from sites FHCRC & VRC"""
+    data: Data = ctx.obj["data"]
+    flow_processed_dir = data.get_processed_flow_paths()
+    if not fhcrc_manifest:
+        fhcrc_manifest = flow_processed_dir / Path("fhrc/fhcrc_manifest.csv")
+    if not vrc_manifest:
+        vrc_manifest = flow_processed_dir / Path("vrc/vrc_manifest.csv")
+    if not sequence_dir:
+        sequence_dir = data.get_data_sequence_path()
+    if not collated_dir:
+        collated_dir = data.get_collated_data_path()
+    if not Path(combined_output_dir).exists():
+        Path(combined_output_dir).mkdir()
+    RScript(verbose=verbose).combine_flow_and_sequence(
+        fhcrc_manifest=Path(fhcrc_manifest),
+        vrc_manifest=Path(vrc_manifest),
+        sequence_dir=Path(sequence_dir),
+        collated_dir=Path(collated_dir),
+        combined_output_dir=Path(combined_output_dir),
     )
 
 
@@ -222,12 +325,18 @@ def figures():
     """
     Generate for figures.
     """
-    sns.set_context("paper", font_scale=1)
-    sns.set_style("ticks")
-    sns.set_style({"font.family": "Arial"})
     import warnings
 
     warnings.simplefilter("ignore")
+
+    import seaborn as sns
+    from matplotlib import pyplot as plt
+
+    sns.set_context("paper", font_scale=1)
+    sns.set_style("ticks")
+    # arial not found on linux by deafult
+    # sns.set_style({"font.family": "Arial"})
+
     np.random.seed(1000)
     pass
 
@@ -244,7 +353,9 @@ def figures():
 )
 def plot_figure_1(ctx: click.Context, outpath: str | Path) -> None:
     data = ctx.obj["data"]
-    figure = plot_flow_frequencies(data)
+    figure: plt.figure = plot_flow_frequencies(data)
+    if not Path(outpath).exists():
+        Path(outpath).parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(outpath + ".png", dpi=300)
     click.echo(f"Figure 1 generated to {outpath}.png")
 

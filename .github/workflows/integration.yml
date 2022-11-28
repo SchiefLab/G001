@@ -24,8 +24,7 @@ jobs:
           activate-environment: G001
           auto-activate-base: false
       - run: |
-          conda install pytest
-          pip install -e .
+          pip install -e '.[dev]'
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
       - name: Restore LFS cache

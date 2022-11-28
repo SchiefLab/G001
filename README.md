@@ -1,7 +1,9 @@
 # The IAVI G001 Clinical Trial Repository
 
+[![Flow Process](https://github.com/SchiefLab/G001/actions/workflows/process.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/process.yml)
+[![Collate](https://github.com/SchiefLab/G001/actions/workflows/collate.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/collate.yml)
 [![Sequence Analysis Pipeline](https://github.com/SchiefLab/G001/workflows/Sequence%20Analysis%20Pipeline/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/integration.yml)
-[![Collate](https://github.com/SchiefLab/G001/actions/workflows/name:Collate.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/name:Collate.yml)
+[![Combine](https://github.com/SchiefLab/G001/actions/workflows/combine.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/combine.yml)
 [![DOI](https://zenodo.org/badge/517925817.svg)](https://zenodo.org/badge/latestdoi/517925817)
 
 This repository includes data and code used to produce the manuscript Leggat, Cohen, Willis, Fulp, deCamp et al. Science (2022). All data has been deidentified.
@@ -15,8 +17,10 @@ This repository includes data and code used to produce the manuscript Leggat, Co
     - [Collation of flow data](#collation-of-flow-data)
   - [BCR sequence analysis](#bcr-sequence-analysis)
   - [Combined B cell frequency and BCR sequence analysis](#combined-b-cell-frequency-and-bcr-sequence-analysis)
-  - [Figures](#figures)
+- [Figures and tables](#figures-and-tables)
+  - [Main figures](#main-figures)
   - [Tables](#tables)
+- [Testing For Development](#testing-for-development)
 
 # Data Access
 
@@ -67,7 +71,11 @@ cd G001
 
 # activate environment
 conda activate G001
+```
 
+Optional - If you'd like to run the figure generation code, you must pull the large input files using `git-lfs`.
+
+```bash
 # initialize git-lfs
 git-lfs install
 
@@ -102,7 +110,12 @@ g001 process-flow -s VRC -m VRC_manifest_file.csv -i flow_input/vrc/
 The following will combine the VRC and FHCRC flow data.
 
 ```bash
-g001 collate --fhcrc-manifest fhcrc_manifest.csv --vcr-manifest vrc_manifest.csv -f data/flow/flow_processed_out/
+# Dyanmic input and outputs
+g001 collate \
+  --fhcrc-manifest flow_input/fhcrc/fhcrc_manifest.csv --vrc-manifest flow_input/vrc/vrc_manifest.csv -f data/flow/flow_processed_out/ \
+  -o collated_flow 
+# Use default inputs from ./install.sh and specify output
+g001 collate -o collated_flow
 ```
 
 ## BCR sequence analysis
@@ -120,10 +133,17 @@ This code combines the sequencing and flow processing results and computes B cel
 As above, we are working to upgrade the code to work on deidentified data. Please check back for updates. In the meantime, we are providing deidentified versions of the output of the original code which can be found [here](data/figures/flow_summary/flow_and_sequences.csv.gz).
 
 ```bash
-Rscript src/g001/R/Combine_Flow_and_Seq_Results.R data/sequence data/flow/collated_flow
+# Dyanmic input and outputs
+g001 combine \
+  --fhcrc-manifest flow_input/fhcrc/fhcrc_manifest.csv --vrc-manifest flow_input/vrc/vrc_manifest.csv -s data/sequence \
+  -c collated_flow -o combined_flow_seq
+# Use default inputs from ./install.sh and specify output
+g001 combine -c collated_flow -o combined_flow_seq
 ```
 
-## Figures
+# Figures and tables
+
+## Main figures
 
 The following code generates the main text figures from the data in this repository.
 
@@ -144,4 +164,13 @@ The following code generates all supplementary tables in the Leggat et al manusc
 
 ```
 g001 supptables -c -o supp_tables
+```
+
+
+# Testing For Development
+
+```bash
+# Run all tests
+pip install -e '.[dev]'
+pytest -svv tests/
 ```
