@@ -69,7 +69,7 @@ supp_tables/
 
 combined_data/Flow_Seq_Results.csv
 combined_data/Wide_Flow_Seq_Data.csv
-collated_flow/
+# collated_flow/
 .ipynb_checkpoints/
 flow_processed/*
 figures/
@@ -80,3 +80,17 @@ flow_input/fhcrc_manifest.csv
 flow_input/vrc_manifest.csv
 flow_input/fhcrc/
 flow_input/vrc/
+collated_flow/FHCRC_Flow_Results_by_Bulk_Antigen_Specific.csv
+collated_flow/FHCRC_Flow_Results_by_Experiment.csv
+collated_flow/FHCRC_Flow_Results_by_Index_File.csv
+collated_flow/FHCRC_Flow_Results_by_PTID_Visit.csv
+collated_flow/fhcrc_manifest_swap.csv
+collated_flow/FHCRC_QC_Concordance.csv
+collated_flow/VRC_Flow_Results_by_Bulk_Antigen_Specific.csv
+collated_flow/VRC_Flow_Results_by_Experiment.csv
+collated_flow/VRC_Flow_Results_by_Index_File.csv
+collated_flow/VRC_Flow_Results_by_PTID_Visit.csv
+collated_flow/vrc_manifest_swap.csv
+collated_flow/VRC_QC_Concordance.csv
+collated_flow/Wide_Flow_Data_by_Type_to_Merge.csv
+collated_flow/Wide_Flow_Data_to_Merge.csv
