@@ -262,7 +262,8 @@ def collate(
     "-1",
     type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
     required=False,
-    show_default=True,
+    show_default=False,
+    default=None,
     help="Path to read the flow manifest for specified site",
 )
 @click.option(
@@ -270,7 +271,8 @@ def collate(
     "-2",
     type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
     required=False,
-    show_default=True,
+    show_default=False,
+    default=None,
     help="Path to read the flow manifest for specified site",
 )
 @click.option(
@@ -307,23 +309,25 @@ def combine(
 ) -> None:
     """Collated Flow Data from sites FHCRC & VRC"""
     data: Data = ctx.obj["data"]
-    flow_processed_dir = data.get_processed_flow_paths()
     if not fhcrc_manifest:
-        fhcrc_manifest = flow_processed_dir / Path("fhrc/fhcrc_manifest.csv")
+        fhcrc_manifest = data.get_fhcrc_swap_manifest_path()
     if not vrc_manifest:
-        vrc_manifest = flow_processed_dir / Path("vrc/vrc_manifest.csv")
+        vrc_manifest = data.get_vrc_swap_manifest_path()
     if not sequence_dir:
         sequence_dir = data.get_data_sequence_path()
     if not collated_dir:
         collated_dir = data.get_collated_data_path()
     if not Path(combined_output_dir).exists():
+        click.echo("Creating output directory")
         Path(combined_output_dir).mkdir()
+    
     RScript(verbose=verbose).combine_flow_and_sequence(
         fhcrc_manifest=Path(fhcrc_manifest),
         vrc_manifest=Path(vrc_manifest),
         sequence_dir=Path(sequence_dir),
         collated_dir=Path(collated_dir),
         combined_output_dir=Path(combined_output_dir),
+        treatment_path=data.get_treatment_path()
     )
 
 

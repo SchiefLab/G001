@@ -158,6 +158,7 @@ class RScript:
         sequence_dir: Path,
         collated_dir: Path,
         combined_output_dir: Path,
+        treatment_path: Path,
     ) -> None:
         """Combine Flow Data with Sequence Data
 
@@ -190,6 +191,7 @@ class RScript:
             str(sequence_dir),
             str(collated_dir),
             str(combined_output_dir),
+            str(treatment_path),
         ]
         print("Running...\n", " ".join(cmd))
         self.__run_cmd(cmd)
