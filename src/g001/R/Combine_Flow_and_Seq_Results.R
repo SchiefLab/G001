@@ -1,23 +1,25 @@
 #' Combine processed flow and sequence data
 args = commandArgs(trailingOnly = TRUE);
 
-library(MIMOSA, warn.conflicts = FALSE)
-library(data.table, warn.conflicts = FALSE)
-library(tidyr, warn.conflicts = FALSE)
-library(purrr, warn.conflicts = FALSE)
-library(readr, warn.conflicts = FALSE)
-library(stringr, warn.conflicts = FALSE)
-library(forcats, warn.conflicts = FALSE)
-library(readxl, warn.conflicts = FALSE)
-library(arrow, warn.conflicts = FALSE)
-library(here, warn.conflicts = FALSE)
-library(dplyr, warn.conflicts = FALSE)
+suppressMessages(library(MIMOSA, warn.conflicts = FALSE))
+suppressMessages(library(data.table, warn.conflicts = FALSE))
+suppressMessages(library(tidyr, warn.conflicts = FALSE))
+suppressMessages(library(purrr, warn.conflicts = FALSE))
+suppressMessages(library(readr, warn.conflicts = FALSE))
+suppressMessages(library(stringr, warn.conflicts = FALSE))
+suppressMessages(library(forcats, warn.conflicts = FALSE))
+suppressMessages(library(readxl, warn.conflicts = FALSE))
+suppressMessages(library(arrow, warn.conflicts = FALSE))
+suppressMessages(library(here, warn.conflicts = FALSE))
+suppressMessages(library(dplyr, warn.conflicts = FALSE))
 
 fhcrc_manifest_path <- args[1]
 vrc_manifest_path <- args[2]
 seq_path <- args[3]
 collated_output_path <- args[4]
 output_path <- args[5]
+treat_path <- args[6]
+# treat_path <- 'data/groups/G001treatment.csv'
 
 
 # Sequence Data Loading and Setup -------------------------------------------------------------
@@ -113,24 +115,24 @@ seq_results <- seq_results_long %>%
 # Flow Data ----------------------------------------------------------------------
 
 
-flow_data <- read_csv(file.path(
+flow_data <- suppressMessages(read_csv(file.path(
   collated_output_path,
   'Wide_Flow_Data_to_Merge.csv'), show_col_types = FALSE) %>%
-  rename(Visit = VISIT)
+  rename(Visit = VISIT))
 
 
-flow_data_by_type <- read_csv(file.path(
+flow_data_by_type <- suppressMessages(read_csv(file.path(
   collated_output_path,
   'Wide_Flow_Data_by_Type_to_Merge.csv'), show_col_types = FALSE) %>%
-  rename(Visit = VISIT)
+  rename(Visit = VISIT))
 
 
 # Manifests -----------------------------------------------------------------------------------
 
 # Need all manifest index plate counts for QC
-fhcrc_flow_manifest <- read_csv(file.path(fhcrc_manifest_path), col_select = -1, show_col_types = FALSE)
-vrc_flow_manifest <- read_csv(file.path(vrc_manifest_path), col_select = -1, show_col_types = FALSE) %>% 
-  mutate(Tube = as.character(Tube))
+fhcrc_flow_manifest <- suppressMessages(read_csv(file.path(fhcrc_manifest_path), show_col_types = FALSE))
+vrc_flow_manifest <- suppressMessages(read_csv(file.path(vrc_manifest_path), show_col_types = FALSE) %>% 
+  mutate(Tube = as.character(Tube)))
 
 flow_manifest_long <- bind_rows(fhcrc_flow_manifest, vrc_flow_manifest) %>%
   filter(!is.na(INX_Number_Of_Cells)) %>%
@@ -154,10 +156,9 @@ flow_manifest <- flow_manifest_long %>%
 # Treatment and PubIDs ----------------------------------------------------
 
 #Getting treatment
-treat_path <- 'data/groups/G001treatment.csv'
 
-treat_info <- read_csv(treat_path, col_select = -1, show_col_types = FALSE) %>% 
-  rename(Site = site)
+treat_info <- suppressMessages(read_csv(treat_path, col_select = -1, show_col_types = FALSE) %>% 
+  rename(Site = site))
 
 
 # Merging All ---------------------------------------------------------------------------------
@@ -531,218 +532,159 @@ write_csv(final_results,
 
 # Ep Spec
 
-ep_spec_response_data <- final_results %>%
-  select(PTID, Visit, Treatment,
-         ep_spec = `Number of epitope-specific (KO-GT8++) IgG+ B cells`,
-         igg_bcell = `Number of IgD-IgG+ B cells`
-  ) %>%
-  group_by(PTID) %>%
-  mutate(
-    ep_spec_bl = ep_spec[Visit == 'V02'],
-    igg_bcell_bl = igg_bcell[Visit == 'V02']
-  )
+# Jordan has commented this out
 
-ep_spec_fisher_response_info <- ep_spec_response_data %>%
-  filter(!Visit %in% c('V02','V05','V07A','V09')) %>%
-  group_by(PTID, Visit, Treatment) %>%
-  mutate(
-    response_p_Ep_Specific = fisher.test(matrix(
-      c(ep_spec, ep_spec_bl,
-        igg_bcell - ep_spec, igg_bcell_bl - ep_spec_bl),
-      nrow = 2
-    ), alternative = "greater")$p.value
-  )
-
-
-E <- ConstructMIMOSAExpressionSet(
-  ep_spec_response_data %>%
-    filter(!Visit %in% c('V05','V07A','V09')),
-  reference = Visit %in% "V02",
-  measure.columns = c("ep_spec", "igg_bcell"),
-  other.annotations = c("Visit", "PTID"),
-  default.cast.formula = component ~ PTID + Visit + Treatment,
-  .variables = .(PTID, Treatment),
-  featureCols = 1,
-  ref.append.replace = "_REF")
-
-
-result <- MIMOSA(igg_bcell + ep_spec ~ PTID + Treatment | Visit,
-                 data = E,
-                 ref = RefTreat %in% 'Reference',
-                 subset = RefTreat %in% 'Treatment',
-                 method = "mcmc",
-                 burn = 5000,
-                 iter = 20000, seed = 538157028)
-
-
-
-MIMOSA_response_prob <- getZ(result)[, 'Pr.response']
-
-
-ep_spec_MIMOSA_info <- bind_cols(
-  map_dfr(result, ~.x@result@phenoData@data) %>%
-    filter(RefTreat == 'Treatment') %>%
-    as_tibble() %>%
-    select(-RefTreat),
-  MIMOSA_response_prob_Ep_Specific = MIMOSA_response_prob,
-  Response_Ep_Specific = as.numeric(MIMOSA_response_prob > .99)
-)
-
-
-# GT8
-
-
-gt8_spec_response_data <- final_results %>%
-  select(PTID, Visit, Treatment,
-         gt8_spec = `Number of IgD-IgG+ B cells that are GT8++ (without regard to KO binding status)`,
-         igg_bcell = `Number of IgD-IgG+ B cells`
-  ) %>%
-  group_by(PTID) %>%
-  mutate(
-    gt8_spec_bl = gt8_spec[Visit == 'V02'],
-    igg_bcell_bl = igg_bcell[Visit == 'V02']
-  ) %>%
-  ungroup() %>%
-  filter(!is.na(gt8_spec))
-
-gt8_fisher_response_info <- gt8_spec_response_data %>%
-  filter(!Visit %in% c('V02','V05','V07A','V09')) %>%
-  group_by(PTID, Visit, Treatment) %>%
-  mutate(
-    response_p_GT8_Specific = fisher.test(matrix(
-      c(gt8_spec, gt8_spec_bl,
-        igg_bcell - gt8_spec, igg_bcell_bl - gt8_spec_bl),
-      nrow = 2
-    ), alternative = "greater")$p.value
-  )
-
-
-E <- ConstructMIMOSAExpressionSet(
-  gt8_spec_response_data %>%
-    filter(!Visit %in% c('V05','V07A','V09')),
-  reference = Visit %in% "V02",
-  measure.columns = c("gt8_spec", "igg_bcell"),
-  other.annotations = c("Visit", "PTID"),
-  default.cast.formula = component ~ PTID + Visit + Treatment,
-  .variables = .(PTID, Treatment),
-  featureCols = 1,
-  ref.append.replace = "_REF")
-
-
-result <- MIMOSA(igg_bcell + gt8_spec ~ PTID + Treatment | Visit,
-                 data = E,
-                 ref = RefTreat %in% 'Reference',
-                 subset = RefTreat %in% 'Treatment',
-                 method = "mcmc",
-                 burn = 5000,
-                 iter = 20000, seed = 538187028)
-
-
-
-MIMOSA_response_prob <- getZ(result)[, 'Pr.response']
-
-
-gt8_MIMOSA_info <- bind_cols(
-  map_dfr(result, ~.x@result@phenoData@data) %>%
-    filter(RefTreat == 'Treatment') %>%
-    as_tibble() %>%
-    select(-RefTreat),
-  MIMOSA_response_prob_GT8_Specific = MIMOSA_response_prob,
-  Response_GT8 = as.numeric(MIMOSA_response_prob > .99)
-)
-
-
-
-final_results_with_calls <- final_results %>%
-  full_join(ep_spec_MIMOSA_info %>%
-              select(PTID, Visit, Treatment, Response_Ep_Specific),
-            by = c('PTID', 'Visit', 'Treatment')) %>%
-  full_join(gt8_MIMOSA_info %>%
-              select(PTID, Visit, Treatment, Response_GT8),
-            by = c('PTID', 'Visit', 'Treatment')) %>%
-  mutate(    # Overriding response calls for FNA and PB based on 0.01%
-    Response_Ep_Specific =
-      case_when(Visit %in% c('V05','V09') ~
-                  (`Percent of IgG+ GC B cells that are epitope-specific (KO-GT8++)` > 0.1) %>%
-                  as.numeric(),
-                Visit %in% c('V07A') ~
-                  (`Percent of IgG+ B cells that are epitope-specific (KO-GT8++)` > 0.1) %>%
-                  as.numeric(),
-                TRUE ~ Response_Ep_Specific),
-    Response_GT8 =
-      case_when(Visit %in% c('V05','V09') ~
-                  (`Percent of IgG+ GC B cells that are GT8++ (without regard to KO binding status)` > 0.1) %>%
-                  as.numeric(),
-                Visit %in% c('V07A') ~
-                  (`Percent of IgG+ B cells that are GT8++ (without regard to KO binding status)` > 0.1) %>%
-                  as.numeric(),
-                TRUE ~ Response_GT8)) %>%
-    select(-contains('Population'), everything(), contains('Population'))
-
-write_csv(final_results_with_calls,
-          file.path(output_path,'Flow_Seq_Results_with_calls.csv'),
-          na = '')
-
-
-
-
-
-
-
-
-
-
-
-
-# # Data Summary -----------------------------------------------------------------------------------------
-# 
-# # Reading in specimen info
-# specimen_info <- read_csv(file.path('Data_Completeness','G001_ptid_info_&_Spec_Collection_29May2020.csv'))
-# 
-# 
-# data_summary_data <- combined_results %>%
-#   mutate(
-#     Visit_Tissue = case_when(
-#       Visit %in% c('V05','V09') ~ paste0(Visit, ' (FNA)'),
-#       Visit %in% c('V07A') ~ paste0(Visit, ' (PB)'),
-#       TRUE ~ paste0(Visit, ' (Frozen)'),
-#     ) %>% factor()
-#   )
-# 
-# data_summary_ptid <-   data_summary_data %>%
-#   full_join(specimen_info,
-#             by = c('PTID', 'Site', 'Dose', 'Visit_Tissue' = 'name')) %>%
-#   mutate(
-#     Flow_Seq_Data = case_when(
-#       is.na(Seq_Attempted) ~ Flow_Missing_Reason,
-#       # AG_Specific_Count < sequenced_Ag_Spec ~ 'Ag Spec < # Seq',
-#       Seq_Attempted %in% c('No Seq Expected',
-#                            'VRC01 Calls Made') ~ 'X',
-#       Seq_Attempted == 'Seq Data but no VRC01 Calls' ~ 'No VRC01 Performed',
-#       Seq_Attempted == 'No Seq Performed' ~ 'No Seq Data'
-#     )
+# ep_spec_response_data <- final_results %>%
+#   select(PTID, Visit, Treatment,
+#          ep_spec = `Number of epitope-specific (KO-GT8++) IgG+ B cells`,
+#          igg_bcell = `Number of IgD-IgG+ B cells`
 #   ) %>%
-#   pivot_wider(id_cols = c('PTID', 'Site'),
-#               names_from = Visit_Tissue,
-#               names_sort = TRUE,
-#               values_from = Flow_Seq_Data) %>%
-#   full_join(combined_results %>% distinct(PTID, Treatment), by = 'PTID') %>%
-#   select(PTID, Site, Treatment, everything()) %>%
-#   arrange(PTID)
-# 
-# 
-# write_csv(data_summary_ptid, file.path('data', 'combined_results', 'flow_and_seq_data_summary_by_ptid.csv'))
-# 
-# 
-# 
+#   group_by(PTID) %>%
+#   mutate(
+#     ep_spec_bl = ep_spec[Visit == 'V02'],
+#     igg_bcell_bl = igg_bcell[Visit == 'V02']
+#   )
+
+# ep_spec_fisher_response_info <- ep_spec_response_data %>%
+#   filter(!Visit %in% c('V02','V05','V07A','V09')) %>%
+#   group_by(PTID, Visit, Treatment) %>%
+#   mutate(
+#     response_p_Ep_Specific = fisher.test(matrix(
+#       c(ep_spec, ep_spec_bl,
+#         igg_bcell - ep_spec, igg_bcell_bl - ep_spec_bl),
+#       nrow = 2
+#     ), alternative = "greater")$p.value
+#   )
+
+
+# E <- ConstructMIMOSAExpressionSet(
+#   ep_spec_response_data %>%
+#     filter(!Visit %in% c('V05','V07A','V09')),
+#   reference = Visit %in% "V02",
+#   measure.columns = c("ep_spec", "igg_bcell"),
+#   other.annotations = c("Visit", "PTID"),
+#   default.cast.formula = component ~ PTID + Visit + Treatment,
+#   .variables = .(PTID, Treatment),
+#   featureCols = 1,
+#   ref.append.replace = "_REF")
+
+
+# result <- MIMOSA(igg_bcell + ep_spec ~ PTID + Treatment | Visit,
+#                  data = E,
+#                  ref = RefTreat %in% 'Reference',
+#                  subset = RefTreat %in% 'Treatment',
+#                  method = "mcmc",
+#                  burn = 5000,
+#                  iter = 20000, seed = 538157028)
 
 
 
+# MIMOSA_response_prob <- getZ(result)[, 'Pr.response']
+
+
+# ep_spec_MIMOSA_info <- bind_cols(
+#   map_dfr(result, ~.x@result@phenoData@data) %>%
+#     filter(RefTreat == 'Treatment') %>%
+#     as_tibble() %>%
+#     select(-RefTreat),
+#   MIMOSA_response_prob_Ep_Specific = MIMOSA_response_prob,
+#   Response_Ep_Specific = as.numeric(MIMOSA_response_prob > .99)
+# )
+
+
+# # GT8
+
+
+# gt8_spec_response_data <- final_results %>%
+#   select(PTID, Visit, Treatment,
+#          gt8_spec = `Number of IgD-IgG+ B cells that are GT8++ (without regard to KO binding status)`,
+#          igg_bcell = `Number of IgD-IgG+ B cells`
+#   ) %>%
+#   group_by(PTID) %>%
+#   mutate(
+#     gt8_spec_bl = gt8_spec[Visit == 'V02'],
+#     igg_bcell_bl = igg_bcell[Visit == 'V02']
+#   ) %>%
+#   ungroup() %>%
+#   filter(!is.na(gt8_spec))
+
+# gt8_fisher_response_info <- gt8_spec_response_data %>%
+#   filter(!Visit %in% c('V02','V05','V07A','V09')) %>%
+#   group_by(PTID, Visit, Treatment) %>%
+#   mutate(
+#     response_p_GT8_Specific = fisher.test(matrix(
+#       c(gt8_spec, gt8_spec_bl,
+#         igg_bcell - gt8_spec, igg_bcell_bl - gt8_spec_bl),
+#       nrow = 2
+#     ), alternative = "greater")$p.value
+#   )
+
+
+# E <- ConstructMIMOSAExpressionSet(
+#   gt8_spec_response_data %>%
+#     filter(!Visit %in% c('V05','V07A','V09')),
+#   reference = Visit %in% "V02",
+#   measure.columns = c("gt8_spec", "igg_bcell"),
+#   other.annotations = c("Visit", "PTID"),
+#   default.cast.formula = component ~ PTID + Visit + Treatment,
+#   .variables = .(PTID, Treatment),
+#   featureCols = 1,
+#   ref.append.replace = "_REF")
+
+
+# result <- MIMOSA(igg_bcell + gt8_spec ~ PTID + Treatment | Visit,
+#                  data = E,
+#                  ref = RefTreat %in% 'Reference',
+#                  subset = RefTreat %in% 'Treatment',
+#                  method = "mcmc",
+#                  burn = 5000,
+#                  iter = 20000, seed = 538187028)
 
 
 
+# MIMOSA_response_prob <- getZ(result)[, 'Pr.response']
 
 
+# gt8_MIMOSA_info <- bind_cols(
+#   map_dfr(result, ~.x@result@phenoData@data) %>%
+#     filter(RefTreat == 'Treatment') %>%
+#     as_tibble() %>%
+#     select(-RefTreat),
+#   MIMOSA_response_prob_GT8_Specific = MIMOSA_response_prob,
+#   Response_GT8 = as.numeric(MIMOSA_response_prob > .99)
+# )
+
+
+
+# final_results_with_calls <- final_results %>%
+#   full_join(ep_spec_MIMOSA_info %>%
+#               select(PTID, Visit, Treatment, Response_Ep_Specific),
+#             by = c('PTID', 'Visit', 'Treatment')) %>%
+#   full_join(gt8_MIMOSA_info %>%
+#               select(PTID, Visit, Treatment, Response_GT8),
+#             by = c('PTID', 'Visit', 'Treatment')) %>%
+#   mutate(    # Overriding response calls for FNA and PB based on 0.01%
+#     Response_Ep_Specific =
+#       case_when(Visit %in% c('V05','V09') ~
+#                   (`Percent of IgG+ GC B cells that are epitope-specific (KO-GT8++)` > 0.1) %>%
+#                   as.numeric(),
+#                 Visit %in% c('V07A') ~
+#                   (`Percent of IgG+ B cells that are epitope-specific (KO-GT8++)` > 0.1) %>%
+#                   as.numeric(),
+#                 TRUE ~ Response_Ep_Specific),
+#     Response_GT8 =
+#       case_when(Visit %in% c('V05','V09') ~
+#                   (`Percent of IgG+ GC B cells that are GT8++ (without regard to KO binding status)` > 0.1) %>%
+#                   as.numeric(),
+#                 Visit %in% c('V07A') ~
+#                   (`Percent of IgG+ B cells that are GT8++ (without regard to KO binding status)` > 0.1) %>%
+#                   as.numeric(),
+#                 TRUE ~ Response_GT8)) %>%
+#     select(-contains('Population'), everything(), contains('Population'))
+
+# write_csv(final_results_with_calls,
+#           file.path(output_path,'Flow_Seq_Results_with_calls.csv'),
+#           na = '')
 
 
 # By Type Results ---------------------------------------------------------
@@ -1152,45 +1094,4 @@ write_csv(final_results_by_type,
           na = '')
 
 
-
-
-# # Reading in specimen info
-# 
-# 
-# 
-# data_summary_data_by_type <- combined_results_by_type %>%
-#   mutate(
-#     Visit_Tissue = case_when(
-#       Visit %in% c('V05','V09') ~ paste0(Visit, ' (FNA)'),
-#       Visit %in% c('V07A') ~ paste0(Visit, ' (PB)'),
-#       TRUE ~ paste0(Visit, ' (Frozen)'),
-#     ) %>% factor()
-#   )
-# 
-# data_summary_ptid_by_type <-   data_summary_data_by_type %>%
-#   filter(Plate_Type == 'Antigen-Specific') %>%
-#   full_join(specimen_info,
-#             by = c('PTID', 'Site', 'Dose', 'Visit_Tissue' = 'name')) %>%
-#   mutate(
-#     Flow_Seq_Data = case_when(
-#       is.na(Seq_Attempted) & !is.na(Flow_Missing_Reason) ~ Flow_Missing_Reason,
-#       # AG_Specific_Count < sequenced_Ag_Spec ~ 'Ag Spec < # Seq',
-#       Seq_Attempted %in% c('No Seq Expected',
-#                            'VRC01 Calls Made') ~ 'X',
-#       Seq_Attempted == 'Seq Data but no VRC01 Calls' ~ 'No VRC01 Performed',
-#       Seq_Attempted == 'No Seq Performed' ~ 'No Seq Data',
-#       TRUE ~ 'No Flow Data During Sorting'
-#     )
-#   ) %>%
-#   pivot_wider(id_cols = c('PTID', 'Site'),
-#               names_from = Visit_Tissue,
-#               names_sort = TRUE,
-#               values_from = Flow_Seq_Data) %>%
-#   full_join(combined_results %>% distinct(PTID, Treatment), by = 'PTID') %>%
-#   select(PTID, Site, Treatment, unique(data_summary_data_by_type$Visit_Tissue)) %>%
-#   arrange(PTID)
-# 
-# write_csv(data_summary_ptid_by_type,
-#           file.path('data', 'combined_results',
-#                     'flow_and_seq_data_summary_by_ptid_ag_spec_plate.csv'))
 

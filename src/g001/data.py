@@ -276,6 +276,9 @@ class FlowDataPaths(BaseModel):
     vrc_preprocessed_manifest_path: Path = processed_input_path/Path("vrc_manifest.csv")
     fhcrc_processed_manifest_path: Path = processed_flow_path/Path("fhcrc/fhcrc_manifest.csv")
     vrc_processed_manifest_path: Path = processed_flow_path/Path("vrc/vrc_manifest.csv")
+    fhcrc_swapped_manifest_path: Path = collated_flow_path/Path("fhcrc_manifest_swap.csv")
+    vrc_swapped_manifest_path: Path = collated_flow_path/Path("vrc_manifest_swap.csv")
+    treatment_path : Path = Path("data/groups/G001treatment.csv")
 
     @validator("*", always=True)
     def validate_paths(cls, v: Path):
@@ -570,3 +573,15 @@ class Data:
     def get_vrc_processed_manifest_path(self) -> Path:
         """Get the vrc processed manifest path"""
         return self.flow_data_paths.vrc_processed_manifest_path
+
+    def get_fhcrc_swap_manifest_path(self) -> Path:
+        """Get the fhcrc swapped manifest path"""
+        return self.flow_data_paths.fhcrc_swapped_manifest_path
+
+    def get_vrc_swap_manifest_path(self) -> Path:
+        """Get the vrc swapped manifest path"""
+        return self.flow_data_paths.vrc_swapped_manifest_path
+
+    def get_treatment_path(self) -> Path:
+        """Get the treatment path"""
+        return self.flow_data_paths.treatment_path
