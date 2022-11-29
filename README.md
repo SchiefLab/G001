@@ -1,4 +1,8 @@
-# The IAVI G001 Clinical Trial Repository
+<h1 align="center" style="font-family:verdana;font-size:150%"> The IAVI Clinical Trial Repository</h2>
+<div align="center">
+<img src="https://repository-images.githubusercontent.com/517925817/1eee6262-ea00-4269-82e3-c1950d5752d6" style="margin:0.5em;width:90%">
+</div>
+
 
 [![Flow Process](https://github.com/SchiefLab/G001/actions/workflows/process.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/process.yml)
 [![Collate](https://github.com/SchiefLab/G001/actions/workflows/collate.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/collate.yml)
@@ -8,7 +12,6 @@
 
 This repository includes data and code used to produce the manuscript Leggat, Cohen, Willis, Fulp, deCamp et al. Science (2022). All data has been deidentified.
 
-- [The IAVI G001 Clinical Trial Repository](#the-iavi-g001-clinical-trial-repository)
 - [Data Access](#data-access)
 - [Pipeline](#pipeline)
   - [Installation pre-requisites](#installation-pre-requisites)
