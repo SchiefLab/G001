@@ -12,7 +12,7 @@ def test_combine(tmp_path_factory: TempdirFactory) -> None:
         "combine",
         "--verbose",
         "-1",
-        "data/flow/flow_processed_out/fhrc/fhcrc_manifest.csv",
+        "data/flow/flow_processed_out/fhcrc/fhcrc_manifest.csv",
         "-2",
         "data/flow/flow_processed_out/vrc/vrc_manifest.csv",
         "-s",

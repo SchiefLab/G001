@@ -410,6 +410,27 @@ final_flow_data <- final_flow_data %>%
   mutate(PTID = if_else(is.na(Correct_PTID), PTID, Correct_PTID)) %>%
   select(-Correct_PTID)
 
+print(fhcrc_manifest)
+fhcrc_swap_manifest <-   fhcrc_manifest %>% full_join(swap_info,
+            by = c('PTID' = 'Bad_PTID', 'Visit'='VISIT')) %>%
+  mutate(PTID = if_else(is.na(Correct_PTID), PTID, Correct_PTID)) %>%
+  select(-Correct_PTID)
+
+vrc_swap_manifest <-   vrc_manifest %>% full_join(swap_info,
+            by = c('PTID' = 'Bad_PTID', 'Visit'='VISIT')) %>%
+  mutate(PTID = if_else(is.na(Correct_PTID), PTID, Correct_PTID)) %>%
+  select(-Correct_PTID)
+
+write_csv(fhcrc_swap_manifest,
+          file.path(output_path,
+                    'fhcrc_manifest_swap.csv'
+          na = '')
+
+write_csv(vrc_swap_manifest,
+          file.path(output_path,
+                    'vrc_manifest_swap.csv'
+          na = '')
+
 write_csv(final_flow_data,
           file.path(output_path,
                     'Wide_Flow_Data_to_Merge.csv'),
