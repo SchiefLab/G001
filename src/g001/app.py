@@ -108,14 +108,13 @@ def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resum
     "--site",
     "-s",
     required=True,
-    type=click.Choice(["FHCRC", "VRC"]),
+    type=click.Choice(["fhcrc", "vrc"]),
 )
 @click.option(
     "--manifest",
     "-m",
     type=click.Path(dir_okay=False, readable=True, exists=True, resolve_path=True),
-    required=True,
-    show_default=True,
+    default=None,
     help="Path to read the flow manifest for specified site",
 )
 @click.option(
@@ -136,7 +135,9 @@ def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resum
     show_default=True,
     help="Path to create the flow_output directory",
 )
-@click.option("-f", "--force_overwrite_output_dir", default=True, is_flag=True, help="Force overwrite output directory")
+@click.option(
+    "-f", "--force-overwrite-output-dir", default=False, is_flag=True, help="Force overwrite output directory"
+)
 def process_flow(
     ctx: click.Context,
     verbose: bool,
@@ -144,13 +145,19 @@ def process_flow(
     manifest: Path | str,
     flow_input_dir: Path | str,
     flow_output_dir: Path | str,
-    force_overwrite_output_dir: str,
+    force_overwrite_output_dir: bool,
 ) -> None:
     """
     Process flow data
     """
+    data: Data = ctx.obj["data"]
     if not Path(flow_output_dir).exists():
         Path(flow_output_dir).mkdir()
+    if not manifest:
+        if site == "fhcrc":
+            manifest = data.get_pre_processed_fhcrc_manifest_path()
+        else:
+            manifest = data.get_pre_processed_vrc_manifest_path()
     RScript(verbose=verbose).flow_processing(
         site=site,
         manifest=manifest,

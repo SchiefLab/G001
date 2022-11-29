@@ -22,8 +22,8 @@ if (!length(args) %in% 4:5) {
 source('src/g001/R/Flow_Functions.R')
 
 key = args[1]
-if (!key %in% c('vrc','fhrc')) {
-  stop('First argument must be vrc or fhrc')
+if (!key %in% c('vrc','fhcrc')) {
+  stop('First argument must be vrc or fhcrc')
 }
 manifest = args[2]
 flow_path = args[3]
@@ -555,7 +555,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
   if (!inherits(imported_workspace_global, "try-error")) {
     imported_workspace_global <- manually_adj_gates(
       ws_in = imported_workspace_global,
-      IgD_color_in = ifelse(key == 'fhrc', 'V780-A', 'V800-A'),
+      IgD_color_in = ifelse(key == 'fhcrc', 'V780-A', 'V800-A'),
       visit_in = current_visit)
 
     experimental_samples_global <- imported_workspace_global[unique(fcs_files_linked$exp_name)]
