@@ -89,10 +89,6 @@ git-lfs pull
 
 The flow processing needs to be run for the two sites (VRC,FHCRC) independently.
 
-The code here was used to process the raw flow files during the trial. Those files contained information that needed to be deidentified before we could share the files themselves. The code as originally written was dependent on the format of the identifier data. Consequently, after we deidentified the raw data for inclusion in the repository, the original code was not able to process the deidentifed raw data files. We have included the code here for reference, but it is not functional on the deidentified data.
-
-We are working to update the code to function with the deidentified data. Please check back for updates. In the meantime, we have included the deidentified versions of the original processed flow data used for trial analysis in the [processed flow](data/flow/processed_flow/) directory.
-
 ```bash
 # get all raw flow files from public S3 bucket
 wget https://iavig001public.s3.us-west-2.amazonaws.com/flow_input.tgz
