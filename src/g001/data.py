@@ -269,8 +269,11 @@ class FigureDataPaths(BaseModel):
 class FlowDataPaths(BaseModel):
     base_path: Path = Path("data/flow")
     processed_flow_path: Path = base_path / Path("flow_processed_out")
+    processed_input_path: Path = base_path / Path("flow_input")
     collated_flow_path: Path = base_path / Path("collated_flow")
     swap_path: Path = base_path / Path("swap.csv")
+    fhcrc_preprocessed_manifest_path: Path = processed_input_path/Path("fhcrc_manifest.csv")
+    vrc_preprocessed_manifest_path: Path = processed_input_path/Path("vrc_manifest.csv")
     fhcrc_processed_manifest_path: Path = processed_flow_path/Path("fhcrc/fhcrc_manifest.csv")
     vrc_processed_manifest_path: Path = processed_flow_path/Path("vrc/vrc_manifest.csv")
 
@@ -551,6 +554,14 @@ class Data:
     def get_sample_swap_file(self) -> Path:
         """Get the sample swap file path for collate flow"""
         return self.flow_data_paths.swap_path
+
+    def get_pre_processed_fhcrc_manifest_path(self) -> Path:
+        """Get the fhcrc pre-processed manifest path"""
+        return self.flow_data_paths.fhcrc_preprocessed_manifest_path
+
+    def get_pre_processed_vrc_manifest_path(self) -> Path:
+        """Get the vrc pre-processed manifest path"""
+        return self.flow_data_paths.vrc_preprocessed_manifest_path
 
     def get_fhcrc_processed_manifest_path(self) -> Path:
         """Get the fhcrc processed manifest path"""

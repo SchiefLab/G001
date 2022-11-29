@@ -25,3 +25,9 @@ jobs:
           activate-environment: G001
           auto-activate-base: false
       - run: pip install -e '.[dev]'
+      - name: Get Data
+      - run: |
+          wget https://iavig001public.s3.us-west-2.amazonaws.com/flow_input_sampled.tgz
+          tar -xzf flow_input_sampled.tgz
+      - name: Test
+      - run: pytest -s -x --log-cli-level INFO tests/integration/test_flow_process_integration.py

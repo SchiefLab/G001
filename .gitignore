@@ -75,3 +75,5 @@ collated_flow/
 flow_processed/*
 figures/
 *.ipynb
+flow_input_sampled/*
+flow_input_sampled.tgz
