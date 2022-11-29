@@ -23,7 +23,6 @@ tests/output/unblind.feather
 tests/output/.cache/find.feather
 raw_flow/
 raw_flow.tgz
-flow_input/
 flow_input.tgz
 flow_output/
 .vscode/*
@@ -77,3 +76,7 @@ figures/
 *.ipynb
 flow_input_sampled/*
 flow_input_sampled.tgz
+flow_input/fhcrc_manifest.csv
+flow_input/vrc_manifest.csv
+flow_input/fhcrc/
+flow_input/vrc/
