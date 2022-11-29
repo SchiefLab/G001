@@ -1,4 +1,3 @@
-<h1 align="center" style="font-family:verdana;font-size:150%"> The IAVI Clinical Trial Repository</h2>
 <div align="center">
 <img src="https://repository-images.githubusercontent.com/517925817/1eee6262-ea00-4269-82e3-c1950d5752d6" style="margin:0.5em;width:90%">
 </div>
