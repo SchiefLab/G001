@@ -9,7 +9,7 @@ on:
     branches: [main]
 
 jobs:
-  collate-combine:
+  process:
     runs-on: ubuntu-latest
     defaults:
       run:
