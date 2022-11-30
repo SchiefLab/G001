@@ -22,7 +22,6 @@ This repository includes data and code used to produce the manuscript Leggat, Co
 - [Figures and tables](#figures-and-tables)
   - [Main figures](#main-figures)
   - [Tables](#tables)
-- [Testing For Development](#testing-for-development)
 
 # Data Access
 
@@ -120,7 +119,8 @@ The following will combine the VRC and FHCRC flow data.
 # If you ran the steps above in FACS analysis, you can use the following command to collate
 g001 collate -i flow_processed_out/ -o collated_flow
 
-# If you did not run the above steps in FACS analysis, we have included the output data in data/flow/flow_process_out needed for collation
+# If you did not run the above steps in FACS analysis, we have run those steps and placed the output 
+# in /data/flow/flow_process_out. You can use the following command to collate 
 g001 collate -i data/flow/flow_process_out/ -o collated_flow
 
 # For more options, use
@@ -132,23 +132,28 @@ g001 collate --help
 Run BCR sequence analysis pipeline (as in Leggat et al fig. S10). This code is fully functional on the deidentified data.
 
 ```bash
-# run sequence analysis with resume and output to sequences_analysis_out
-g001 sequence_analysis -r -o sequence_analysis_output
+# run sequence analysis and output to the folder sequence_analysis_output
+g001 sequence_analysis -o sequence_analysis_output
+
+# For more options, use
+g001 sequence_analysis --help
 ```
 
 ## Combined B cell frequency and BCR sequence analysis
 
-This code combines the sequencing and flow processing results and computes B cell frequencies among various sets of cells (e.g VRC01-class B cells among all IgG+ memory B cells). Similar to the problem we experienced with [flow processing code](#facs-analysis), we found that the original code does not function properly on deidentified data.
-
-As above, we are working to upgrade the code to work on deidentified data. Please check back for updates. In the meantime, we are providing deidentified versions of the output of the original code which can be found [here](data/figures/flow_summary/flow_and_sequences.csv.gz).
+This code combines the sequencing and flow processing results and computes B cell frequencies among various sets of cells (e.g VRC01-class B cells among all IgG+ memory B cells). 
 
 ```bash
-# Dyanmic input and outputs
-g001 combine \
-  --fhcrc-manifest flow_input/fhcrc/fhcrc_manifest.csv --vrc-manifest flow_input/vrc/vrc_manifest.csv -s data/sequence \
-  -c collated_flow -o combined_flow_seq
-# Use default inputs from ./install.sh and specify output
-g001 combine -c collated_flow -o combined_flow_seq
+
+# If you ran the steps above for collate and sequence analysis, 
+# and the respective output folders are sequence_analysis_output and collated_flow, 
+# you can use the following command to combine the sequence and flow data
+g001 combine -s sequence_analysis_output -c collated_flow -o combined_flow_seq
+
+
+# If you did not run the above steps for collate and sequence analysis, we have run those steps and placed the output 
+# in /data/flow/collated_flow and data/sequence. You can use the following command to combine the sequence and flow data 
+g001 combine -s data/sequence -c data/flow/collated_flow -o combined_flow_seq
 ```
 
 # Figures and tables
@@ -170,17 +175,14 @@ g001 figures fig8
 
 ## Tables
 
-The following code generates all supplementary tables in the Leggat et al manuscript. Both individual pdfs and a single combined pdf are generated. This is only supported on Mac.
+The following code generates all supplementary tables in the Leggat et al. manuscript. Both individual pdfs and a single combined pdf are generated. This command is only supported on Mac.
 
 ```
 g001 supptables -c -o supp_tables
 ```
 
 
-# Testing For Development
 
-```bash
-# Run all tests
-pip install -e '.[dev]'
-pytest -svv tests/
-```
+
+
+
