@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 from __future__ import annotations
 from itertools import product
 
@@ -55,7 +54,8 @@ def main(ctx: click.Context, data_path: Path) -> None:
     "--data-path",
     "-d",
     type=click.Path(dir_okay=True, readable=True, exists=True, resolve_path=True),
-    required=True,
+    required=False,
+    default=None,
     help="Path to the sequence data directory",
 )
 @click.option(
@@ -72,8 +72,12 @@ def click_run_sa(ctx: click.Context, data_path: str | Path, outpath: Path, resum
     """
     Run sequence analysis
     """
+    if not data_path:
+        data: Data = ctx.obj["data"]
+    else:
+        data = Data(Path(data_path))
+
     logger = logging.getLogger("G001")
-    data = Data(Path(data_path))
     logger.info(
         f"Running complete sequence analysis pipeline using data: {data.sequence_data_paths.base_sequence_path}"
     )
@@ -307,7 +311,7 @@ def combine(
     collated_dir: Path,
     combined_output_dir: Path,
 ) -> None:
-    """Collated Flow Data from sites FHCRC & VRC"""
+    """Combine Flow and Sequence Data"""
     data: Data = ctx.obj["data"]
     if not fhcrc_manifest:
         fhcrc_manifest = data.get_fhcrc_swap_manifest_path()
@@ -320,21 +324,21 @@ def combine(
     if not Path(combined_output_dir).exists():
         click.echo("Creating output directory")
         Path(combined_output_dir).mkdir()
-    
+
     RScript(verbose=verbose).combine_flow_and_sequence(
         fhcrc_manifest=Path(fhcrc_manifest),
         vrc_manifest=Path(vrc_manifest),
         sequence_dir=Path(sequence_dir),
         collated_dir=Path(collated_dir),
         combined_output_dir=Path(combined_output_dir),
-        treatment_path=data.get_treatment_path()
+        treatment_path=data.get_treatment_path(),
     )
 
 
 @main.group()
 def figures():
     """
-    Generate for figures.
+    Generate main text figures.
     """
     import warnings
 
@@ -546,6 +550,7 @@ def plot_figure_8(ctx: click.Context, outpath: str | Path) -> None:
 )
 @click.option("-c", "--cleanheaders", is_flag=True, default=False)
 def generate_st1(ctx: click.Context, cleanheaders: bool, outpath: str) -> None:
+    "Make all suppplementary tables"
     data = ctx.obj["data"]
     if not outpath:
         table_output = data.table_data_paths.table_out

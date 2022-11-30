@@ -31,7 +31,7 @@ If you don't want to run the code but would just like the important data files f
 1. The raw FACS files including .fcs, .xml and .csv files can be found [here](https://iavig001public.s3.us-west-2.amazonaws.com/flow_input.tgz)
    <br> **Warning - this file is large at ~120 GB**
 
-2. The outputs of the processed FACS files are found in the [processed flow](data/flow/processed_flow/) directory.
+2. The outputs of the processed FACS files are found in the [processed flow](data/flow/flow_processed_out/) directory.
 
 3. The outputs need to be collated from both trial sites into one [collated flow](data/flow/collated_flow/) directory.
 
@@ -55,7 +55,7 @@ While not necessary, we highly recommend using the [conda](https://docs.conda.io
 
 [Linux command line installer](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
 
-Due to our dependencies on HMMER, there is no windows support at the moment.
+Due to our dependencies on HMMER, there is no Windows support at the moment.
 
 ## Installation
 
@@ -85,9 +85,15 @@ git-lfs install
 git-lfs pull
 ```
 
+Once you install you can use to list of available options
+```bash
+g001 --help
+```
+
+
 ## FACS analysis
 
-The flow processing needs to be run for the two sites (VRC,FHCRC) independently.
+The flow processing needs to be run for the two sites (VRC,FHCRC) independently from the raw_flow data.
 
 ```bash
 # get all raw flow files from public S3 bucket
@@ -97,10 +103,13 @@ wget https://iavig001public.s3.us-west-2.amazonaws.com/flow_input.tgz
 tar -xvzf flow_input.tgz
 
 # Run for FHCRC
-g001 process-flow -s FHCRC -m FHCRC_manifest_file.csv -i flow_input/fhcrc/
+g001 process-flow -s fhcrc -i flow_input/fhcrc/ -o flow_processed_out/
 
 # Run for VRC
-g001 process-flow -s VRC -m VRC_manifest_file.csv -i flow_input/vrc/
+g001 process-flow -s vrc -i flow_input/vrc/ -o flow_processed_out/
+
+# For more options, use
+g001 process-flow --help
 ```
 
 ### Collation of flow data
@@ -108,12 +117,14 @@ g001 process-flow -s VRC -m VRC_manifest_file.csv -i flow_input/vrc/
 The following will combine the VRC and FHCRC flow data.
 
 ```bash
-# Dyanmic input and outputs
-g001 collate \
-  --fhcrc-manifest flow_input/fhcrc/fhcrc_manifest.csv --vrc-manifest flow_input/vrc/vrc_manifest.csv -f data/flow/flow_processed_out/ \
-  -o collated_flow 
-# Use default inputs from ./install.sh and specify output
+# Use this command assumes you did not run the flow process and will use data in data/flow/flow_processed_out/
 g001 collate -o collated_flow
+
+# If you used the above command in FACS analysis, you can use the following command
+g001 collate -i flow_processed_out/ -o collated_flow
+
+# For more options, use
+g001 collate --help
 ```
 
 ## BCR sequence analysis
