@@ -93,7 +93,7 @@ g001 --help
 
 ## FACS analysis
 
-The flow processing needs to be run for the two sites (VRC,FHCRC) independently from the raw_flow data.
+The flow processing needs to be run for the two sites (VRC,FHCRC) independently from the flow_input data.
 
 ```bash
 # get all raw flow files from public S3 bucket
@@ -117,13 +117,10 @@ g001 process-flow --help
 The following will combine the VRC and FHCRC flow data.
 
 ```bash
-# Use this command assumes you did not run the flow process and will use data in data/flow/flow_processed_out/
-g001 collate -o collated_flow
-
-# If you used the above command in FACS analysis, you can use the following command
+# If you ran the steps above in FACS analysis, you can use the following command to collate
 g001 collate -i flow_processed_out/ -o collated_flow
 
-# If you want to run collate without runnint the previous command, we have included the output data in data/flow/flow_process_out
+# If you did not run the above steps in FACS analysis, we have included the output data in data/flow/flow_process_out needed for collation
 g001 collate -i data/flow/flow_process_out/ -o collated_flow
 
 # For more options, use
