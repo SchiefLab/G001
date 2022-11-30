@@ -9,7 +9,7 @@
 [![Combine](https://github.com/SchiefLab/G001/actions/workflows/combine.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/combine.yml)
 [![DOI](https://zenodo.org/badge/517925817.svg)](https://zenodo.org/badge/latestdoi/517925817)
 
-This repository includes data and code used to produce the manuscript Leggat, Cohen, Willis, Fulp, deCamp et al. Science (2022). All data has been deidentified.
+This repository includes data and code used to produce the manuscript Leggat, Cohen, Willis, Fulp, deCamp et al. Science (2022). All data has been deidentified, and as of v2.0.0 all code is functional with deidentified data.
 
 
 - [Data Access](#data-access)
@@ -92,7 +92,7 @@ g001 --help
 
 ## FACS analysis
 
-The flow processing needs to be run for the two sites (VRC,FHCRC) independently from the flow_input data. As of v2.0.0, this code is fully functional with deidentified data. 
+The flow processing needs to be run for the two sites (VRC,FHCRC) independently from the flow_input data. 
 
 ```bash
 # get all raw flow files from public S3 bucket
@@ -129,7 +129,7 @@ g001 collate --help
 
 ## BCR sequence analysis
 
-Run BCR sequence analysis pipeline (as in Leggat et al fig. S10). This code is fully functional with deidentified data.
+Run BCR sequence analysis pipeline (as in Leggat et al fig. S10). 
 
 ```bash
 # run sequence analysis and output to the folder sequence_analysis_output
@@ -141,7 +141,7 @@ g001 sequence_analysis --help
 
 ## Combined B cell frequency and BCR sequence analysis
 
-This code combines the sequencing and flow processing results and computes B cell frequencies among various sets of cells (e.g VRC01-class B cells among all IgG+ memory B cells). As of v2.0.0, this code is fully functional with deidentified data. 
+This code combines the sequencing and flow processing results and computes B cell frequencies among various sets of cells (e.g VRC01-class B cells among all IgG+ memory B cells). 
 
 ```bash
 # If you ran the steps above for collate and sequence analysis, 
