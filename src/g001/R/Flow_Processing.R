@@ -613,7 +613,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
     dplyr::mutate(PTID = paste0(PTID1,'_',PTID2),
                   proportion = Count / ParentCount,
                   proportion = ifelse(is.nan(proportion), 0, proportion)) %>%
-    dplyr::select(-PTID1,PTID2) %>%
+    dplyr::select(-PTID1,-PTID2) %>%
     full_join(exp_time, by = 'name')
 
 
@@ -711,7 +711,7 @@ for (i in 1:nrow(run_exp_id_vis)) {
         ),
         Percent_Sorted = round(INX_Number_Of_Cells / Count * 100, 2)
       ) %>%
-      dplyr::select(-PTID1,PTID2) %>%
+      dplyr::select(-PTID1,-PTID2) %>%
       arrange(Min_Time, INX_Population)
 
 
