@@ -94,3 +94,5 @@ collated_flow/vrc_manifest_swap.csv
 collated_flow/VRC_QC_Concordance.csv
 collated_flow/Wide_Flow_Data_by_Type_to_Merge.csv
 collated_flow/Wide_Flow_Data_to_Merge.csv
+combined_data/Flow_Seq_Results_by_Plate_Type.csv
+combined_data/Wide_Flow_Seq_Data_by_Plate_Type.csv
