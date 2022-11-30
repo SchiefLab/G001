@@ -9,7 +9,8 @@
 [![Combine](https://github.com/SchiefLab/G001/actions/workflows/combine.yml/badge.svg)](https://github.com/SchiefLab/G001/actions/workflows/combine.yml)
 [![DOI](https://zenodo.org/badge/517925817.svg)](https://zenodo.org/badge/latestdoi/517925817)
 
-This repository includes data and code used to produce the manuscript Leggat, Cohen, Willis, Fulp, deCamp et al. Science (2022). All data has been deidentified.
+This repository includes data and code used to produce the manuscript Leggat, Cohen, Willis, Fulp, deCamp et al. Science (2022). All data has been deidentified, and as of v2.0.0 all code is functional with deidentified data.
+
 
 - [Data Access](#data-access)
 - [Pipeline](#pipeline)
@@ -22,7 +23,6 @@ This repository includes data and code used to produce the manuscript Leggat, Co
 - [Figures and tables](#figures-and-tables)
   - [Main figures](#main-figures)
   - [Tables](#tables)
-- [Testing For Development](#testing-for-development)
 
 # Data Access
 
@@ -31,13 +31,13 @@ If you don't want to run the code but would just like the important data files f
 1. The raw FACS files including .fcs, .xml and .csv files can be found [here](https://iavig001public.s3.us-west-2.amazonaws.com/flow_input.tgz)
    <br> **Warning - this file is large at ~120 GB**
 
-2. The outputs of the processed FACS files are found in the [processed flow](data/flow/processed_flow/) directory.
+2. The outputs of the processed FACS files are found in the [processed flow](data/flow/flow_processed_out/) directory.
 
 3. The outputs need to be collated from both trial sites into one [collated flow](data/flow/collated_flow/) directory.
 
 4. The FASTQ files from Sanger sequencing are found in the [fastq](data/sequence/fastq) directory.
 
-5. The annotated,filtered and paired antibody sequences are found in the [sequences/](data/figures/sequences/) directory and may be downloaded with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/sequences/unblinded_sequences.csv.gz)
+5. The annotated, filtered and paired antibody sequences are found in the [sequences/](data/figures/sequences/) directory and may be downloaded with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/sequences/unblinded_sequences.csv.gz)
 
 6. A merged summary file with all frequencies reported in this study can be found in the [flow_summary](data/figures/flow_summary) directory and may be downloaded with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/flow_summary/flow_and_sequences.csv.gz)
 
@@ -45,7 +45,7 @@ If you don't want to run the code but would just like the important data files f
 
 ## Installation pre-requisites
 
-While not necessary, we highly recommend using the [conda](https://docs.conda.io/en/latest/) open-source package and environment manager. This allows you to make an environment with both Python and R dependencies. For the purposes of this repository, only minimal installer for anaconda is necessary (Miniconda).
+While not necessary, we highly recommend using the [conda](https://docs.conda.io/en/latest/) open-source package and environment manager. This allows you to make an environment with both Python and R dependencies. For the purposes of this repository, only a minimal installer for anaconda is necessary (Miniconda).
 
 <ins>Miniconda installers</ins>
 
@@ -55,7 +55,7 @@ While not necessary, we highly recommend using the [conda](https://docs.conda.io
 
 [Linux command line installer](https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh)
 
-Due to our dependencies on HMMER, there is no windows support at the moment.
+Due to our dependencies on HMMER, there is no Windows support at the moment.
 
 ## Installation
 
@@ -85,9 +85,14 @@ git-lfs install
 git-lfs pull
 ```
 
+Once you install you can use to list of available options
+```bash
+g001 --help
+```
+
 ## FACS analysis
 
-The flow processing needs to be run for the two sites (VRC,FHCRC) independently.
+The flow processing needs to be run for the two sites (VRC,FHCRC) independently from the flow_input data. 
 
 ```bash
 # get all raw flow files from public S3 bucket
@@ -97,10 +102,13 @@ wget https://iavig001public.s3.us-west-2.amazonaws.com/flow_input.tgz
 tar -xvzf flow_input.tgz
 
 # Run for FHCRC
-g001 process-flow -s FHCRC -m FHCRC_manifest_file.csv -i flow_input/fhcrc/
+g001 process-flow -s fhcrc -i flow_input/fhcrc/ -o flow_processed_out/
 
 # Run for VRC
-g001 process-flow -s VRC -m VRC_manifest_file.csv -i flow_input/vrc/
+g001 process-flow -s vrc -i flow_input/vrc/ -o flow_processed_out/
+
+# For more options, use
+g001 process-flow --help
 ```
 
 ### Collation of flow data
@@ -108,35 +116,43 @@ g001 process-flow -s VRC -m VRC_manifest_file.csv -i flow_input/vrc/
 The following will combine the VRC and FHCRC flow data.
 
 ```bash
-# Dyanmic input and outputs
-g001 collate \
-  --fhcrc-manifest flow_input/fhcrc/fhcrc_manifest.csv --vrc-manifest flow_input/vrc/vrc_manifest.csv -f data/flow/flow_processed_out/ \
-  -o collated_flow 
-# Use default inputs from ./install.sh and specify output
-g001 collate -o collated_flow
+# If you ran the steps above in FACS analysis, you can use the following command to collate
+g001 collate -i flow_processed_out/ -o collated_flow
+
+# If you did not run the above steps in FACS analysis, we have run those steps and 
+#placed the output in /data/flow/flow_process_out. You can use the following command to collate 
+g001 collate -i data/flow/flow_process_out/ -o collated_flow
+
+# For more options, use
+g001 collate --help
 ```
 
 ## BCR sequence analysis
 
-Run BCR sequence analysis pipeline (as in Leggat et al fig. S10). This code is fully functional on the deidentified data.
+Run BCR sequence analysis pipeline (as in Leggat et al fig. S10). 
 
 ```bash
-g001 sequence_analysis -d data/ -r -o sequence_analysis_output
+# run sequence analysis and output to the folder sequence_analysis_output
+g001 sequence_analysis -o sequence_analysis_output
+
+# For more options, use
+g001 sequence_analysis --help
 ```
 
 ## Combined B cell frequency and BCR sequence analysis
 
-This code combines the sequencing and flow processing results and computes B cell frequencies among various sets of cells (e.g VRC01-class B cells among all IgG+ memory B cells). Similar to the problem we experienced with [flow processing code](#facs-analysis), we found that the original code does not function properly on deidentified data.
-
-As above, we are working to upgrade the code to work on deidentified data. Please check back for updates. In the meantime, we are providing deidentified versions of the output of the original code which can be found [here](data/figures/flow_summary/flow_and_sequences.csv.gz).
+This code combines the sequencing and flow processing results and computes B cell frequencies among various sets of cells (e.g VRC01-class B cells among all IgG+ memory B cells). 
 
 ```bash
-# Dyanmic input and outputs
-g001 combine \
-  --fhcrc-manifest flow_input/fhcrc/fhcrc_manifest.csv --vrc-manifest flow_input/vrc/vrc_manifest.csv -s data/sequence \
-  -c collated_flow -o combined_flow_seq
-# Use default inputs from ./install.sh and specify output
-g001 combine -c collated_flow -o combined_flow_seq
+# If you ran the steps above for collate and sequence analysis, 
+# and the respective output folders are sequence_analysis_output and collated_flow, 
+# you can use the following command to combine the sequence and flow data
+g001 combine -s sequence_analysis_output -c collated_flow -o combined_flow_seq
+
+
+# If you did not run the above steps for collate and sequence analysis, we have run those steps and placed the output 
+# in /data/flow/collated_flow and data/sequence. You can use the following command to combine the sequence and flow data 
+g001 combine -s data/sequence -c data/flow/collated_flow -o combined_flow_seq
 ```
 
 # Figures and tables
@@ -158,17 +174,13 @@ g001 figures fig8
 
 ## Tables
 
-The following code generates all supplementary tables in the Leggat et al manuscript. Both individual pdfs and a single combined pdf are generated. This is only supported on Mac.
+The following code generates all supplementary tables in the Leggat et al. manuscript. Both individual pdfs and a single combined pdf are generated. This command is only supported on Mac.
 
 ```
 g001 supptables -c -o supp_tables
 ```
 
 
-# Testing For Development
 
-```bash
-# Run all tests
-pip install -e '.[dev]'
-pytest -svv tests/
-```
+
+
