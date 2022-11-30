@@ -132,7 +132,8 @@ g001 collate --help
 Run BCR sequence analysis pipeline (as in Leggat et al fig. S10). This code is fully functional on the deidentified data.
 
 ```bash
-g001 sequence_analysis -d data/ -r -o sequence_analysis_output
+# run sequence analysis with resume and output to sequences_analysis_out
+g001 sequence_analysis -r -o sequence_analysis_output
 ```
 
 ## Combined B cell frequency and BCR sequence analysis
