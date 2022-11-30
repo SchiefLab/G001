@@ -37,7 +37,7 @@ If you don't want to run the code but would just like the important data files f
 
 4. The FASTQ files from Sanger sequencing are found in the [fastq](data/sequence/fastq) directory.
 
-5. The annotated,filtered and paired antibody sequences are found in the [sequences/](data/figures/sequences/) directory and may be downloaded with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/sequences/unblinded_sequences.csv.gz)
+5. The annotated, filtered and paired antibody sequences are found in the [sequences/](data/figures/sequences/) directory and may be downloaded with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/sequences/unblinded_sequences.csv.gz)
 
 6. A merged summary file with all frequencies reported in this study can be found in the [flow_summary](data/figures/flow_summary) directory and may be downloaded with this [link](https://github.com/SchiefLab/G001/raw/main/data/figures/flow_summary/flow_and_sequences.csv.gz)
 
@@ -45,7 +45,7 @@ If you don't want to run the code but would just like the important data files f
 
 ## Installation pre-requisites
 
-While not necessary, we highly recommend using the [conda](https://docs.conda.io/en/latest/) open-source package and environment manager. This allows you to make an environment with both Python and R dependencies. For the purposes of this repository, only minimal installer for anaconda is necessary (Miniconda).
+While not necessary, we highly recommend using the [conda](https://docs.conda.io/en/latest/) open-source package and environment manager. This allows you to make an environment with both Python and R dependencies. For the purposes of this repository, only a minimal installer for anaconda is necessary (Miniconda).
 
 <ins>Miniconda installers</ins>
 
@@ -122,6 +122,9 @@ g001 collate -o collated_flow
 
 # If you used the above command in FACS analysis, you can use the following command
 g001 collate -i flow_processed_out/ -o collated_flow
+
+# If you want to run collate without runnint the previous command, we have included the output data in data/flow/flow_process_out
+g001 collate -i data/flow/flow_process_out/ -o collated_flow
 
 # For more options, use
 g001 collate --help
