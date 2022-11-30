@@ -96,3 +96,5 @@ collated_flow/Wide_Flow_Data_by_Type_to_Merge.csv
 collated_flow/Wide_Flow_Data_to_Merge.csv
 combined_data/Flow_Seq_Results_by_Plate_Type.csv
 combined_data/Wide_Flow_Seq_Data_by_Plate_Type.csv
+data/flow/collated_flow/Wide_Flow_Data_by_Type_to_Merge.csv
+combined_data/Flow_Seq_Results_with_calls.csv
