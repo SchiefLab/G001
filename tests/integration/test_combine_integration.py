@@ -9,7 +9,6 @@ def test_combine(tmp_path_factory: TempdirFactory) -> None:
     print(path)
     runner = CliRunner()
     args = ["combine", "--verbose", "-o", str(path)]
-    print("Running", "g001 combine", " ".join(args))
+    print("Running", "g001", " ".join(args))
     result = runner.invoke(main, args)
-    print(result.stdout)
     assert result.exit_code == 0

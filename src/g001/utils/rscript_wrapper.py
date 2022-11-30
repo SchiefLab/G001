@@ -36,11 +36,12 @@ class RScript:
                 #     [e for e in str(proc.stderr).replace(":\n", ":").split("\n") if not e.startswith("Warning")]
                 # )
                 # # ignore ugly R column renames
-                # stderr = "\n".join([e for e in stderr.split("\n") if not e.startswith("New names:")])
-                self.console.print(proc.stderr)
-                raise RProcessError(proc.returncode, " ".join(cmd), proc.stderr)
+                if str(proc.stderr).startswith("Warning message:"):
+                    self.console.print(proc.stderr)
+                else:
+                    raise RProcessError(proc.returncode, " ".join(cmd), proc.stderr)
             if proc.stdout:
-                self.console.print("Output from R:\n{proc.stdout}")
+                self.console.print(f"Output from R:\n{proc.stdout}")
 
     def flow_processing(
         self,
