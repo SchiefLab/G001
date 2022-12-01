@@ -23,6 +23,7 @@ This repository includes data and code used to produce the manuscript Leggat, Co
 - [Figures and tables](#figures-and-tables)
   - [Main figures](#main-figures)
   - [Tables](#tables)
+- [Issues](#issues)
 
 # Data Access
 
@@ -117,11 +118,11 @@ The following will combine the VRC and FHCRC flow data.
 
 ```bash
 # If you ran the steps above in FACS analysis, you can use the following command to collate
-g001 collate -i flow_processed_out/ -o collated_flow
+g001 collate -f flow_processed_out/ -o collated_flow
 
 # If you did not run the above steps in FACS analysis, we have run those steps and 
 #placed the output in /data/flow/flow_process_out. You can use the following command to collate 
-g001 collate -i data/flow/flow_process_out/ -o collated_flow
+g001 collate -f data/flow/flow_process_out/ -o collated_flow
 
 # For more options, use
 g001 collate --help
@@ -180,6 +181,12 @@ The following code generates all supplementary tables in the Leggat et al. manus
 g001 supptables -c -o supp_tables
 ```
 
+# Issues
+
+Please submit any issues to the [issues page](https://github.com/SchiefLab/G001/issues) and we are happy to help.
+
+---
+Copyright © Jordan R. Willis, Troy Sincomb, Jimmy Fulp, VISC and IAVI 2022
 
 
 
